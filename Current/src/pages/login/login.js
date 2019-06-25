@@ -46,13 +46,33 @@ export default class login extends Component {
     });
   };
   
+  signup = e => {
+    e.preventDefault();
+    
+    let endPoint = '/api/signup';
+    
+    this.postData(endPoint, this.state)
+      .then(res => res.json())
+      .then(res => {
+        return res.ok
+          ? Promise.resolve(res)
+          : Promise.reject(res);
+      })
+      .then(res => {
+        this.props.history.push({ pathname: '/login' });
+      })
+      .catch(err => {
+        console.error(err);
+      });
+  };
+  
   login = e => {
     e.preventDefault();
     
     let endPoint = '/api/authenticate'; // - API call endpoint
     
     if(this.state.email && this.state.password) {
-      this.postData(endPoint, this.state).then(result => {
+      this.postData(endPoint, {email: this.state.email, password: this.state.password}).then(result => {
         console.log(result);
         localStorage.setItem('AUTH_TOKEN', result.auth_token);
         this.props.history.push({ pathname: '/home' });
@@ -91,14 +111,14 @@ export default class login extends Component {
 						</span>
             
             <input
-              name='first-name'
+              name='firstName'
               className='slide-design-input'
               type='text'
               placeholder='First name'
             />
             
             <input
-              name='last-name'
+              name='lastName'
               className='slide-design-input'
               type='text'
               placeholder='Last name'
@@ -130,7 +150,7 @@ export default class login extends Component {
                 Birthdate
               </span>
               <input
-                name='date-of-birth'
+                name='birthDate'
                 type="date"
                 placeholder="Date of birth"
               />
@@ -142,7 +162,7 @@ export default class login extends Component {
               </span>
               
               <select
-                name='signup-select'
+                name='sex'
               >
                 <option value='male'>
                   Male
@@ -162,7 +182,10 @@ export default class login extends Component {
               type="text"
               placeholder="Profession"
             />
-            <button className='slide-design-button'>Sign Up</button>
+            <button
+              className='slide-design-button'
+              onClick={ this.signup }
+            >Sign Up</button>
           </form>
         </div>
         <div className='slide-design-form-container slide-design-sign-in-container'>
