@@ -9,7 +9,13 @@ export default class login extends Component {
     this.state = {
       signUpCondition: false, //this helps to slide active and false
       email: '',
-      password: ''
+      password: '',
+      firstName: null,
+      lastName: null,
+      phone: null,
+      birthDate: null,
+      sex: null,
+      profession: null,
     };
     this.handleClick = this.handleClick.bind(this);
   }
@@ -115,6 +121,7 @@ export default class login extends Component {
               className='slide-design-input'
               type='text'
               placeholder='First name'
+              onChange={ this.handleChange }
             />
             
             <input
@@ -122,6 +129,7 @@ export default class login extends Component {
               className='slide-design-input'
               type='text'
               placeholder='Last name'
+              onChange={ this.handleChange }
             />
             
             <input
@@ -129,6 +137,7 @@ export default class login extends Component {
               className='slide-design-input'
               type='email'
               placeholder='Email'
+              onChange={ this.handleChange }
             />
             
             <input
@@ -136,6 +145,7 @@ export default class login extends Component {
               className='slide-design-input'
               type='password'
               placeholder='Password'
+              onChange={ this.handleChange }
             />
   
             <input
@@ -143,6 +153,7 @@ export default class login extends Component {
               className="slide-design-input"
               type="text"
               placeholder="Phone"
+              onChange={ this.handleChange }
             />
   
             <div className='slide-design-input slide-design-select-wrap'>
@@ -153,6 +164,7 @@ export default class login extends Component {
                 name='birthDate'
                 type="date"
                 placeholder="Date of birth"
+                onChange={ this.handleChange }
               />
             </div>
   
@@ -163,6 +175,7 @@ export default class login extends Component {
               
               <select
                 name='sex'
+                onChange={ this.handleChange }
               >
                 <option value='male'>
                   Male
@@ -181,6 +194,7 @@ export default class login extends Component {
               className="slide-design-input"
               type="text"
               placeholder="Profession"
+              onChange={ this.handleChange }
             />
             <button
               className='slide-design-button'
