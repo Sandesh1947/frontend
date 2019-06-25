@@ -1,0 +1,55 @@
+@import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
+@import "../node_modules/video-react/dist/video-react.css";
+
+@import 'style/reset';
+
+@import 'style/abstract/abstract';
+@import 'style/typography';
+
+html {
+    font-size: 16px;
+}
+
+body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+        "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+        sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+    font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+        monospace;
+}
+
+.card-header {
+    background-color: #ffffff;
+    border-bottom: none;
+}
+
+.card-footer {
+    background-color: #ffffff;
+}
+
+.cursor-pointer {
+    cursor: pointer;
+}
+
+.content {
+    margin-top: 2rem;
+}
+
+.carousel-control-prev,
+.carousel-control-next {
+    width: 5%;
+
+    .carousel-control-next-icon,
+    .carousel-control-prev-icon {
+        background-color: black;
+        border-radius: 100%;
+        padding: 1rem;
+        background-size: 15px 15px;
+    }
+}

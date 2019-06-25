@@ -1,0 +1,109 @@
+@import '../../style/abstract/abstract';
+
+.header {
+  padding: 1rem 0;
+  background-color: $c-lightest !important;
+  text-align: center;
+  text-align: -webkit-center;
+  
+  .navbar-collapse {
+    .form-inline {
+      position: relative;
+    }
+    
+    input {
+      width: 30vw;
+      min-width: 200px;
+      border: 0;
+      border-radius: 5px;
+    }
+    
+    .search-icon {
+      position: absolute;
+      right: 15px;
+    }
+  }
+}
+
+.form-inline {
+  flex-flow: row nowrap;
+}
+
+.navbar {
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  
+  &__brand {
+    @extend %h2;
+    margin-right: 3rem;
+    
+    &:hover {
+      color: $c-neutral;
+    }
+  }
+}
+
+.navbar-avatar {
+  width: 3rem;
+  height: 3rem;
+  overflow: hidden;
+  border-radius: $border-radius;
+  
+  &__image {
+    object-fit: cover;
+    height: 3rem;
+  }
+}
+
+.navbar-control {
+  &__button {
+    display: flex;
+    align-items: center;
+    border: none;
+    background: none;
+    transition: .3s;
+    
+    &:hover {
+      background: none;
+      color: $c-neutral;
+      border: none;
+      
+      .navbar-control__icon {
+        color: $c-neutral;
+      }
+    }
+  }
+  &__text {
+    @extend %h3;
+  }
+  &__icon {
+    margin-left: .25rem;
+    color: $c-active;
+    transition: .3s;
+  }
+}
+
+.navbar-right {
+  &__button {
+    margin-right: .5rem;
+    border: none;
+    transition: .3s;
+    background: none;
+    color: $c-darkest;
+  
+    &:hover {
+      background: none;
+      color: $c-neutral;
+      border: none;
+    }
+  }
+}
+
+.navbar-dropdown {
+  @extend %h3;
+  color: $c-darkest;
+  background: none;
+  display: flex;
+  align-items: center;
+}
