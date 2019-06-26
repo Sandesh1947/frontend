@@ -68,7 +68,7 @@ export default class login extends Component {
       .then(res => {
         this.setState({
           message: 'Successfully registered! Login to your account.',
-          signUpCondition: true,
+          signUpCondition: false,
         });
       })
       .catch(err => {
