@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Router } from 'react-router-dom';
 import { BASE_URL } from '../../app.constants';
 import './login.scss';
 
@@ -16,6 +17,7 @@ export default class login extends Component {
       birthDate: null,
       sex: null,
       profession: null,
+      message: null
     };
     this.handleClick = this.handleClick.bind(this);
   }
@@ -65,7 +67,10 @@ export default class login extends Component {
           : Promise.reject(res);
       })
       .then(res => {
-        this.props.history.push({ pathname: '/login' });
+        this.setState({
+          message: res.message || 'Successfully registered!',
+          signUpCondition: true,
+        });
       })
       .catch(err => {
         console.error(err);
@@ -112,6 +117,12 @@ export default class login extends Component {
                 <i className='fab fa-linkedin-in' />
               </a>
             </div>
+            {
+              this.state.message
+                && (
+                  <span className='slide-design-a' style={{ color: 'red' }}>{ this.state.message }</span>
+                )
+            }
             <span className='slide-design-a'>
 							or use your email for registration
 						</span>
@@ -204,7 +215,15 @@ export default class login extends Component {
         </div>
         <div className='slide-design-form-container slide-design-sign-in-container'>
           <form className='slide-design-form' action='#'>
-            <h1 className='slide-design-header'>Sign in</h1>
+            {
+              this.state.message
+                ? (
+                  <h1 className='slide-design-header'>{ this.state.message }</h1>
+                )
+                : (
+                  <h1 className='slide-design-header'>Sign in</h1>
+                )
+            }
             <div className='slide-design-social-container slide-design-a'>
               <a href='# ' className='slide-design-social'>
                 <i className='fab fa-facebook-f' />
