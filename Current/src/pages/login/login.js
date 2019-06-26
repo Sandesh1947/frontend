@@ -60,20 +60,20 @@ export default class login extends Component {
     let endPoint = '/api/signup';
     
     this.postData(endPoint, this.state)
-      .then(res => res.json())
       .then(res => {
-        return res.ok
+        return res.msg === 'Successful'
           ? Promise.resolve(res)
           : Promise.reject(res);
       })
       .then(res => {
         this.setState({
-          message: res.message || 'Successfully registered!',
+          message: res.msg,
           signUpCondition: true,
         });
       })
       .catch(err => {
-        this.setState({ message: err.message || 'Unable to register! Try again!' });
+        console.error(err.msg);
+        this.setState({ message: 'Unable to register! Try again!' });
       });
   };
   
