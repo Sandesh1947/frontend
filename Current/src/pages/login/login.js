@@ -73,7 +73,7 @@ export default class login extends Component {
         });
       })
       .catch(err => {
-        console.error(err);
+        this.setState({ message: err.message || 'Unable to register! Try again!' });
       });
   };
   
