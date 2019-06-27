@@ -14,7 +14,7 @@ import Spinner from 'react-bootstrap/Spinner';
 import { BASE_URL } from '../../app.constants';
 import ContentCard from '../../components/content-card/content-card';
 import Left from '../../components/left/left';
-import './home.scss';
+// import './home.scss';
 
 export default class Home extends Component {
 

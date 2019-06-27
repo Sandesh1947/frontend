@@ -3,6 +3,7 @@ import Header from '../header/Header'
 import { Route, Switch } from 'react-router-dom';
 import Home from '../../pages/home/home';
 import Profile from '../../pages/profile/profile';
+import HomeContainer from '../home/HomeContainer'
 class Container extends React.Component {
     render () {
         return(
@@ -10,7 +11,7 @@ class Container extends React.Component {
                 <Header user={null} />
                 <Switch>
                     <Route path="/profile" component={Profile} />
-                    <Route path="/home" component={Home} />
+                    <Route path="/home" component={HomeContainer} />
                 </Switch>
             </section>
         )
