@@ -6,7 +6,7 @@ import Left from '../../components/left/left';
 import Right from '../../components/right/right';
 import Axios from "axios";
 import { BASE_URL } from "../../app.constants";
-import './profile.scss';
+// import './profile.scss';
 
 export default class Profile extends Component {
 
