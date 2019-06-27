@@ -13,7 +13,6 @@ import Row from 'react-bootstrap/Row';
 import Spinner from 'react-bootstrap/Spinner';
 import { BASE_URL } from '../../app.constants';
 import ContentCard from '../../components/content-card/content-card';
-import Header from '../../components/header/header';
 import Left from '../../components/left/left';
 import './home.scss';
 
@@ -41,10 +40,10 @@ export default class Home extends Component {
   }
 
   componentDidMount() {
-    if (!localStorage.getItem('AUTH_TOKEN') || localStorage.getItem('AUTH_TOKEN') === '') {
-      this.props.history.replace('/');
-      return;
-    }
+    // if (!localStorage.getItem('AUTH_TOKEN') || localStorage.getItem('AUTH_TOKEN') === '') {
+    //   this.props.history.replace('/login');
+    //   return;
+    // }
 
     Axios.defaults.headers.common['Authorization'] = localStorage.getItem('AUTH_TOKEN');
 
@@ -161,7 +160,6 @@ export default class Home extends Component {
   render() {
     return (
       <section style={{ backgroundColor: '#f2f2f2', paddingBottom: '2rem' }}>
-        <Header user={this.state.user} />
         <Container className='content'>
           <Row>
             <Col md={3}>

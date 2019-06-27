@@ -7,9 +7,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import './index.scss';
-import Home from './pages/home/home';
 import Login from './pages/login/login';
-import Profile from './pages/profile/profile';
+import Container from './components/container/Container'
 import * as serviceWorker from './serviceWorker';
 
 library.add(faHeart, faShare);
@@ -18,9 +17,8 @@ JavascriptTimeAgo.locale(en);
 const routing = (
 	<BrowserRouter>
 		<Switch>
-			<Route exact path="/" component={Login} />
-			<Route path="/profile" component={Profile} />
-			<Route path="/home" component={Home} />
+			<Route exact path="/login" component={Login} />
+			<Route path='/' component={Container}/>
 		</Switch>
 	</BrowserRouter>
 );
