@@ -25,7 +25,7 @@ class Header extends Component {
           <Row>
             <Col>
               <Navbar expand='lg' className='navbar'>
-                <Navbar.Brand href='#home' className='navbar__brand'>Eycon</Navbar.Brand>
+                <Navbar.Brand  className='navbar__brand'><Link to='/home'>Eycon</Link></Navbar.Brand>
                 <Navbar.Toggle aria-controls='basic-navbar-nav' />
                 <Navbar.Collapse id='basic-navbar-nav' className='navbar-collapse'>
                   <Form inline className='navbar-search-form'>

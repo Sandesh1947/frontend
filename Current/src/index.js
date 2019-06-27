@@ -7,7 +7,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import './index.scss';
-import Login from './pages/login/login';
+import LoginContainer from './components/Login/LoginContainer'
 import Container from './components/container/Container'
 import * as serviceWorker from './serviceWorker';
 
@@ -17,7 +17,7 @@ JavascriptTimeAgo.locale(en);
 const routing = (
 	<BrowserRouter>
 		<Switch>
-			<Route exact path="/login" component={Login} />
+			<Route exact path="/login" component={LoginContainer} />
 			<Route path='/' component={Container}/>
 		</Switch>
 	</BrowserRouter>

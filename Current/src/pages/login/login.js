@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Router } from 'react-router-dom';
 import { BASE_URL } from '../../app.constants';
-import './login.scss';
+// import './login.scss';
 
 export default class login extends Component {
   constructor(props) {
