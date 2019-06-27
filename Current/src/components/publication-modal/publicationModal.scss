@@ -1,0 +1,73 @@
+@import '../../style/abstract/abstract';
+
+.publication-modal {
+  overflow: hidden;
+  
+  .modal-header {
+    padding: 1rem;
+    background: $c-light;
+  }
+
+  .modal-body {
+    padding: 5px 0;
+  }
+  
+  .publication-card {
+    &-wrapper {
+      border-top: none;
+      
+      .navbar-avatar {
+        margin-right: 1rem;
+        min-width: 3rem;
+        min-height: 3rem;
+        width: 3rem;
+        height: 3rem;
+      }
+    }
+
+    &__textarea {
+      height: 7rem;
+    }
+
+    &__attachments {
+      margin-top: 0.5rem;
+      margin-left: 4rem;
+      display: inline-block;
+      vertical-align: top;
+    }
+
+    &__map-marker {
+      display: inline-block;
+      margin-top: 0.5rem;
+      color: $c-dark;
+      transition: .3s;
+      cursor: pointer;
+      
+      &:hover,
+      &:focus {
+        color: $c-active;
+      }
+    }
+
+    &__control {
+      width: 100%;
+    }
+  }
+
+  .bbar {
+    padding: 1rem;
+  }
+
+  &__button {
+    background-color: $c-dark;
+    border: none;
+    height: 2rem;
+    padding: 0 2rem;
+    
+    &:hover,
+    &:focus {
+      background-color: $c-active;
+    }
+  }
+
+}

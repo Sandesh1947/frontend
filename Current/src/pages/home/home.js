@@ -1,20 +1,13 @@
-import { faFilm, faImage } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import Axios from 'axios';
 import React, { Component } from 'react';
-import Alert from 'react-bootstrap/Alert';
-import Button from 'react-bootstrap/Button';
-import Card from 'react-bootstrap/Card';
-import Col from 'react-bootstrap/Col';
-import Container from 'react-bootstrap/Container';
-import Form from 'react-bootstrap/Form';
-import Image from 'react-bootstrap/Image';
-import Row from 'react-bootstrap/Row';
-import Spinner from 'react-bootstrap/Spinner';
+import { Alert, Button, Card, Col, Container, Form, Image, Row, Spinner } from 'react-bootstrap';
+import Axios from 'axios';
+
 import { BASE_URL } from '../../app.constants';
 import ContentCard from '../../components/content-card/content-card';
 import Header from '../../components/header/header';
 import Left from '../../components/left/left';
+import Attachment from '../../components/attachment/attachment';
+
 import './home.scss';
 
 export default class Home extends Component {
@@ -111,43 +104,29 @@ export default class Home extends Component {
     this.setState({ lastScrollPos: scrolled });
   }
 
-  onFileUpload = (e) => {
-    if (!e.target.files.length) {
-      return;
-    }
-
-    const file = Array.from(e.target.files)[0];
-    if (file.type === 'image/jpeg' || file.type === 'image/png') {
-      this.setState({ avatar: file, publication_img: '1', publication_vid: '0' });
-    } else if (file.type === 'video/mp4') {
-      this.setState({ avatar: file, publication_img: '0', publication_vid: '1' });
-    } else {
-      this.setState({ avatar: null, publication_img: '0', publication_vid: '0' });
-    }
+  onUpload = ({ attachment: avatar, attachmentType }) => {
+    this.setState({
+      avatar,
+      publication_img: attachmentType === 'image' ? '1' : '0',
+      publication_vid: attachmentType === 'video' ? '1' : '0'
+    });
   }
 
   onSubmit = () => {
-    
-    if(!this.state.avatar) {
-      Axios.post(BASE_URL + '/api/publish', {
-        publication_img: this.state.publication_img,
-        publication_vid: this.state.publication_vid,
-        publication_text: this.state.publication_text
-      }).then((response) => {
-        console.log('uploading sucessful');
-      }).catch((error) => {
-        console.log(error);
-      })
+    const { avatar, publication_img, publication_vid, publication_text } = this.state;
 
-      return
+    let data;
+    if (avatar) {
+      data = new FormData();
+      data.append('post', avatar);
+      data.append('publication_text', publication_text);
+      data.append('publication_img', publication_img);
+      data.append('publication_vid', publication_vid);
+    } else {
+      data = { publication_img, publication_vid, publication_text };
     }
-    const formData = new FormData();
-    formData.append('post', this.state.avatar);
-    formData.append('publication_text', this.state.publication_text);
-    formData.append('publication_img', this.state.publication_img);
-    formData.append('publication_vid', this.state.publication_vid);
 
-    Axios.post(BASE_URL + '/api/publish', formData).then((response) => {
+    Axios.post(BASE_URL + '/api/publish', data).then((response) => {
       console.log('uploading sucessful');
     }).catch((error) => {
       console.log(error);
@@ -177,31 +156,11 @@ export default class Home extends Component {
                       )}
                     <div className='posting-card__control'>
                       <Form.Control style={{ resize: 'none' }} placeholder='Share with the world your latest piece...'
-                        as='textarea' rows='3' value={this.state.publication_text} onChange={this.handlePublicatioText.bind(this)} className='posting-card__textarea' />
+                        as='textarea' rows='3' value={this.state.publication_text} onChange={this.handlePublicatioText.bind(this)}
+                        className='posting-card__textarea'
+                      />
                       <div className='d-flex justify-content-between'>
-                        <div className='posting-card-attachment'>
-                          {this.state.publication_vid === '0' && (
-                            <div className='btn posting-card-attachment__button'>
-                              <label htmlFor='image' className='m-0 p-0 posting-card-attachment__label'>
-                                <FontAwesomeIcon icon={faImage} size='2x'
-                                  className='cursor-pointer posting-card-attachment__icon' />
-                              </label>
-                              <input className='d-none' type='file' id='image' onChange={this.onFileUpload}
-                                accept='image/x-png,image/jpeg' />
-                            </div>
-                          )}
-
-                          {this.state.publication_img === '0' && (
-                            <div className='btn posting-card-attachment__button'>
-                              <label htmlFor='video' className='m-0 posting-card-attachment__label'>
-                                <FontAwesomeIcon icon={faFilm} size='2x'
-                                  className='cursor-pointer posting-card-attachment__icon' />
-                              </label>
-                              <input className='d-none' type='file' id='video' onChange={this.onFileUpload}
-                                accept='video/mp4' />
-                            </div>
-                          )}
-                        </div>
+                        <Attachment types={['image', 'video']} onUpload={this.onUpload} />
                         <Button
                           style={{ padding: '0 1rem' }}
                           onClick={this.onSubmit}

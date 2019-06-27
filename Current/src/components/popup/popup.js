@@ -20,10 +20,10 @@ export default class Popup extends Component {
     }
 
     render() {
-        const { user, userPublications, show, onHide } = this.props;
+        const { userPublications, show, onHide } = this.props;
 
         return (
-            <Modal show={show} onShow={this.onModalShow} onHide={onHide} aria-labelledby="contained-modal-title-vcenter" centered >
+            <Modal show={show} onShow={this.onModalShow} onHide={onHide} >
                 <div className="carousel-control-prev" role="button" onClick={this.props.onPrevClick}>
                     <span className="carousel-control-prev-icon" aria-hidden="true"></span>
                     <span className="sr-only">Previous</span>

@@ -38,20 +38,6 @@
   }
 }
 
-.posting-card-attachment {
-  &__button {
-    margin-right: 1rem;
-  }
-  &__label {
-    transition: .3s;
-    
-    &:hover,
-    &:focus {
-      color: $c-active;
-    }
-  }
-}
-
 .members {
   background-color: $c-lightest;
   border-radius: $border-radius;
