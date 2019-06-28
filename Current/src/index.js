@@ -10,17 +10,20 @@ import './index.scss';
 import LoginContainer from './components/Login/LoginContainer'
 import Container from './components/container/Container'
 import * as serviceWorker from './serviceWorker';
-
+import { Provider } from 'react-redux';
+import store from './store.js';
 library.add(faHeart, faShare);
 JavascriptTimeAgo.locale(en);
 
 const routing = (
-	<BrowserRouter>
-		<Switch>
-			<Route exact path="/login" component={LoginContainer} />
-			<Route path='/' component={Container}/>
-		</Switch>
-	</BrowserRouter>
+	<Provider store={store}>
+		<BrowserRouter>
+			<Switch>
+				<Route exact path="/login" component={LoginContainer} />
+				<Route path='/' component={Container} />
+			</Switch>
+		</BrowserRouter>
+	</Provider>
 );
 
 ReactDOM.render(routing, document.getElementById('root'));

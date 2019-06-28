@@ -138,7 +138,7 @@ class LoginView extends React.Component {
               </form>
             </div>
             <div className='slide-design-form-container slide-design-sign-in-container'>
-              <form className='slide-design-form' action='#'>
+              <form className='slide-design-form'>
                 {
                   this.props.message
                     ? (
@@ -179,8 +179,7 @@ class LoginView extends React.Component {
                 <a href='#'>Forgot your password?</a>
                 <button
                   className='slide-design-button'
-                  type='submit'
-                  onClick={ ()=> { this.login(this.state) }}
+                  onClick={ (e)=> {e.preventDefault();this.props.login(this.state) }}
                 >
                   Login
                 </button>

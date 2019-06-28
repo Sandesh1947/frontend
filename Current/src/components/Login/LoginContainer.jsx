@@ -1,6 +1,9 @@
 import React from 'react'
 import LoginView from './LoginView'
 import { BASE_URL } from '../../app.constants';
+import {loginAction} from '../../actions/loginAction'
+import {connect} from 'react-redux'
+import {Redirect} from 'react-router-dom'
 class LoginContainer extends React.Component {
     constructor(props) {
         super(props);
@@ -17,6 +20,7 @@ class LoginContainer extends React.Component {
           profession: null,
           message: null
         };
+        this.login = this.login.bind(this) 
       }
       /** service */
       postData = (type, userData) => {
@@ -59,24 +63,16 @@ class LoginContainer extends React.Component {
             this.setState({ message: 'Unable to register! Try again!' });
           });
       };
-      
-      login = (data) => {
-        
-        let endPoint = '/api/authenticate'; // - API call endpoint
-        
-        if(data.email && data.password) {
-          this.postData(endPoint, {email: data.email, password: data.password}).then(result => {
-            console.log(result);
-            localStorage.setItem('AUTH_TOKEN', result.auth_token);
-            this.props.history.push({ pathname: '/home' });
-          });
-        }
-      };
-      
+      login(data) {
+        this.props.dispatch(loginAction({email: data.email, password: data.password}))
+      }
     render() {
         return(
-           <LoginView login={this.login} signup={this.signup} message={this.state.message}/>
+          <React.Fragment>
+            {this.props.logindata.AUTH_TOKEN ? <Redirect to='/home'/> :
+            <LoginView login={this.login} signup={this.signup} message={this.state.message}/>}
+          </React.Fragment>
         )
     }
 }
-export default LoginContainer
+export default connect(state =>({logindata:state.logindata}))  (LoginContainer)
