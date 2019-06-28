@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import Header from '../../components/header/header';
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Container from "react-bootstrap/Container";
@@ -7,7 +6,7 @@ import Left from '../../components/left/left';
 import Right from '../../components/right/right';
 import Axios from "axios";
 import { BASE_URL } from "../../app.constants";
-import './profile.scss';
+// import './profile.scss';
 
 export default class Profile extends Component {
 
@@ -27,10 +26,10 @@ export default class Profile extends Component {
     }
 
     componentDidMount() {
-        if (!localStorage.getItem('AUTH_TOKEN') || localStorage.getItem('AUTH_TOKEN') === "") {
-            this.props.history.replace("/");
-            return;
-        }
+        // if (!localStorage.getItem('AUTH_TOKEN') || localStorage.getItem('AUTH_TOKEN') === "") {
+        //     this.props.history.replace("/login");
+        //     return;
+        // }
 
         Axios.defaults.headers.common["Authorization"] = localStorage.getItem('AUTH_TOKEN');
 
@@ -105,7 +104,6 @@ export default class Profile extends Component {
     render() {
         return (
             <section style={{ backgroundColor: '#f2f2f2' }}>
-                <Header user={this.state.user} />
                 <Container className='content'>
                     <Row>
                         <Col md={{ span: 3, offset: 1 }}>
