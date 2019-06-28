@@ -1,11 +1,12 @@
 import { takeLatest, call, put } from 'redux-saga/effects';
 import axios from "axios";
+import { BASE_URL } from '../app.constants';
 //this is for testing with mock
 function sampleLogin() {
     return 'sfgsdfgsdfg'
 }
 function callLoginApi(data) {
-    return  axios.post( "'/api/authenticate'",data)
+    return  axios.post(BASE_URL+'/api/authenticate/',data)
 }
 function* Login(action) {
     try {

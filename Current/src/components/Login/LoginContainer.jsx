@@ -1,6 +1,5 @@
 import React from 'react'
 import LoginView from './LoginView'
-import { BASE_URL } from '../../app.constants';
 import {loginAction,signUp} from '../../actions/accountAction'
 import {connect} from 'react-redux'
 import {Redirect} from 'react-router-dom'
@@ -22,9 +21,10 @@ class LoginContainer extends React.Component {
         };
         this.login = this.login.bind(this) 
         this.handleSignUpCondition = this.handleSignUpCondition.bind(this)
+        this.signup = this.signup.bind(this)
       }
       signup (data) {
-        this.props.dispatch(signUp(data)).then(
+        signUp(data).then(
           (res) =>{
             this.setState({
               message: 'Successfully registered! Login to your account.',

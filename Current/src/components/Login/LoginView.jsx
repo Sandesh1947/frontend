@@ -127,7 +127,7 @@ class LoginView extends React.Component {
                 />
                 <button
                   className='slide-design-button'
-                  onClick={ ()=> {this.props.signup(this.state)} }
+                  onClick={ (e)=> {e.preventDefault() ; this.props.signup(this.state)} }
                 >Sign Up</button>
               </form>
             </div>
