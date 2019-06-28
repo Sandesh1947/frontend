@@ -9,31 +9,26 @@ class HomeContainer extends React.Component {
         super(props);
     
         this.state = {
-          user: null,
-          followers: [],
-          userPublications: [],
           avatar: null,
           publication_text: '',
           publication_img: '0',
           publication_vid: '0',
           lastScrollPos: 0,
-          loading: false,
-          page: 1,
           noMoreData: false,
-          modalShow: false
         }
     
         this.loadMoreData = this.loadMoreData.bind(this);
+        this.trackScrolling = this.trackScrolling.bind(this)
       }
     
       componentDidMount() {
         if(!this.props.userInfo.user) {
           this.props.dispatch(getUserInfo())
         }
-        if(!this.props.userPublications.publications) {
+        if(this.props.userPublications.publications.length ===0) {
           this.props.dispatch(getUserPublications())
         }
-        if(!this.props.userFollowers.followers) {
+        if(this.props.userFollowers.followers.length ===0 ) {
           this.props.dispatch(getUserFollowers())
         }
         document.addEventListener('scroll', this.trackScrolling);
@@ -41,40 +36,19 @@ class HomeContainer extends React.Component {
     
       loadMoreData = () => {
     
-        if (this.state.noMoreData && this.state.loading) {
-          this.setState({ loading: false });
+        if (this.props.userPublications.noMoreData && this.props.userPublications.loading) {
           return;
         }
-    
-        this.setState({ loading: true });
-        Axios.get(BASE_URL + '/api/userpublications', {
-          params: {
-            page: this.state.page + 1
-          }
-        })
-          .then((response) => {
-            if (response && response.data) {
-              this.setState(prevState => ({
-                userPublications: prevState.userPublications.concat(response.data),
-                loading: false,
-                page: this.state.page + 1
-              }));
-            } else {
-              this.setState({ noMoreData: true });
-            }
-          })
-          .catch((error) => {
-            console.log(error);
-          }).finally(() => {
-            this.setState({ loading: false });
-          })
+        this.props.dispatch(getUserPublications({
+          page: this.state.page + 1
+        }))
       }
     
       trackScrolling = () => {
         const scrollable = document.documentElement.scrollHeight - window.innerHeight;
         const scrolled = window.scrollY;
     
-        if (!this.state.noMoreData && !this.state.loading && this.state.lastScrollPos < scrolled && Math.ceil(scrolled) >= scrollable - 100) {
+        if (!this.props.userPublications.noMoreData && !this.props.userPublications.loading && this.state.lastScrollPos < scrolled && Math.ceil(scrolled) >= scrollable - 100) {
           this.loadMoreData();
         }
     
@@ -129,10 +103,9 @@ class HomeContainer extends React.Component {
       }
     
     render() {
-      console.log(this.props)
         return(
           <React.Fragment>
-            {this.props.userInfo.user && this.props.userPublications.publications&& this.props.userFollowers.followers?<HomeView userFollowers={this.props.userFollowers.followers} userPublications={this.props.userPublications.publications} userInfo={this.props.userInfo} submit={this.onSubmit} handlePublicatioText={this.handlePublicatioText} stateFields = {this.state} />:''}
+            {this.props.userInfo.user?<HomeView  loading={this.props.userPublications.loading} userFollowers={this.props.userFollowers.followers} userPublications={this.props.userPublications.publications} userInfo={this.props.userInfo} submit={this.onSubmit} handlePublicatioText={this.handlePublicatioText} stateFields={this.state} />:''}
           </React.Fragment>
         )
     }

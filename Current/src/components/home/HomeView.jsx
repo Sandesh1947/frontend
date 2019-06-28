@@ -71,7 +71,7 @@ export default class HomeView extends React.Component {
                     return <ContentCard key={index} id={index} user={this.props.userInfo.user} userPublications={value} userPublicationsArray={this.props.userPublications} loadMoreData={this.loadMoreData} />
                   })}
     
-                  {this.props.stateFields.loading && <div className='mt-3 font-weight-bold'>
+                  {this.props.loading && <div className='mt-3 font-weight-bold'>
                     <Alert variant='light'>
                       <Spinner animation='grow' size='sm' /> Loading...
                     </Alert>

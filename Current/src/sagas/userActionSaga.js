@@ -35,8 +35,12 @@ export function* userInfoWatcher() {
   }
 
 // USER PUBLICATION SAGA
-  function callUserPubApi() {
-    // return  axios.get(BASE_URL+'/api/userpublications')
+  function callUserPubApi(action) {
+    // return axios({
+    //     method: "get",
+    //     url: BASE_URL+'/api/userpublications',
+    //     params:action.params
+    //   });
     return {'data' : [
         {
         "id": 113,
@@ -70,11 +74,16 @@ export function* userInfoWatcher() {
         }]
     }
 }
-function* getUserPublications() {
+function* getUserPublications(action) {
     try {
-        // let infoResponse = yield call(callUserInfoApi)
-        let pubResponse = yield callUserPubApi()
+        // let infoResponse = yield call(callUserInfoApi,action)
+        yield put({type:'FETCHING_USER_PUBLICATIONS'})
+        let pubResponse = yield callUserPubApi(action)
+        if(pubResponse && pubResponse.data)
         yield put({ type: 'FETCHED_USER_PUBLICATIONS', payload:pubResponse});
+        else
+        yield put({type:'NO_MORE_USER_PUBLICATIONS'})
+
     }
     catch(error) {
         yield put({ type: 'ERROR_OCCUR', payload: {  message : 'Something went wrong.Please try again later' }});
