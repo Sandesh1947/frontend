@@ -7,3 +7,6 @@ export function getUserPublications() {
 export function getUserFollowers() {
     return {type:'GET_USER_FOLLOWERS'}
 }
+export function publishPost(data) {
+    return {type:'PUBLISH_POST',data:data}
+}

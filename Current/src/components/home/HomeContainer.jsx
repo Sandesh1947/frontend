@@ -1,9 +1,7 @@
 import React from 'react'
 import HomeView from './HomeView'
-import { BASE_URL } from '../../app.constants';
-import Axios from 'axios';
 import {connect} from 'react-redux'
-import {getUserInfo,getUserPublications,getUserFollowers} from '../../actions/userInfoActions'
+import {getUserInfo,getUserPublications,getUserFollowers,publishPost} from '../../actions/userInfoActions'
 class HomeContainer extends React.Component {
     constructor(props) {
         super(props);
@@ -18,7 +16,8 @@ class HomeContainer extends React.Component {
         }
     
         this.loadMoreData = this.loadMoreData.bind(this);
-        this.trackScrolling = this.trackScrolling.bind(this)
+        this.trackScrolling = this.trackScrolling.bind(this);
+        this.handlePublicatioText = this.handlePublicatioText.bind(this)
       }
     
       componentDidMount() {
@@ -73,16 +72,11 @@ class HomeContainer extends React.Component {
       onSubmit = () => {
         
         if(!this.state.avatar) {
-          Axios.post(BASE_URL + '/api/publish', {
+          this.props.dispatch(publishPost({
             publication_img: this.state.publication_img,
             publication_vid: this.state.publication_vid,
             publication_text: this.state.publication_text
-          }).then((response) => {
-            console.log('uploading sucessful');
-          }).catch((error) => {
-            console.log(error);
-          })
-    
+          }))
           return
         }
         const formData = new FormData();
@@ -90,12 +84,7 @@ class HomeContainer extends React.Component {
         formData.append('publication_text', this.state.publication_text);
         formData.append('publication_img', this.state.publication_img);
         formData.append('publication_vid', this.state.publication_vid);
-    
-        Axios.post(BASE_URL + '/api/publish', formData).then((response) => {
-          console.log('uploading sucessful');
-        }).catch((error) => {
-          console.log(error);
-        })
+        this.props.dispatch(publishPost(formData))
       }
     
       handlePublicatioText(e) {
@@ -105,7 +94,7 @@ class HomeContainer extends React.Component {
     render() {
         return(
           <React.Fragment>
-            {this.props.userInfo.user?<HomeView  loading={this.props.userPublications.loading} userFollowers={this.props.userFollowers.followers} userPublications={this.props.userPublications.publications} userInfo={this.props.userInfo} submit={this.onSubmit} handlePublicatioText={this.handlePublicatioText} stateFields={this.state} />:''}
+            {this.props.userInfo.user?<HomeView onFileUpload={this.onFileUpload} loading={this.props.userPublications.loading} userFollowers={this.props.userFollowers.followers} userPublications={this.props.userPublications.publications} userInfo={this.props.userInfo} submit={this.onSubmit} handlePublicatioText={this.handlePublicatioText} stateFields={this.state} />:''}
           </React.Fragment>
         )
     }

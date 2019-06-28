@@ -33,7 +33,7 @@ export default class HomeView extends React.Component {
                           )}
                         <div className='posting-card__control'>
                           <Form.Control style={{ resize: 'none' }} placeholder='Share with the world your latest piece...'
-                            as='textarea' rows='3' value={this.props.stateFields.publication_text} onChange={this.props.handlePublicatioText.bind(this)} className='posting-card__textarea' />
+                            as='textarea' rows='3' value={this.props.stateFields.publication_text} onChange={this.props.handlePublicatioText} className='posting-card__textarea' />
                           <div className='d-flex justify-content-between'>
                             <div className='posting-card-attachment'>
                               {this.props.stateFields.publication_vid === '0' && (
@@ -42,7 +42,7 @@ export default class HomeView extends React.Component {
                                     <FontAwesomeIcon icon={faImage} size='2x'
                                       className='cursor-pointer posting-card-attachment__icon' />
                                   </label>
-                                  <input className='d-none' type='file' id='image' onChange={this.onFileUpload}
+                                  <input className='d-none' type='file' id='image' onChange={this.props.onFileUpload}
                                     accept='image/x-png,image/jpeg' />
                                 </div>
                               )}
@@ -53,7 +53,7 @@ export default class HomeView extends React.Component {
                                     <FontAwesomeIcon icon={faFilm} size='2x'
                                       className='cursor-pointer posting-card-attachment__icon' />
                                   </label>
-                                  <input className='d-none' type='file' id='video' onChange={this.onFileUpload}
+                                  <input className='d-none' type='file' id='video' onChange={this.props.onFileUpload}
                                     accept='video/mp4' />
                                 </div>
                               )}
