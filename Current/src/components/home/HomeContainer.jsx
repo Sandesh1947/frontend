@@ -25,11 +25,6 @@ class HomeContainer extends React.Component {
       }
     
       componentDidMount() {
-        // if (!localStorage.getItem('AUTH_TOKEN') || localStorage.getItem('AUTH_TOKEN') === '') {
-        //   this.props.history.replace('/login');
-        //   return;
-        // }
-    
         Axios.defaults.headers.common['Authorization'] = localStorage.getItem('AUTH_TOKEN');
     
         Axios.get(BASE_URL + '/api/user').then((response) => {
