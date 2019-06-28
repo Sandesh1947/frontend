@@ -4,6 +4,7 @@ import { Route, Switch ,Redirect} from 'react-router-dom';
 import HomeContainer from '../home/HomeContainer'
 import ProfileContainer from '../profile/ProfileContainer'
 import {connect} from 'react-redux'
+import {getUserInfo} from '../../actions/userInfoActions'
 class Container extends React.Component {
     constructor() {
         super()
@@ -12,6 +13,7 @@ class Container extends React.Component {
     componentDidMount() {
         if(localStorage.getItem('AUTH_TOKEN')) {
             this.setState({isLoggedIn:true,isLoadingLocalStorage:false})
+            this.props.dispatch(getUserInfo())
         }
     }
     render () {
@@ -19,7 +21,7 @@ class Container extends React.Component {
             <React.Fragment>
                 {this.state.isLoggedIn  ? 
                 <section>
-                    <Header user={null} />
+                    <Header user={this.props.userInfo.user} />
                     <Switch>
                         <Route path="/profile" component={ProfileContainer} />
                         <Route path="/home" component={HomeContainer} />
@@ -29,4 +31,4 @@ class Container extends React.Component {
         )
     }
 }
-export default connect(state =>({logindata:state.logindata}))(Container)
+export default connect(state =>({logindata:state.logindata,userInfo:state.userInfo}))(Container)

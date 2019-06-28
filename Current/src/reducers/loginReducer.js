@@ -1,5 +1,4 @@
 export default function LoginStateReducer(state = {}, action) {
-    console.log(action)
     switch (action.type) {
         case 'LOGIN_COMPLETED':
             return {AUTH_TOKEN:action.payload}

@@ -21,15 +21,15 @@ export default class HomeView extends React.Component {
             <Container className='content'>
               <Row>
                 <Col md={3}>
-                  <Left user={this.props.stateFields.user} />
+                  <Left user={this.props.userInfo.user} />
                 </Col>
                 <Col md={6}>
                   <Card className='posting-card-wrapper'>
                     <Card.Body style={{ padding: '1rem' }} className='posting-card-body'>
                       <div className='d-flex posting-card'>
-                        {this.props.stateFields.user && this.props.stateFields.user.avatar &&
+                        {this.props.userInfo.user && this.props.userInfo.user.avatar &&
                           (
-                            <Image src={BASE_URL + this.props.stateFields.user.avatar} className='posting-card__avatar' /> // TODO: fix avatar size
+                            <Image src={BASE_URL + this.props.userInfo.user.avatar} className='posting-card__avatar' /> // TODO: fix avatar size
                           )}
                         <div className='posting-card__control'>
                           <Form.Control style={{ resize: 'none' }} placeholder='Share with the world your latest piece...'
@@ -67,8 +67,8 @@ export default class HomeView extends React.Component {
                       </div>
                     </Card.Body>
                   </Card>
-                  {this.props.stateFields.userPublications && this.props.stateFields.userPublications.map((value, index) => {
-                    return <ContentCard key={index} id={index} user={this.props.user} userPublications={value} userPublicationsArray={this.props.stateFields.userPublications} loadMoreData={this.loadMoreData} />
+                  {this.props.userPublications && this.props.userPublications.map((value, index) => {
+                    return <ContentCard key={index} id={index} user={this.props.userInfo.user} userPublications={value} userPublicationsArray={this.props.userPublications} loadMoreData={this.loadMoreData} />
                   })}
     
                   {this.props.stateFields.loading && <div className='mt-3 font-weight-bold'>
@@ -82,7 +82,7 @@ export default class HomeView extends React.Component {
                   <aside className='members'>
                     <h6 className='members__title'>Influential members</h6>
                     <div className='members__container'>
-                      {this.props.stateFields.followers && this.props.stateFields.followers.map((value, index) => {
+                      {this.props.userFollowers&& this.props.userFollowers.map((value, index) => {
                         return (
                           <div key={index} className='member d-flex flex-row align-items-start'>
                             <Image className='member__avatar'

@@ -2,6 +2,8 @@ import React from 'react'
 import HomeView from './HomeView'
 import { BASE_URL } from '../../app.constants';
 import Axios from 'axios';
+import {connect} from 'react-redux'
+import {getUserInfo,getUserPublications,getUserFollowers} from '../../actions/userInfoActions'
 class HomeContainer extends React.Component {
     constructor(props) {
         super(props);
@@ -25,26 +27,15 @@ class HomeContainer extends React.Component {
       }
     
       componentDidMount() {
-        Axios.defaults.headers.common['Authorization'] = localStorage.getItem('AUTH_TOKEN');
-    
-        Axios.get(BASE_URL + '/api/user').then((response) => {
-          this.setState({ user: response.data });
-        }).catch((error) => {
-          console.log(error);
-        });
-    
-        Axios.get(BASE_URL + '/api/userpublications').then((response) => {
-          this.setState({ userPublications: response.data });
-        }).catch((error) => {
-          console.log(error);
-        });
-    
-        Axios.get(BASE_URL + '/api/followers').then((response) => {
-          this.setState({ followers: response.data });
-        }).catch((error) => {
-          console.log(error);
-        });
-    
+        if(!this.props.userInfo.user) {
+          this.props.dispatch(getUserInfo())
+        }
+        if(!this.props.userPublications.publications) {
+          this.props.dispatch(getUserPublications())
+        }
+        if(!this.props.userFollowers.followers) {
+          this.props.dispatch(getUserFollowers())
+        }
         document.addEventListener('scroll', this.trackScrolling);
       }
     
@@ -138,9 +129,12 @@ class HomeContainer extends React.Component {
       }
     
     render() {
+      console.log(this.props)
         return(
-            <HomeView submit={this.onSubmit} handlePublicatioText={this.handlePublicatioText} stateFields = {this.state} />
+          <React.Fragment>
+            {this.props.userInfo.user && this.props.userPublications.publications&& this.props.userFollowers.followers?<HomeView userFollowers={this.props.userFollowers.followers} userPublications={this.props.userPublications.publications} userInfo={this.props.userInfo} submit={this.onSubmit} handlePublicatioText={this.handlePublicatioText} stateFields = {this.state} />:''}
+          </React.Fragment>
         )
     }
 }
-export default HomeContainer
+export default connect(state =>({userInfo:state.userInfo,userPublications:state.userPublications,userFollowers:state.userFollowers})) (HomeContainer)
