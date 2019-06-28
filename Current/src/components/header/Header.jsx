@@ -83,7 +83,6 @@ class Header extends Component {
                       <NavDropdown.Item
                         className='navbar-dropdown__item'
                         onClick={() => {
-                          console.log(this.props);
                           localStorage.removeItem('AUTH_TOKEN');
                           this.props.history.replace('/');
                         }}>Logout</NavDropdown.Item>

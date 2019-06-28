@@ -11,10 +11,10 @@ class ProfileView extends React.Component {
                 <Container className='content'>
                     <Row>
                         <Col md={{ span: 3, offset: 1 }}>
-                            <Left partners={this.props.stateFields.partners} followers={this.props.stateFields.followers} user={this.props.stateFields.user} />
+                            <Left partners={this.props.userPartners} followers={this.props.userFollowers} user={this.props.userInfo} />
                         </Col>
                         <Col md={7}>
-                            <Right loading={this.props.stateFields.loading} user={this.props.stateFields.user} userPublications={this.props.stateFields.userPublications} />
+                            <Right loading={this.props.loading} user={this.props.userInfo} userPublications={this.props.userPublications} />
                         </Col>
                     </Row>
                 </Container>

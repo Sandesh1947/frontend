@@ -12,7 +12,7 @@ class HomeContainer extends React.Component {
           publication_img: '0',
           publication_vid: '0',
           lastScrollPos: 0,
-          noMoreData: false,
+          page:1
         }
     
         this.loadMoreData = this.loadMoreData.bind(this);
@@ -41,6 +41,7 @@ class HomeContainer extends React.Component {
         this.props.dispatch(getUserPublications({
           page: this.state.page + 1
         }))
+        this.setState({page:this.state.page + 1})
       }
     
       trackScrolling = () => {

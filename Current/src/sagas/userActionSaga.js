@@ -107,6 +107,7 @@ function callUserFollowersApi() {
 }
 function* getUserFollowers() {
     try {
+        // let followersResponse = yield call(callUserFollowersApi)
         let followersResponse = yield callUserFollowersApi()
         yield put({ type: 'FETCHED_USER_FOLLOWERS', payload: followersResponse });
     }
@@ -133,4 +134,22 @@ function* postPublish(action) {
 }
 export function* publishPostWatcher() {
     yield takeLatest('PUBLISH_POST', postPublish);
+}
+
+
+// User partners saga
+function callUserPartnersApi() {
+    return  axios.get(BASE_URL+'/api/partners')
+}
+function* getPartners() {
+    try {
+        let partnersResponse = yield call(callUserPartnersApi)
+        yield put({ type: 'FETCHED_USER_PARTNERS', payload: partnersResponse });
+    }
+    catch (error) {
+        yield put({ type: 'ERROR_OCCUR', payload: { message: 'Something went wrong.Please try again later' } });
+    }
+}
+export function* userPartnerWatcher() {
+    yield takeLatest('callUserPartnersApi', getPartners);
 }

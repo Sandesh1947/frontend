@@ -10,3 +10,7 @@ export function getUserFollowers() {
 export function publishPost(data) {
     return {type:'PUBLISH_POST',data:data}
 }
+
+export function getPartners() {
+    return {type:'GET_PARTNERS'}
+}
