@@ -1,19 +1,13 @@
 import React from 'react'
 import './login.scss';
 class LoginView extends React.Component {
-    constructor() {
-        super()
-        this.state = {signUpCondition:false}
-        this.handleClick = this.handleClick.bind(this);
-    }
-    handleClick() {
-        this.setState({
-          signUpCondition: !this.state.signUpCondition
-        });
-      }
-      handleChange = e => {
-        this.setState({ [e.target.name]: e.target.value });
-      };
+  constructor() {
+    super()
+    this.handleChange = this.handleChange.bind(this);
+  }
+  handleChange = e => {
+    this.setState({ [e.target.name]: e.target.value });
+  };
       
     render() {
         return (
@@ -22,7 +16,7 @@ class LoginView extends React.Component {
             className={
               //click triggered showing the right panel active
               //else it shows the container
-              this.state.signUpCondition
+              this.props.signUpCondition
                 ? 'slide-design-container slide-design-right-panel-active slide-design-sign-up-container'
                 : 'slide-design-container'
             }
@@ -133,12 +127,12 @@ class LoginView extends React.Component {
                 />
                 <button
                   className='slide-design-button'
-                  onClick={ ()=> {this.props.signup(this.state)} }
+                  onClick={ (e)=> {e.preventDefault() ; this.props.signup(this.state)} }
                 >Sign Up</button>
               </form>
             </div>
             <div className='slide-design-form-container slide-design-sign-in-container'>
-              <form className='slide-design-form' action='#'>
+              <form className='slide-design-form'>
                 {
                   this.props.message
                     ? (
@@ -179,8 +173,7 @@ class LoginView extends React.Component {
                 <a href='#'>Forgot your password?</a>
                 <button
                   className='slide-design-button'
-                  type='submit'
-                  onClick={ ()=> { this.login(this.state) }}
+                  onClick={ (e)=> {e.preventDefault();this.props.login(this.state) }}
                 >
                   Login
                 </button>
@@ -198,7 +191,7 @@ class LoginView extends React.Component {
                   <button
                     id='signIn'
                     className='slide-design-button slide-design-button-ghost slide-design-right'
-                    onClick={ this.handleClick }
+                    onClick={ this.props.handleSignUpCondition }
                   >
                     Sign In
                   </button>
@@ -214,7 +207,7 @@ class LoginView extends React.Component {
                   <button
                     className='slide-design-button slide-design-button-ghost slide-design-move'
                     id='signUp'
-                    onClick={ this.handleClick }
+                    onClick={ this.props.handleSignUpCondition }
                   >
                     Sign Up
                   </button>

@@ -1,6 +1,8 @@
 import React from 'react'
 import LoginView from './LoginView'
-import { BASE_URL } from '../../app.constants';
+import {loginAction,signUp} from '../../actions/accountAction'
+import {connect} from 'react-redux'
+import {Redirect} from 'react-router-dom'
 class LoginContainer extends React.Component {
     constructor(props) {
         super(props);
@@ -17,66 +19,39 @@ class LoginContainer extends React.Component {
           profession: null,
           message: null
         };
+        this.login = this.login.bind(this) 
+        this.handleSignUpCondition = this.handleSignUpCondition.bind(this)
+        this.signup = this.signup.bind(this)
       }
-      /** service */
-      postData = (type, userData) => {
-        return new Promise((resolve, reject) => {
-          fetch(BASE_URL + type, {
-            method: 'POST',
-            body: JSON.stringify(userData),
-            headers: {
-              'Content-type': 'application/json; charset=UTF-8'
-            }
-          })
-            .then(response => response.json())
-            .then(res => {
-              resolve(res);
-            })
-            .catch(error => {
-              reject(error);
-            });
-        });
-      };
-      
-      signup = (data) => {
-        
-        let endPoint = '/api/signup';
-        
-        this.postData(endPoint, data)
-          .then(res => {
-            return res.msg === 'Successful'
-              ? Promise.resolve(res)
-              : Promise.reject(res);
-          })
-          .then(res => {
+      signup (data) {
+        signUp(data).then(
+          (res) =>{
             this.setState({
               message: 'Successfully registered! Login to your account.',
               signUpCondition: false,
             });
-          })
-          .catch(err => {
+          },
+          (err) =>{
             console.error(err.msg);
             this.setState({ message: 'Unable to register! Try again!' });
-          });
-      };
-      
-      login = (data) => {
-        
-        let endPoint = '/api/authenticate'; // - API call endpoint
-        
-        if(data.email && data.password) {
-          this.postData(endPoint, {email: data.email, password: data.password}).then(result => {
-            console.log(result);
-            localStorage.setItem('AUTH_TOKEN', result.auth_token);
-            this.props.history.push({ pathname: '/home' });
-          });
-        }
-      };
-      
+          }
+        )
+      }
+      login(data) {
+        this.props.dispatch(loginAction({email: data.email, password: data.password}))
+      }
+      handleSignUpCondition() {
+        this.setState({
+          signUpCondition: !this.state.signUpCondition
+        });
+      }
     render() {
         return(
-           <LoginView login={this.login} signup={this.signup} message={this.state.message}/>
+          <React.Fragment>
+            {this.props.logindata.AUTH_TOKEN ? <Redirect to='/home'/> :
+            <LoginView signUpCondition={this.state.signUpCondition} handleSignUpCondition={this.handleSignUpCondition} login={this.login} signup={this.signup} message={this.state.message}/>}
+          </React.Fragment>
         )
     }
 }
-export default LoginContainer
+export default connect(state =>({logindata:state.logindata}))  (LoginContainer)

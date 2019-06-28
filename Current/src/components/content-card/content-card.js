@@ -63,6 +63,7 @@ export default class ContentCard extends Component {
   }
 
   render() {
+    console.log(this.props)
     return (
       <div className='content-card'>
         <Popup show={this.state.modalShow} onHide={this.handleClose} onPrevClick={this.onPrevClick} onNextClick={this.onNextClick} user={this.props.user} userPublications={this.props.userPublicationsArray[this.state.postIndex]} />
