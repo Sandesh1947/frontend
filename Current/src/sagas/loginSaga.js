@@ -13,7 +13,7 @@ function* Login(action) {
     try {
         let loginResponse = yield call(callLoginApi,action.data)
          yield console.log(loginResponse)
-        yield localStorage.setItem('AUTH_TOKEN', loginResponse.auth_token);
+        yield localStorage.setItem('AUTH_TOKEN', loginResponse.data.auth_token);
         yield put({ type: 'LOGIN_COMPLETED', payload:loginResponse});
         //this is for testing with mock should component sampleLogin and uncommnet above statement once testing with real api
     //     let loginResponse = yield sampleLogin()
