@@ -36,7 +36,7 @@ export default class Right extends Component {
           </Dropdown>
         </div>
         { this.props.userPublications.map((value, index) => {
-          return <ContentCard key={ index } userPublications={value} userPublicationsArray={ value } />
+          return <ContentCard key={index} id={index} user={this.props.user}  userPublications={value} userPublicationsArray={ this.props.userPublications } />
         }) }
         
         { this.props.loading && <div className='mt-3 font-weight-bold'>
