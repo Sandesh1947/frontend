@@ -13,13 +13,12 @@ import * as serviceWorker from './serviceWorker';
 import { Provider } from 'react-redux';
 import store from './store.js';
 import axios from 'axios';
+import {setInterceptor} from './initAxios'
 library.add(faHeart, faShare);
 JavascriptTimeAgo.locale(en);
 class IndexApp extends React.Component {
 	componentDidMount() {
-		let auth_token = localStorage.getItem('AUTH_TOKEN')
-		if(auth_token)
-		axios.defaults.headers.common['Authorization'] = auth_token;
+		setInterceptor()
 		axios.interceptors.request.use(request => {
 			console.log('Starting Request', request)
 			return request
