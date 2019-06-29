@@ -14,6 +14,7 @@ class Container extends React.Component {
         if(localStorage.getItem('AUTH_TOKEN')) {
             this.setState({isLoggedIn:true,isLoadingLocalStorage:false})
             this.props.dispatch(getUserInfo())
+            if(this.props.location.pathname==='/')
             this.props.history.push({
                 pathname:'/home'
             })

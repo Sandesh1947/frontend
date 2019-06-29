@@ -2,7 +2,7 @@ import React from 'react'
 import ProfileView from './ProfileView'
 import './profile.scss';
 import {connect} from 'react-redux'
-import {getUserInfo,getUserPublications,getUserFollowers,publishPost} from '../../actions/userInfoActions'
+import {getUserInfo,getUserPublications,getUserFollowers,getPartners} from '../../actions/userInfoActions'
 class ProfileContainer extends React.Component {
     constructor(props) {
         super(props);
