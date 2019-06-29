@@ -5,7 +5,7 @@ import Axios from 'axios';
 import { BASE_URL } from '../../app.constants';
 import ContentCard from '../../components/content-card/content-card';
 import Left from '../../components/left/left';
-import Attachment from '../../components/attachment/attachment';
+import Attachment from '../../components/generic/Attachment';
 
 export default class Home extends Component {
 
@@ -24,8 +24,8 @@ export default class Home extends Component {
       loading: false,
       page: 1,
       noMoreData: false,
-      modalShow: false
-    }
+      modalShow: false,
+    };
 
     this.loadMoreData = this.loadMoreData.bind(this);
   }
@@ -69,15 +69,15 @@ export default class Home extends Component {
     this.setState({ loading: true });
     Axios.get(BASE_URL + '/api/userpublications', {
       params: {
-        page: this.state.page + 1
-      }
+        page: this.state.page + 1,
+      },
     })
       .then((response) => {
         if (response && response.data) {
           this.setState(prevState => ({
             userPublications: prevState.userPublications.concat(response.data),
             loading: false,
-            page: this.state.page + 1
+            page: this.state.page + 1,
           }));
         } else {
           this.setState({ noMoreData: true });
@@ -87,7 +87,7 @@ export default class Home extends Component {
         console.log(error);
       }).finally(() => {
         this.setState({ loading: false });
-      })
+      });
   }
 
   trackScrolling = () => {
@@ -105,7 +105,7 @@ export default class Home extends Component {
     this.setState({
       avatar,
       publication_img: attachmentType === 'image' ? '1' : '0',
-      publication_vid: attachmentType === 'video' ? '1' : '0'
+      publication_vid: attachmentType === 'video' ? '1' : '0',
     });
   }
 
@@ -127,68 +127,68 @@ export default class Home extends Component {
       console.log('uploading sucessful');
     }).catch((error) => {
       console.log(error);
-    })
+    });
   }
 
   handlePublicatioText(e) {
-    this.setState({ publication_text: e.target.value })
+    this.setState({ publication_text: e.target.value });
   }
 
   render() {
     return (
       <section style={{ backgroundColor: '#f2f2f2', paddingBottom: '2rem' }}>
-        <Container className='content'>
+        <Container className="content">
           <Row>
             <Col md={3}>
               <Left user={this.state.user} />
             </Col>
             <Col md={6}>
-              <Card className='posting-card-wrapper'>
-                <Card.Body style={{ padding: '1rem' }} className='posting-card-body'>
-                  <div className='d-flex posting-card'>
+              <Card className="posting-card-wrapper">
+                <Card.Body style={{ padding: '1rem' }} className="posting-card-body">
+                  <div className="d-flex posting-card">
                     {this.state.user && this.state.user.avatar &&
                       (
-                        <Image src={BASE_URL + this.state.user.avatar} className='posting-card__avatar' /> // TODO: fix avatar size
+                        <Image src={BASE_URL + this.state.user.avatar} className="posting-card__avatar" /> // TODO: fix avatar size
                       )}
-                    <div className='posting-card__control'>
-                      <Form.Control style={{ resize: 'none' }} placeholder='Share with the world your latest piece...'
-                        as='textarea' rows='3' value={this.state.publication_text} onChange={this.handlePublicatioText.bind(this)}
-                        className='posting-card__textarea'
+                    <div className="posting-card__control">
+                      <Form.Control style={{ resize: 'none' }} placeholder="Share with the world your latest piece..."
+                        as="textarea" rows="3" value={this.state.publication_text} onChange={this.handlePublicatioText.bind(this)}
+                        className="posting-card__textarea"
                       />
-                      <div className='d-flex justify-content-between'>
+                      <div className="d-flex justify-content-between">
                         <Attachment types={['image', 'video']} onUpload={this.onUpload} />
                         <Button
                           style={{ padding: '0 1rem' }}
                           onClick={this.onSubmit}
-                          className='posting-card__button'>Publish</Button>
+                          className="posting-card__button">Publish</Button>
                       </div>
                     </div>
                   </div>
                 </Card.Body>
               </Card>
               {this.state.userPublications && this.state.userPublications.map((value, index) => {
-                return <ContentCard key={index} id={index} user={this.props.user} userPublications={value} userPublicationsArray={this.state.userPublications} loadMoreData={this.loadMoreData} />
+                return <ContentCard key={index} id={index} user={this.props.user} userPublications={value} userPublicationsArray={this.state.userPublications} loadMoreData={this.loadMoreData} />;
               })}
 
-              {this.state.loading && <div className='mt-3 font-weight-bold'>
-                <Alert variant='light'>
-                  <Spinner animation='grow' size='sm' /> Loading...
+              {this.state.loading && <div className="mt-3 font-weight-bold">
+                <Alert variant="light">
+                  <Spinner animation="grow" size="sm" /> Loading...
                 </Alert>
               </div>}
 
             </Col>
             <Col md={3}>
-              <aside className='members'>
-                <h6 className='members__title'>Influential members</h6>
-                <div className='members__container'>
+              <aside className="members">
+                <h6 className="members__title">Influential members</h6>
+                <div className="members__container">
                   {this.state.followers && this.state.followers.map((value, index) => {
                     return (
-                      <div key={index} className='member d-flex flex-row align-items-start'>
-                        <Image className='member__avatar'
+                      <div key={index} className="member d-flex flex-row align-items-start">
+                        <Image className="member__avatar"
                           src={require('../../assets/avatar.png')} />
-                        <h6 className='member__username'>{value.first_name + ' ' + value.last_name}</h6>
+                        <h6 className="member__username">{value.first_name + ' ' + value.last_name}</h6>
                       </div>
-                    )
+                    );
                   })}
                 </div>
               </aside>
@@ -196,6 +196,6 @@ export default class Home extends Component {
           </Row>
         </Container>
       </section>
-    )
+    );
   }
 }

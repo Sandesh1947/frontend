@@ -6,13 +6,18 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import './publicationModal.scss';
 
 import { BASE_URL } from '../../app.constants';
-import Attachment from '../attachment/attachment';
+
+import Attachment from '../generic/Attachment';
+import VideoThumbnail from '../generic/VideoThumbnail';
+import ImageThumbnail from '../generic/ImageThumbnail';
 
 export default class PublicationModal extends Component {
   state = {
     showUploadPiece: false,
     pieceFile: null,
     pieceType: null,
+    attachment: null,
+    attachmentType: null,
   };
 
   onUploadPiece = (e, pieceType) => {
@@ -20,30 +25,30 @@ export default class PublicationModal extends Component {
       return;
     }
 
-    const file = Array.from(e.target.files)[0];
-    this.setState({ pieceFile: file, pieceType });
-
-    if (file.type === 'image/jpeg' || file.type === 'image/png') {
-      const reader = new FileReader();
-      reader.onload = e => {
-        this.setState({ pieceImage: e.target.result });
-      };
-      reader.readAsDataURL(file);
-    }
+    const pieceFile = Array.from(e.target.files)[0];
+    this.setState({ pieceFile, pieceType });
   };
 
-  onUpload = attachment => {
-    console.log(attachment);
+  onUpload = ({ attachment, attachmentType }) => {
+    this.setState({ attachment, attachmentType });
   };
+  
+  onRemove = () => {
+    this.setState({
+      attachment: null,
+      attachmentType: null,
+    });
+  }
 
   removePiece = () => {
     const { pieceType } = this.state;
     if (pieceType) {
-      // TODO:
-      // document.querySelector(`.publication-modal input#piece-${pieceType}`).value = '';
+      // rest file picker so that the same file can be picked again
+      // (o/w change event won't fire for the same file)
+      document.querySelector(`.publication-modal input#piece-${pieceType}`).value = '';
     }
 
-    this.setState({ pieceFile: null, pieceImage: null, pieceType: null });
+    this.setState({ pieceFile: null, pieceType: null });
   }
 
   renderPieceUploadField = type => {
@@ -61,8 +66,22 @@ export default class PublicationModal extends Component {
     );
   }
 
+  get thumbnail() {
+    const { pieceFile } = this.state;
+    if (pieceFile) {
+      if (pieceFile.type === 'video/mp4') {
+        return <VideoThumbnail file={pieceFile} onRemove={this.removePiece} />;
+      }
+      if (pieceFile.type === 'image/jpeg' || pieceFile.type === 'image/png') {
+        return <ImageThumbnail file={pieceFile} onRemove={this.removePiece} />;
+      }
+    }
+    return <FontAwesomeIcon icon={faTimes} className="preview__removeIcon" onClick={this.removePiece} />;
+  }
+
+  // unfortunately can't reuse Attachment field here for now
   renderPiece() {
-    const { pieceFile, pieceType, pieceImage } = this.state;
+    const { pieceFile } = this.state;
     return (
       <React.Fragment>
         <span className={`add-piece__label${pieceFile ? ' d-none' : ''}`}>Add Piece</span>
@@ -72,9 +91,7 @@ export default class PublicationModal extends Component {
           {this.renderPieceUploadField('Lyrics')}
         </DropdownButton>
         <div className={`preview ${pieceFile ? '' : 'd-none'}`}>
-          {pieceImage && <img src={pieceImage} />}
-          {pieceImage && <FontAwesomeIcon icon={faTimes} className="preview__removeIcon" onClick={this.removePiece} />
-          }
+          {this.thumbnail}
         </div>
       </React.Fragment>
     );
@@ -109,7 +126,14 @@ export default class PublicationModal extends Component {
                     />
                   </div>
                 </div>
-                <Attachment types={['image', 'geo']} onUpload={this.onUpload} className="publication-card__attachments" />
+                <Attachment
+                  types={['image', 'geo']}
+                  attachment={this.state.attachment}
+                  attachmentType={this.state.attachmentType}
+                  onUpload={this.onUpload}
+                  onRemove={this.onRemove}
+                  className="publication-card__attachments"
+                />
               </Card.Body>
             </Card>
             <Card className="add-piece justify-content-between">

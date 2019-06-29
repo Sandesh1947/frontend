@@ -1,3 +1,23 @@
 @mixin easeOut {
   transition: all $default-transition-time ease-out;
 }
+
+@mixin roundIcon {
+  cursor: pointer;
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  padding: 0.4rem;
+  border-color: $c-lightest;
+  color: $c-lightest;
+  background-color: $c-darkest;
+  @include easeOut;
+
+  &:hover,
+  &:active {
+    background-color: $c-active;
+  }
+}
