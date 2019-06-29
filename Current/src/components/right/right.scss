@@ -24,7 +24,7 @@
   &__item {
     @extend %h4;
     font-weight: bold;
-    transition: .3s;
+    @include easeOut;
     
     &:hover,
     &:focus {
@@ -43,7 +43,7 @@
   &__toggle {
     @extend %h3;
     font-size: 1rem;
-    transition: .3s;
+    @include easeOut;
   
     &:hover,
     &:focus {

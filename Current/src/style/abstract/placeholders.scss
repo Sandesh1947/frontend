@@ -26,3 +26,28 @@
 %round {
   border-radius: .25rem;
 }
+
+%button {
+  background-color: $c-dark;
+  border: none;
+  height: 2rem;
+  padding: 0 2rem;
+  margin: 0 1rem;
+  @include easeOut;
+  
+  &:hover,
+  &:focus {
+    background-color: $c-active;
+  }
+}
+
+%dropdown-button {
+  @extend %button;
+  background-color: $c-neutral;
+  color: $c-darkest;
+
+  &:hover,
+  &:focus {
+    background-color: $c-active;
+  }
+}

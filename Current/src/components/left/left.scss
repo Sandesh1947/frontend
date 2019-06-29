@@ -56,7 +56,7 @@
     @extend %small;
     color: $c-active;
     text-transform: uppercase;
-    transition: .3s;
+    @include easeOut;
     
     &:hover,
     &:focus {

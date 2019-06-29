@@ -16,7 +16,7 @@ import Col from 'react-bootstrap/Col';
 
 import { BASE_URL } from '../../app.constants';
 
-import PublicationModal from '../publication-modal/publicationModal';
+import PublicationModal from '../publication-modal/PublicationModal';
 
 import './header.scss';
 
@@ -37,12 +37,12 @@ class Header extends Component {
     const { pathname } = this.props.location;
     return (
       <header className='header'>
-        <PublicationModal show={this.state.showPublicationModal} onShow={this.showPublicationModal} onHide={this.hidePublicationModal} />
+        <PublicationModal user={this.props.user} show={this.state.showPublicationModal} onShow={this.showPublicationModal} onHide={this.hidePublicationModal} />
         <Container>
           <Row>
             <Col>
               <Navbar expand='lg' className='navbar'>
-                <Navbar.Brand  className='navbar__brand'><Link to='/home'>Eycon</Link></Navbar.Brand>
+                <Navbar.Brand className='navbar__brand'><Link to='/home'>Eycon</Link></Navbar.Brand>
                 <Navbar.Toggle aria-controls='basic-navbar-nav' />
                 <Navbar.Collapse id='basic-navbar-nav' className='navbar-collapse'>
                   <Form inline className='navbar-search-form'>
