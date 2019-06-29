@@ -17,7 +17,10 @@ library.add(faHeart, faShare);
 JavascriptTimeAgo.locale(en);
 class IndexApp extends React.Component {
 	componentDidMount() {
-		axios.defaults.headers.common['Authorization'] = localStorage.getItem('AUTH_TOKEN');
+		let auth_token = localStorage.getItem('AUTH_TOKEN')
+		console.log(auth_token)
+		if(auth_token)
+		axios.defaults.headers.common['Authorization'] = auth_token;
 		axios.interceptors.request.use(request => {
 			console.log('Starting Request', request)
 			return request
