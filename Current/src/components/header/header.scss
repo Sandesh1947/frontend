@@ -75,7 +75,7 @@
     align-items: center;
     border: none;
     background: none;
-    transition: .3s;
+    @include easeOut;
     
     &:hover {
       background: none;
@@ -93,7 +93,7 @@
   &__icon {
     margin-left: .25rem;
     color: $c-active;
-    transition: .3s;
+    @include easeOut;
   }
 }
 
@@ -101,7 +101,7 @@
   &__button {
     margin-right: .5rem;
     border: none;
-    transition: .3s;
+    @include easeOut;
     background: none;
     color: $c-darkest;
     text-align: left;

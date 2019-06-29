@@ -7,7 +7,7 @@
 
   &__label {
     color: $c-dark;
-    transition: .3s;
+    @include easeOut;
     
     &:hover,
     &:focus {

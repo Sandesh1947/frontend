@@ -31,7 +31,7 @@
   }
   &__icon {
     color: $c-darkest;
-    transition: .3s;
+    @include easeOut;
     
     &:hover {
       color: $c-active;
@@ -65,7 +65,7 @@
     background: none;
     border: none;
     color: $c-darkest;
-    transition: .3s;
+    @include easeOut;
     margin: 0 .5rem;
     
     &:hover {
