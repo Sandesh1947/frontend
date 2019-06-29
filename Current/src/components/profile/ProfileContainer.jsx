@@ -23,6 +23,9 @@ class ProfileContainer extends React.Component {
           if(this.props.userFollowers.followers.length ===0 ) {
             this.props.dispatch(getUserFollowers())
           }
+          if(this.props.userPartners.partners.length ===0 ) {
+            this.props.dispatch(getPartners())
+          }
         document.addEventListener('scroll', this.trackScrolling);
     }
 
