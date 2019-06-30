@@ -2,6 +2,7 @@ import React from 'react';
 import HomeView from './HomeView';
 import { connect } from 'react-redux';
 import { getUserInfo, getUserPublications, getUserFollowers, publishPost } from '../../actions/userInfoActions';
+import Loader from '../Loader/Loader'
 class HomeContainer extends React.Component {
   constructor() {
     super(...arguments);
@@ -115,7 +116,7 @@ class HomeContainer extends React.Component {
             handlePublicatioText={this.handlePublicatioText}
             stateFields={this.state}
           />
-          : ''
+          :this.props.userPublications.loading &&<Loader/>
         }
       </React.Fragment>
     );
