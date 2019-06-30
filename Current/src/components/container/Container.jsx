@@ -5,10 +5,12 @@ import HomeContainer from '../home/HomeContainer'
 import ProfileContainer from '../profile/ProfileContainer'
 import {connect} from 'react-redux'
 import {getUserInfo} from '../../actions/userInfoActions'
+import {loginOutAction} from '../../actions/accountAction'
 class Container extends React.Component {
     constructor() {
         super()
         this.state = {isLoggedIn:false,isLoadingLocalStorage:true}
+        this.logOut = this.logOut.bind(this)
     }
     componentDidMount() {
         if(localStorage.getItem('AUTH_TOKEN')) {
@@ -23,12 +25,15 @@ class Container extends React.Component {
             this.setState({isLoadingLocalStorage:false})
         }
     }
+    logOut() {
+        this.props.dispatch(loginOutAction())
+    }
     render () {
         return(
             <React.Fragment>
                 {this.state.isLoggedIn  ? 
                 <section>
-                    <Header user={this.props.userInfo.user} />
+                    <Header logOut={this.logOut} user={this.props.userInfo.user} />
                     <Switch>
                         <Route path="/profile" component={ProfileContainer} />
                         <Route path="/home" component={HomeContainer} />
