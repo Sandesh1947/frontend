@@ -1,0 +1,30 @@
+@import '../../style/abstract/abstract';
+
+.image-thumbnail {
+  position: relative;
+  min-width: 64px;
+  min-height: 64px;
+  
+  img {
+    position: relative;
+    min-width: 64px;
+    min-height: 64px;
+    max-width: 150px;
+    max-height: 150px;
+    border-radius: $border-radius;
+    z-index: 1;
+  }
+
+  .remove-icon {
+    @include roundIcon;
+    z-index: 2;
+  }
+  
+  .fallback {
+    position: absolute;
+    top: 0;
+    left: 0;
+    color: $c-dark;
+    z-index: 0;
+  }
+}
