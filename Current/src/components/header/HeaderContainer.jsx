@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import Header from './Header';
 import Attachment from '../generic/Attachment';
 import { publishPost } from '../../actions/userInfoActions';
+import { logout } from '../../actions/accountAction';
 
 class HeaderContainer extends Component {
   onSubmitPublication = ({ text, pieceFile, pieceType, attachment }) => {
@@ -28,6 +29,7 @@ class HeaderContainer extends Component {
       <Header
         user={this.props.userInfo.user}
         onSubmitPublication={this.onSubmitPublication}
+        logout={this.props.logout}
       />
     );
   }
@@ -37,4 +39,4 @@ const mapStateToProps = state => ({
   userInfo: state.userInfo,
 });
 
-export default connect(mapStateToProps, { publishPost })(HeaderContainer);
+export default connect(mapStateToProps, { publishPost, logout })(HeaderContainer);
