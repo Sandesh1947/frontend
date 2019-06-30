@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { Button, Card, DropdownButton, Dropdown, Modal, Form, Image } from 'react-bootstrap';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-
-import './publicationModal.scss';
 
 import { BASE_URL } from '../../app.constants';
 
@@ -11,14 +10,44 @@ import Attachment from '../generic/Attachment';
 import VideoThumbnail from '../generic/VideoThumbnail';
 import ImageThumbnail from '../generic/ImageThumbnail';
 
+import './publicationModal.scss';
+
+const INITIAL_STATE = {
+  text: '',
+  pieceFile: null,
+  pieceType: null,
+  attachment: null,
+  attachmentType: null,
+};
+
+/**
+ * Modal component which allows user to attach a few files along
+ * with some text description and then publish this information.
+ */
 export default class PublicationModal extends Component {
-  state = {
-    showUploadPiece: false,
-    pieceFile: null,
-    pieceType: null,
-    attachment: null,
-    attachmentType: null,
-  };
+  static propTypes = {
+    /**
+     * Object with `avatar` property which is a relative path to the user image
+     * stored on the server side
+     */
+    user: PropTypes.shape({ avatar: PropTypes.string }),
+    show: PropTypes.bool.isRequired,
+    onHide: PropTypes.func.isRequired,
+    onSubmit: PropTypes.func.isRequired,
+  }
+
+  state = INITIAL_STATE;
+
+  componentDidUpdate(prevProps) {
+    if (!prevProps.show && this.props.show) {
+      // make sure modal contents are cleared upon show
+      this.setState(INITIAL_STATE);
+    }
+  }
+
+  onPublicationTextChange = e => {
+    this.setState({ [e.target.name]: e.target.value });
+  }
 
   onUploadPiece = (e, pieceType) => {
     if (!e.target.files.length) {
@@ -32,12 +61,16 @@ export default class PublicationModal extends Component {
   onUpload = ({ attachment, attachmentType }) => {
     this.setState({ attachment, attachmentType });
   };
-  
+
   onRemove = () => {
     this.setState({
       attachment: null,
       attachmentType: null,
     });
+  }
+
+  onSubmit = () => {
+    this.props.onSubmit(this.state);
   }
 
   removePiece = () => {
@@ -68,13 +101,11 @@ export default class PublicationModal extends Component {
 
   get thumbnail() {
     const { pieceFile } = this.state;
-    if (pieceFile) {
-      if (pieceFile.type === 'video/mp4') {
-        return <VideoThumbnail file={pieceFile} onRemove={this.removePiece} />;
-      }
-      if (pieceFile.type === 'image/jpeg' || pieceFile.type === 'image/png') {
-        return <ImageThumbnail file={pieceFile} onRemove={this.removePiece} />;
-      }
+    if (Attachment.isImage(pieceFile)) {
+      return <ImageThumbnail file={pieceFile} onRemove={this.removePiece} />;
+    }
+    if (Attachment.isVideo(pieceFile)) {
+      return <VideoThumbnail file={pieceFile} onRemove={this.removePiece} />;
     }
     return <FontAwesomeIcon icon={faTimes} className="preview__removeIcon" onClick={this.removePiece} />;
   }
@@ -98,13 +129,11 @@ export default class PublicationModal extends Component {
   }
 
   render() {
-    const { show, onShow, onHide } = this.props;
+    const { show, onHide } = this.props;
     return (
-      <Modal show={show} onHide={onHide} onShow={onShow} centered size="lg" className="publication-modal" aria-labelledby="contained-modal-title-vcenter">
+      <Modal show={show} onHide={onHide} centered size="lg" className="publication-modal" aria-labelledby="contained-modal-title-vcenter">
         <Modal.Header closeButton>
-          <div className="header-title">
-            Create a publication
-          </div>
+          <div className="header-title">Create a publication</div>
         </Modal.Header>
         <Modal.Body>
           <Form>
@@ -121,8 +150,8 @@ export default class PublicationModal extends Component {
                       className="publication-card__textarea"
                       as="textarea"
                       rows="3"
-                      value={this.state.todo1}
-                      onChange={() => { console.error('TODO!!!'); }}
+                      name="text"
+                      onChange={this.onPublicationTextChange}
                     />
                   </div>
                 </div>
