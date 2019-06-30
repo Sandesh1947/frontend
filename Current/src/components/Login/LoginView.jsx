@@ -97,6 +97,9 @@ class LoginView extends React.Component {
                     name='sex'
                     onChange={ this.handleChange }
                   >
+                    <option>
+                      Select your sex
+                    </option>
                     <option value='male'>
                       Male
                     </option>
@@ -126,21 +129,24 @@ class LoginView extends React.Component {
                     )
                 }
                 <input
-                  className='slide-design-input'
+                  className={this.props.login_failed ? 'slide-design-input login-failed-border':'slide-design-input'}
                   name='email'
                   type='email'
                   id='email'
                   placeholder='Enter email'
+                  required
                   onChange={ this.handleChange }
                 />
                 <input
-                  className='slide-design-input'
+                  className={this.props.login_failed ? 'slide-design-input login-failed-border':'slide-design-input'}
                   name='password'
                   type='password'
                   id='password'
+                  required
                   placeholder='Enter password'
                   onChange={ this.handleChange }
                 />
+                {this.props.login_failed&&<span style={{color:'red'}}>Invalid credentials</span>}
                 <a className='mt-2' href='#'>Forgot your password?</a>
                 <button
                   className='slide-design-button mt-2'

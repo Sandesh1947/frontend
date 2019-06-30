@@ -9,15 +9,7 @@ class LoginContainer extends React.Component {
         
         this.state = {
           signUpCondition: false, //this helps to slide active and false
-          email: '',
-          password: '',
-          firstName: null,
-          lastName: null,
-          phone: null,
-          birthDate: null,
-          sex: null,
-          profession: null,
-          message: null
+          message: null,
         };
         this.login = this.login.bind(this) 
         this.handleSignUpCondition = this.handleSignUpCondition.bind(this)
@@ -49,7 +41,7 @@ class LoginContainer extends React.Component {
         return(
           <React.Fragment>
             {this.props.logindata.AUTH_TOKEN ? <Redirect to='/home'/> :
-            <LoginView signUpCondition={this.state.signUpCondition} handleSignUpCondition={this.handleSignUpCondition} login={this.login} signup={this.signup} message={this.state.message}/>}
+            <LoginView login_failed={this.props.logindata.login_failed} signUpCondition={this.state.signUpCondition} handleSignUpCondition={this.handleSignUpCondition} login={this.login} signup={this.signup} message={this.state.message}/>}
           </React.Fragment>
         )
     }

@@ -17,12 +17,12 @@ function* Login(action) {
         yield setInterceptor()
         yield put({ type: 'LOGIN_COMPLETED', payload:loginResponse.data.auth_token});
         //this is for testing with mock should component sampleLogin and uncommnet above statement once testing with real api
-    //     let loginResponse = yield sampleLogin()
-    //     yield localStorage.setItem('AUTH_TOKEN', loginResponse);
-    //     yield put({ type: 'LOGIN_COMPLETED', payload:loginResponse});
+        // let loginResponse = yield sampleLogin()
+        // yield localStorage.setItem('AUTH_TOKEN', loginResponse);
+        // yield put({ type: 'LOGIN_FAILED', payload:loginResponse});
     }
     catch(error) {
-        yield put({ type: 'ERROR_OCCUR', payload: {  message : 'Something went wrong.Please try again later' }});
+        yield put({ type: 'LOGIN_FAILED', payload: {  message : 'Something went wrong.Please try again later' }});
       }
 }
 export function* LoginWatcher() {
