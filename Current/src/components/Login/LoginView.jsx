@@ -1,12 +1,24 @@
 import React from 'react'
 import './login.scss';
+import DatePicker from "react-datepicker";
+import moment from 'moment'
+import "react-datepicker/dist/react-datepicker.css";
 class LoginView extends React.Component {
   constructor() {
     super()
+    this.state = {birthDate:null}
     this.handleChange = this.handleChange.bind(this);
+    this.handleDateOfBirth = this.handleDateOfBirth.bind(this)
+    this.birthDate = null
+  }
+  handleDateOfBirth = (value) => {
+    this.birthDate=value
+    this.setState({birthDate:moment(value).format("YYYY-MM-DD")})
+    this.props.clearErrorBorders()
   }
   handleChange = e => {
     this.setState({ [e.target.name]: e.target.value });
+    this.props.clearErrorBorders()
   };
       
     render() {
@@ -21,33 +33,18 @@ class LoginView extends React.Component {
                 : 'slide-design-container'
             }
           >
-            <div className='slide-design-form-container slide-design-sign-up-container'>
+            {this.props.signUpCondition ? <div className='slide-design-form-container slide-design-sign-up-container'>
               <form className='slide-design-form' action='#'>
-                <h1 className='slide-design-header'>Create Account</h1>
-                <div className='slide-design-social-container'>
-                  <a href='#' className='slide-design-social slide-design-a'>
-                    <i className='fab fa-facebook-f' />
-                  </a>
-                  <a href='#' className='slide-design-social slide-design-a'>
-                    <i className='fab fa-google-plus-g' />
-                  </a>
-                  <a href='#' className='slide-design-social slide-design-a'>
-                    <i className='fab fa-linkedin-in' />
-                  </a>
-                </div>
+                <h1 className='slide-design-header mb-2'>Create Account</h1>
                 {
                   this.props.message
                     && (
                       <span className='slide-design-a' style={{ color: 'red' }}>{ this.props.message }</span>
                     )
-                }
-                <span className='slide-design-a'>
-                                or use your email for registration
-                            </span>
-                
+                }    
                 <input
                   name='firstName'
-                  className='slide-design-input'
+                  className={this.props.signUpFailed ? 'slide-design-input login-failed-border':'slide-design-input'}
                   type='text'
                   placeholder='First name'
                   onChange={ this.handleChange }
@@ -55,7 +52,7 @@ class LoginView extends React.Component {
                 
                 <input
                   name='lastName'
-                  className='slide-design-input'
+                  className={this.props.signUpFailed ? 'slide-design-input login-failed-border':'slide-design-input'}
                   type='text'
                   placeholder='Last name'
                   onChange={ this.handleChange }
@@ -63,7 +60,7 @@ class LoginView extends React.Component {
                 
                 <input
                   name='email'
-                  className='slide-design-input'
+                  className={this.props.signUpFailed ? 'slide-design-input login-failed-border':'slide-design-input'}
                   type='email'
                   placeholder='Email'
                   onChange={ this.handleChange }
@@ -71,7 +68,7 @@ class LoginView extends React.Component {
                 
                 <input
                   name='password'
-                  className='slide-design-input'
+                  className={this.props.signUpFailed ? 'slide-design-input login-failed-border':'slide-design-input'}
                   type='password'
                   placeholder='Password'
                   onChange={ this.handleChange }
@@ -79,33 +76,32 @@ class LoginView extends React.Component {
       
                 <input
                   name='phone'
-                  className="slide-design-input"
+                  className={this.props.signUpFailed ? 'slide-design-input login-failed-border':'slide-design-input'}
                   type="text"
                   placeholder="Phone"
                   onChange={ this.handleChange }
                 />
       
-                <div className='slide-design-input slide-design-select-wrap'>
-                  <span className='slide-design-select-placeholder'>
-                    Birthdate
-                  </span>
-                  <input
-                    name='birthDate'
-                    type="date"
-                    placeholder="Date of birth"
-                    onChange={ this.handleChange }
+                <div className={this.props.signUpFailed ? 'slide-design-input login-failed-border slide-design-select-wrap':'slide-design-input slide-design-select-wrap'}>
+                  <DatePicker
+                    placeholderText='Date of birth'
+                    selected={this.birthDate}
+                    onChange={this.handleDateOfBirth}
                   />
                 </div>
       
-                <div className='slide-design-input slide-design-select-wrap'>
+                <div className={this.props.signUpFailed ? 'slide-design-input login-failed-border slide-design-select-wrap':'slide-design-input slide-design-select-wrap'}>
                   <span className='slide-design-select-placeholder'>
                     Sex
                   </span>
-                  
                   <select
+                    className='select-css'
                     name='sex'
                     onChange={ this.handleChange }
                   >
+                    <option>
+                      Select your sex
+                    </option>
                     <option value='male'>
                       Male
                     </option>
@@ -116,46 +112,27 @@ class LoginView extends React.Component {
                       Other
                     </option>
                   </select>
-                </div>
-      
-                <input
-                  name='profession'
-                  className="slide-design-input"
-                  type="text"
-                  placeholder="Profession"
-                  onChange={ this.handleChange }
-                />
+                  </div>
+                  {this.props.signUpFailed && <span style={{color:'red'}}>Sign up error! Try again</span>}
                 <button
-                  className='slide-design-button'
+                  className='slide-design-button mt-2'
                   onClick={ (e)=> {e.preventDefault() ; this.props.signup(this.state)} }
                 >Sign Up</button>
               </form>
-            </div>
+            </div>:
             <div className='slide-design-form-container slide-design-sign-in-container'>
               <form className='slide-design-form'>
                 {
                   this.props.message
                     ? (
-                      <h1 className='slide-design-header'>{ this.props.message }</h1>
+                      <h1 className='slide-design-header mb-2'>{ this.props.message }</h1>
                     )
                     : (
-                      <h1 className='slide-design-header'>Sign in</h1>
+                      <h1 className='slide-design-header mb-2'>Sign in</h1>
                     )
                 }
-                <div className='slide-design-social-container slide-design-a'>
-                  <a href='# ' className='slide-design-social'>
-                    <i className='fab fa-facebook-f' />
-                  </a>
-                  <a href='#' className='slide-design-social slide-design-a'>
-                    <i className='fab fa-google-plus-g' />
-                  </a>
-                  <a href='#' className='slide-design-social slide-design-a'>
-                    <i className='fab fa-linkedin-in' />
-                  </a>
-                </div>
-                <span className='slide-design-span'>or use your account</span>
                 <input
-                  className='slide-design-input'
+                  className={this.props.login_failed ? 'slide-design-input login-failed-border':'slide-design-input'}
                   name='email'
                   type='email'
                   id='email'
@@ -163,22 +140,23 @@ class LoginView extends React.Component {
                   onChange={ this.handleChange }
                 />
                 <input
-                  className='slide-design-input'
+                  className={this.props.login_failed ? 'slide-design-input login-failed-border':'slide-design-input'}
                   name='password'
                   type='password'
                   id='password'
                   placeholder='Enter password'
                   onChange={ this.handleChange }
                 />
-                <a href='#'>Forgot your password?</a>
+                {this.props.login_failed&&<span style={{color:'red'}}>Invalid credentials</span>}
+                <a className='mt-2' href='#'>Forgot your password?</a>
                 <button
-                  className='slide-design-button'
+                  className='slide-design-button mt-2'
                   onClick={ (e)=> {e.preventDefault();this.props.login(this.state) }}
                 >
-                  Login
+                  Sign in
                 </button>
               </form>
-            </div>
+            </div>}
             <div className='slide-design-overlay-container'>
               <div className='slide-design-overlay'>
                 <div className='slide-design-overlay-panel slide-design-overlay-left'>
