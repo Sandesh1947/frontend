@@ -31,7 +31,7 @@ class LoginView extends React.Component {
                 : 'slide-design-container'
             }
           >
-            <div className='slide-design-form-container slide-design-sign-up-container'>
+            {this.props.signUpCondition ? <div className='slide-design-form-container slide-design-sign-up-container'>
               <form className='slide-design-form' action='#'>
                 <h1 className='slide-design-header mb-2'>Create Account</h1>
                 {
@@ -113,7 +113,7 @@ class LoginView extends React.Component {
                   onClick={ (e)=> {e.preventDefault() ; this.props.signup(this.state)} }
                 >Sign Up</button>
               </form>
-            </div>
+            </div>:
             <div className='slide-design-form-container slide-design-sign-in-container'>
               <form className='slide-design-form'>
                 {
@@ -149,7 +149,7 @@ class LoginView extends React.Component {
                   Sign in
                 </button>
               </form>
-            </div>
+            </div>}
             <div className='slide-design-overlay-container'>
               <div className='slide-design-overlay'>
                 <div className='slide-design-overlay-panel slide-design-overlay-left'>
