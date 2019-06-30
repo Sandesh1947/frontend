@@ -42,7 +42,7 @@ class LoginView extends React.Component {
                 }    
                 <input
                   name='firstName'
-                  className='slide-design-input'
+                  className={this.props.signUpFailed ? 'slide-design-input login-failed-border':'slide-design-input'}
                   type='text'
                   placeholder='First name'
                   onChange={ this.handleChange }
@@ -50,7 +50,7 @@ class LoginView extends React.Component {
                 
                 <input
                   name='lastName'
-                  className='slide-design-input'
+                  className={this.props.signUpFailed ? 'slide-design-input login-failed-border':'slide-design-input'}
                   type='text'
                   placeholder='Last name'
                   onChange={ this.handleChange }
@@ -58,7 +58,7 @@ class LoginView extends React.Component {
                 
                 <input
                   name='email'
-                  className='slide-design-input'
+                  className={this.props.signUpFailed ? 'slide-design-input login-failed-border':'slide-design-input'}
                   type='email'
                   placeholder='Email'
                   onChange={ this.handleChange }
@@ -66,7 +66,7 @@ class LoginView extends React.Component {
                 
                 <input
                   name='password'
-                  className='slide-design-input'
+                  className={this.props.signUpFailed ? 'slide-design-input login-failed-border':'slide-design-input'}
                   type='password'
                   placeholder='Password'
                   onChange={ this.handleChange }
@@ -74,13 +74,13 @@ class LoginView extends React.Component {
       
                 <input
                   name='phone'
-                  className="slide-design-input"
+                  className={this.props.signUpFailed ? 'slide-design-input login-failed-border':'slide-design-input'}
                   type="text"
                   placeholder="Phone"
                   onChange={ this.handleChange }
                 />
       
-                <div className='slide-design-input slide-design-select-wrap'>
+                <div className={this.props.signUpFailed ? 'slide-design-input login-failed-border slide-design-select-wrap':'slide-design-input slide-design-select-wrap'}>
                   <DatePicker
                     placeholderText='Date of birth'
                     selected={this.birthDate}
@@ -88,7 +88,7 @@ class LoginView extends React.Component {
                   />
                 </div>
       
-                <div className='slide-design-input slide-design-select-wrap'>
+                <div className={this.props.signUpFailed ? 'slide-design-input login-failed-border slide-design-select-wrap':'slide-design-input slide-design-select-wrap'}>
                   <span className='slide-design-select-placeholder'>
                     Sex
                   </span>
@@ -111,6 +111,7 @@ class LoginView extends React.Component {
                     </option>
                   </select>
                   </div>
+                  {this.props.signUpFailed && <span style={{color:'red'}}>Sign up error! Try again</span>}
                 <button
                   className='slide-design-button mt-2'
                   onClick={ (e)=> {e.preventDefault() ; this.props.signup(this.state)} }
@@ -134,7 +135,6 @@ class LoginView extends React.Component {
                   type='email'
                   id='email'
                   placeholder='Enter email'
-                  required
                   onChange={ this.handleChange }
                 />
                 <input
@@ -142,7 +142,6 @@ class LoginView extends React.Component {
                   name='password'
                   type='password'
                   id='password'
-                  required
                   placeholder='Enter password'
                   onChange={ this.handleChange }
                 />
