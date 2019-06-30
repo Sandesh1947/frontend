@@ -12,6 +12,14 @@ import ImageThumbnail from '../generic/ImageThumbnail';
 
 import './publicationModal.scss';
 
+const INITIAL_STATE = {
+  text: '',
+  pieceFile: null,
+  pieceType: null,
+  attachment: null,
+  attachmentType: null,
+};
+
 /**
  * Modal component which allows user to attach a few files along
  * with some text description and then publish this information.
@@ -28,13 +36,14 @@ export default class PublicationModal extends Component {
     onSubmit: PropTypes.func.isRequired,
   }
 
-  state = {
-    text: '',
-    pieceFile: null,
-    pieceType: null,
-    attachment: null,
-    attachmentType: null,
-  };
+  state = INITIAL_STATE;
+
+  componentDidUpdate(prevProps) {
+    if (!prevProps.show && this.props.show) {
+      // make sure modal contents are cleared upon show
+      this.setState(INITIAL_STATE);
+    }
+  }
 
   onPublicationTextChange = e => {
     this.setState({ [e.target.name]: e.target.value });
