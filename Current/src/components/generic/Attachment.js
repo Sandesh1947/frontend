@@ -52,10 +52,13 @@ class Attachment extends Component {
     attachmentType: PropTypes.oneOf(['image', 'video', 'geo']),
   }
 
+  static isImage = file => file && (file.type === 'image/jpeg' || file.type === 'image/png');
+  static isVideo = file => file && file.type === 'video/mp4';
+
   componentDidMount() {
     TEMP_HACK++;
   }
-  
+
   onFileUpload = e => {
     if (!e.target.files.length) {
       return;
@@ -63,9 +66,9 @@ class Attachment extends Component {
 
     const attachment = Array.from(e.target.files)[0];
     let attachmentInfo;
-    if (attachment.type === 'image/jpeg' || attachment.type === 'image/png') {
+    if (Attachment.isImage(attachment)) {
       attachmentInfo = { attachment, attachmentType: 'image' };
-    } else if (attachment.type === 'video/mp4') {
+    } else if (Attachment.isVideo(attachment)) {
       attachmentInfo = { attachment, attachmentType: 'video' };
     } else {
       attachmentInfo = { attachment: null, attachmentType: null };
@@ -81,10 +84,10 @@ class Attachment extends Component {
 
     if (attachment) {
       if (attachmentType === 'video') {
-        return <VideoThumbnail key={type} file={attachment} onRemove={this.props.onRemove}/>;
+        return <VideoThumbnail key={type} file={attachment} onRemove={this.props.onRemove} />;
       }
       if (attachmentType === 'image') {
-        return <ImageThumbnail key={type} file={attachment} onRemove={this.props.onRemove}/>;
+        return <ImageThumbnail key={type} file={attachment} onRemove={this.props.onRemove} />;
       }
     }
 

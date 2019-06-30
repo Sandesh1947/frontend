@@ -2,6 +2,7 @@ import React from 'react';
 import HomeView from './HomeView';
 import { connect } from 'react-redux';
 import { getUserInfo, getUserPublications, getUserFollowers, publishPost } from '../../actions/userInfoActions';
+
 class HomeContainer extends React.Component {
   constructor() {
     super(...arguments);
@@ -22,25 +23,22 @@ class HomeContainer extends React.Component {
 
   componentDidMount() {
     if (!this.props.userInfo.user) {
-      this.props.dispatch(getUserInfo());
+      this.props.getUserInfo();
     }
     if (this.props.userPublications.publications.length === 0) {
-      this.props.dispatch(getUserPublications());
+      this.props.getUserPublications();
     }
     if (this.props.userFollowers.followers.length === 0) {
-      this.props.dispatch(getUserFollowers());
+      this.props.getUserFollowers();
     }
     document.addEventListener('scroll', this.trackScrolling);
   }
 
   loadMoreData = () => {
-
     if (this.props.userPublications.noMoreData && this.props.userPublications.loading) {
       return;
     }
-    this.props.dispatch(getUserPublications({
-      page: this.state.page + 1,
-    }));
+    this.props.getUserPublications({ page: this.state.page + 1 });
     this.setState({ page: this.state.page + 1 });
   }
 
@@ -77,11 +75,11 @@ class HomeContainer extends React.Component {
 
   onSubmit = () => {
     if (!this.state.avatar) {
-      this.props.dispatch(publishPost({
+      this.props.publishPost({
         publication_img: this.state.publication_img,
         publication_vid: this.state.publication_vid,
         publication_text: this.state.publication_text,
-      }));
+      });
       return;
     }
     const formData = new FormData();
@@ -89,7 +87,7 @@ class HomeContainer extends React.Component {
     formData.append('publication_text', this.state.publication_text);
     formData.append('publication_img', this.state.publication_img);
     formData.append('publication_vid', this.state.publication_vid);
-    this.props.dispatch(publishPost(formData));
+    this.props.publishPost(formData);
   }
 
   handlePublicatioText(e) {
@@ -127,4 +125,7 @@ const mapStateToProps = ({ userInfo, userPublications, userFollowers }) => ({
   userPublications,
   userFollowers,
 });
-export default connect(mapStateToProps)(HomeContainer);
+export default connect(
+  mapStateToProps,
+  { getUserInfo, getUserPublications, getUserFollowers, publishPost }
+)(HomeContainer);

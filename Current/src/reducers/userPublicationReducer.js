@@ -4,7 +4,11 @@ import {
   NO_MORE_USER_PUBLICATIONS,
 } from '../actions/types';
 
-const initialState = { publications: [], loading: false, noMoreData: false };
+const initialState = {
+  publications: [],
+  loading: false,
+  noMoreData: false,
+};
 
 const userPublicationReducer = (state = initialState, action) => {
   switch (action.type) {
