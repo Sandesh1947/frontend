@@ -14,9 +14,11 @@ class LoginView extends React.Component {
   handleDateOfBirth = (value) => {
     this.birthDate=value
     this.setState({birthDate:moment(value).format("YYYY-MM-DD")})
+    this.props.clearErrorBorders()
   }
   handleChange = e => {
     this.setState({ [e.target.name]: e.target.value });
+    this.props.clearErrorBorders()
   };
       
     render() {

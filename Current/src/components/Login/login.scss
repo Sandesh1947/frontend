@@ -188,10 +188,12 @@
 }
 .slide-design-overlay-left {
 	transform: translateX(-20%);
+	background-color: rgba(91, 91, 103, 0.7);
 }
 .slide-design-overlay-right {
 	right: 0;
 	transform: translateX(0);
+	background-color: rgba(91, 91, 103, 0.7);
 }
 
 .slide-design-select-wrap {
