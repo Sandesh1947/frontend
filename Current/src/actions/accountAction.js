@@ -6,3 +6,6 @@ export function loginAction(postData) {
 export function signUp(data) {
     return axios.post(BASE_URL+'/api/signup/',data)
 }
+export function loginOutAction() {
+    return{type:'LOGOUT'}
+}

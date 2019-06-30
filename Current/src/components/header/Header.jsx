@@ -19,7 +19,6 @@ import { BASE_URL } from '../../app.constants';
 import PublicationModal from '../publication-modal/PublicationModal';
 
 import './header.scss';
-
 class Header extends Component {
   state = {
     showPublicationModal: false
@@ -84,6 +83,7 @@ class Header extends Component {
                         className='navbar-dropdown__item'
                         onClick={() => {
                           localStorage.removeItem('AUTH_TOKEN');
+                          this.props.logOut()
                           this.props.history.replace('/login');
                         }}>Logout</NavDropdown.Item>
                     </NavDropdown>
