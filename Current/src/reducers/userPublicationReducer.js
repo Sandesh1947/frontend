@@ -2,6 +2,7 @@ import {
   FETCHING_USER_PUBLICATIONS,
   FETCHED_USER_PUBLICATIONS,
   NO_MORE_USER_PUBLICATIONS,
+  CLEAR_USER_PUBLICATIONS
 } from '../actions/types';
 
 const initialState = {
@@ -27,6 +28,12 @@ const userPublicationReducer = (state = initialState, action) => {
     case NO_MORE_USER_PUBLICATIONS:
       return {
         publications: state.publications,
+        loading: false,
+        noMoreData: true,
+      };
+    case CLEAR_USER_PUBLICATIONS:
+      return {
+        publications: [],
         loading: false,
         noMoreData: true,
       };
