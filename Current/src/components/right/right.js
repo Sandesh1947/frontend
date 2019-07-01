@@ -42,6 +42,9 @@ export default class Right extends Component {
             user={this.props.user}
             userPublication={userPublication}
             userPublications={this.props.userPublications}
+            // TODO: provide these props
+            likePublication={() => this.props.likePublication({ id: userPublication.id })}
+            promotePublication={() => this.props.promotePublication({ id: userPublication.id })}
           />
         ))}
 

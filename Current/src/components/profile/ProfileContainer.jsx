@@ -3,6 +3,7 @@ import ProfileView from './ProfileView';
 import './profile.scss';
 import { connect } from 'react-redux';
 import { getUserInfo, getUserPublications, getUserFollowers, getPartners } from '../../actions/userInfoActions';
+import { likePublication, promotePublication } from '../../actions/userPublicationAction';
 
 class ProfileContainer extends React.Component {
   state = {
@@ -52,14 +53,17 @@ class ProfileContainer extends React.Component {
   }
 
   render() {
-    const { userPartners, userPublications, userFollowers, userInfo } = this.props;
+    const { userPartners, userPublications, userFollowers, userInfo, likePublication, promotePublication } = this.props;
     return (
       <ProfileView
         userPartners={userPartners.partners}
         loading={userPublications.loading}
         userFollowers={userFollowers.followers}
         userPublications={userPublications.publications}
-        userInfo={userInfo} />
+        userInfo={userInfo}
+        likePublication={likePublication}
+        promotePublication={promotePublication}
+      />
     );
   }
 }
@@ -73,5 +77,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { getUserInfo, getUserPublications, getUserFollowers, getPartners }
+  { getUserInfo, getUserPublications, getUserFollowers, getPartners, likePublication, promotePublication }
 )(ProfileContainer); 
