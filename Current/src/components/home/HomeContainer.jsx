@@ -2,23 +2,16 @@ import React from 'react';
 import HomeView from './HomeView';
 import { connect } from 'react-redux';
 import { getUserInfo, getUserPublications, getUserFollowers, publishPost } from '../../actions/userInfoActions';
+import { likePublication, promotePublication } from '../../actions/userPublicationAction';
 
 class HomeContainer extends React.Component {
-  constructor() {
-    super(...arguments);
-
-    this.state = {
-      avatar: null,
-      publication_text: '',
-      publication_img: '0',
-      publication_vid: '0',
-      lastScrollPos: 0,
-      page: 1,
-    };
-
-    this.loadMoreData = this.loadMoreData.bind(this);
-    this.trackScrolling = this.trackScrolling.bind(this);
-    this.handlePublicatioText = this.handlePublicatioText.bind(this);
+  state = {
+    avatar: null,
+    publication_text: '',
+    publication_img: '0',
+    publication_vid: '0',
+    lastScrollPos: 0,
+    page: 1,
   }
 
   componentDidMount() {
@@ -73,7 +66,7 @@ class HomeContainer extends React.Component {
     this.setState({ avatar: null, avatarType: null, publication_img: '0', publication_vid: '0' });
   }
 
-  onSubmit = () => {
+  onSubmitPublication = () => {
     if (!this.state.avatar) {
       this.props.publishPost({
         publication_img: this.state.publication_img,
@@ -90,31 +83,35 @@ class HomeContainer extends React.Component {
     this.props.publishPost(formData);
   }
 
-  handlePublicatioText(e) {
+  onPublicationTextChange = e => {
     this.setState({ publication_text: e.target.value });
   }
 
   render() {
     const { userPublications, userInfo, userFollowers } = this.props;
-    const { avatar, avatarType } = this.state;
+    if (!userInfo.user) {
+      return null;
+    }
     return (
       <React.Fragment>
-        {userInfo.user
-          ? <HomeView
-            loading={userPublications.loading}
-            userFollowers={userFollowers.followers}
-            userPublications={userPublications.publications}
-            userInfo={userInfo}
-            avatar={avatar}
-            avatarType={avatarType}
-            onFileUpload={this.onFileUpload}
-            onRemoveUpload={this.removeUpload}
-            submit={this.onSubmit}
-            handlePublicatioText={this.handlePublicatioText}
-            stateFields={this.state}
-          />
-          : ''
-        }
+        <HomeView
+          loading={userPublications.loading}
+          userFollowers={userFollowers.followers}
+          userPublications={userPublications.publications}
+          userInfo={userInfo}
+          avatar={this.state.avatar}
+          avatarType={this.state.avatarType}
+          onFileUpload={this.onFileUpload}
+          onRemoveUpload={this.removeUpload}
+          submitPublication={this.onSubmitPublication}
+          promotePublication={this.props.promotePublication}
+          likePublication={this.props.likePublication}
+          onPublicationTextChange={this.onPublicationTextChange}
+          // TODO: `stateFields` doesn't like good
+          // maybe keep state inside HomeView and only pass down acitons
+          // instead of tracking underlying component state here???
+          stateFields={this.state}
+        />
       </React.Fragment>
     );
   }
@@ -125,7 +122,8 @@ const mapStateToProps = ({ userInfo, userPublications, userFollowers }) => ({
   userPublications,
   userFollowers,
 });
+
 export default connect(
   mapStateToProps,
-  { getUserInfo, getUserPublications, getUserFollowers, publishPost }
+  { getUserInfo, getUserPublications, getUserFollowers, publishPost, likePublication, promotePublication }
 )(HomeContainer);

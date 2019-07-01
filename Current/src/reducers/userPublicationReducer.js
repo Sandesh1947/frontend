@@ -2,6 +2,8 @@ import {
   FETCHING_USER_PUBLICATIONS,
   FETCHED_USER_PUBLICATIONS,
   NO_MORE_USER_PUBLICATIONS,
+  PROMOTE_PUBLICATION,
+  LIKE_PUBLICATION,
 } from '../actions/types';
 
 const initialState = {
