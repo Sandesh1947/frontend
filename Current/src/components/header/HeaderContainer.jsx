@@ -6,19 +6,15 @@ import Attachment from '../generic/Attachment';
 import { publishPost ,getUserPublications,clearUserPublication} from '../../actions/userInfoActions';
 import { logout } from '../../actions/accountAction';
 class HeaderContainer extends Component {
-  onSubmitPublication = ({ text, pieceFile, pieceType, attachment }) => {
+  onSubmitPublication = ({ text, attachment, publicationType, visibility }) => {
     const post = new FormData();
     post.append('publication_text', text);
+    post.append('publication_type', publicationType);
+    post.append('visibility', visibility);
     if (attachment) {
       post.append('post', attachment);
       post.append('publication_img', Attachment.isImage(attachment) ? '1' : '0');
-      post.append('publication_vide', Attachment.isVideo(attachment) ? '1' : '0');
-    }
-    if (pieceFile) {
-      post.append('piece', pieceFile);
-      post.append('pieceType', pieceType);
-      post.append('piece_img', Attachment.isImage(pieceFile) ? '1' : '0');
-      post.append('piece_vid', Attachment.isVideo(pieceFile) ? '1' : '0');
+      post.append('publication_video', Attachment.isVideo(attachment) ? '1' : '0');
     }
     this.props.publishPost(post);
   }

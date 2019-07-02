@@ -1,23 +1,22 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Button, Card, DropdownButton, Dropdown, Modal, Form, Image } from 'react-bootstrap';
-import { faTimes } from '@fortawesome/free-solid-svg-icons';
+import { faGlobe, faKey } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { BASE_URL } from '../../app.constants';
 
 import Attachment from '../generic/Attachment';
-import VideoThumbnail from '../generic/VideoThumbnail';
-import ImageThumbnail from '../generic/ImageThumbnail';
 
 import './publicationModal.scss';
 
 const INITIAL_STATE = {
   text: '',
-  pieceFile: null,
   pieceType: null,
   attachment: null,
   attachmentType: null,
+  visibility: 'Public',
+  publicationType: null,
 };
 
 /**
@@ -49,15 +48,6 @@ export default class PublicationModal extends Component {
     this.setState({ [e.target.name]: e.target.value });
   }
 
-  onUploadPiece = (e, pieceType) => {
-    if (!e.target.files.length) {
-      return;
-    }
-
-    const pieceFile = Array.from(e.target.files)[0];
-    this.setState({ pieceFile, pieceType });
-  };
-
   onUpload = ({ attachment, attachmentType }) => {
     this.setState({ attachment, attachmentType });
   };
@@ -73,60 +63,26 @@ export default class PublicationModal extends Component {
     this.props.onSubmit(this.state);
   }
 
-  removePiece = () => {
-    const { pieceType } = this.state;
-    if (pieceType) {
-      // rest file picker so that the same file can be picked again
-      // (o/w change event won't fire for the same file)
-      document.querySelector(`.publication-modal input#piece-${pieceType}`).value = '';
-    }
-
-    this.setState({ pieceFile: null, pieceType: null });
-  }
-
   renderPieceUploadField = type => {
     return (
       <Dropdown.Item as="div">
         {type}
-        <input
-          className="file-picker"
-          title=""
-          type="file"
-          id={`piece-${type}`}
-          onChange={e => this.onUploadPiece(e, type)}
-        />
       </Dropdown.Item>
     );
   }
 
-  get thumbnail() {
-    const { pieceFile } = this.state;
-    if (Attachment.isImage(pieceFile)) {
-      return <ImageThumbnail file={pieceFile} onRemove={this.removePiece} />;
-    }
-    if (Attachment.isVideo(pieceFile)) {
-      return <VideoThumbnail file={pieceFile} onRemove={this.removePiece} />;
-    }
-    return <FontAwesomeIcon icon={faTimes} className="preview__removeIcon" onClick={this.removePiece} />;
-  }
+  renderVisibilityItem = visibility => (
+    <React.Fragment>
+      <FontAwesomeIcon icon={visibility === 'Public' ? faGlobe : faKey} className="visibility__icon" />
+      {visibility}
+    </React.Fragment>
+  )
 
-  // unfortunately can't reuse Attachment field here for now
-  renderPiece() {
-    const { pieceFile } = this.state;
-    return (
-      <React.Fragment>
-        <span className={`add-piece__label${pieceFile ? ' d-none' : ''}`}>Add Piece</span>
-        <DropdownButton title="Forms" className={pieceFile ? ' d-none' : ''}>
-          {this.renderPieceUploadField('Essay')}
-          {this.renderPieceUploadField('Poem')}
-          {this.renderPieceUploadField('Lyrics')}
-        </DropdownButton>
-        <div className={`preview ${pieceFile ? '' : 'd-none'}`}>
-          {this.thumbnail}
-        </div>
-      </React.Fragment>
-    );
-  }
+  renderPublicationTypeItem = publicationType => (
+    <Dropdown.Item onClick={() => this.setState({ publicationType })}>
+      {publicationType}
+    </Dropdown.Item>
+  )
 
   render() {
     const { show, onHide } = this.props;
@@ -155,22 +111,33 @@ export default class PublicationModal extends Component {
                     />
                   </div>
                 </div>
-                <Attachment
-                  types={['image', 'geo']}
-                  attachment={this.state.attachment}
-                  attachmentType={this.state.attachmentType}
-                  onUpload={this.onUpload}
-                  onRemove={this.onRemove}
-                  className="publication-card__attachments"
-                />
               </Card.Body>
             </Card>
-            <Card className="add-piece justify-content-between">
-              {this.renderPiece()}
-              <DropdownButton className="flex-grow-1 visibility" title="Public">
-                <Dropdown.Item>Public</Dropdown.Item>
+            <div className="publication-card__attachments">
+              <Attachment
+                types={['image', 'video', 'geo']}
+                attachment={this.state.attachment}
+                attachmentType={this.state.attachmentType}
+                onUpload={this.onUpload}
+                onRemove={this.onRemove}
+              />
+              <DropdownButton title={this.state.publicationType || 'Forms'} className="publication-card__forms">
+                {this.renderPublicationTypeItem('Essay')}
+                {this.renderPublicationTypeItem('Lyrics')}
+                {this.renderPublicationTypeItem('Poem')}
               </DropdownButton>
-            </Card>
+              <DropdownButton
+                className="flex-grow-1 visibility"
+                title={this.renderVisibilityItem(this.state.visibility)}
+              >
+                <Dropdown.Item onClick={() => this.setState({ visibility: 'Public' })}>
+                  {this.renderVisibilityItem('Public')}
+                </Dropdown.Item>
+                <Dropdown.Item onClick={() => this.setState({ visibility: 'Restricted' })}>
+                  {this.renderVisibilityItem('Restricted')}
+                </Dropdown.Item>
+              </DropdownButton>
+            </div>
             <div className="d-flex justify-content-end bbar">
               <Button
                 onClick={this.onSubmit}
