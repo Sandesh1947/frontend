@@ -3,9 +3,8 @@ import { connect } from 'react-redux';
 
 import Header from './Header';
 import Attachment from '../generic/Attachment';
-import { publishPost } from '../../actions/userInfoActions';
+import { publishPost ,getUserPublications,clearUserPublication} from '../../actions/userInfoActions';
 import { logout } from '../../actions/accountAction';
-
 class HeaderContainer extends Component {
   onSubmitPublication = ({ text, pieceFile, pieceType, attachment }) => {
     const post = new FormData();
@@ -30,6 +29,8 @@ class HeaderContainer extends Component {
         user={this.props.userInfo.user}
         onSubmitPublication={this.onSubmitPublication}
         logout={this.props.logout}
+        getUserPublications={this.props.getUserPublications}
+        clearUserPublication={this.props.clearUserPublication}
       />
     );
   }
@@ -39,4 +40,4 @@ const mapStateToProps = state => ({
   userInfo: state.userInfo,
 });
 
-export default connect(mapStateToProps, { publishPost, logout })(HeaderContainer);
+export default connect(mapStateToProps, { publishPost, logout,getUserPublications ,clearUserPublication})(HeaderContainer);

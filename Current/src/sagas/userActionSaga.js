@@ -56,7 +56,7 @@ function callUserPubApi(action) {
   return axios({
     method: 'get',
     url: BASE_URL + '/api/userpublications',
-    params: action.params,
+    params: action.query,
   });
 
   // return {
@@ -95,7 +95,7 @@ function callUserPubApi(action) {
 }
 function* getUserPublications(action) {
   try {
-    yield put({ type: FETCHING_USER_PUBLICATIONS });
+    yield put({ type: FETCHING_USER_PUBLICATIONS});
     const pubResponse = yield callUserPubApi(action);
     if (pubResponse && pubResponse.data) {
       yield put({ type: FETCHED_USER_PUBLICATIONS, payload: pubResponse });

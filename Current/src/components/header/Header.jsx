@@ -21,10 +21,17 @@ import PublicationModal from '../publication-modal/PublicationModal';
 import './header.scss';
 
 class Header extends Component {
-  state = {
-    showPublicationModal: false,
+  constructor(props) {
+    super(props)
+    this.state = {
+      showPublicationModal: false,
+      searchKeyword:''
+    }
+    this.handleSearch = this.handleSearch.bind(this)
   }
-
+  handleSearch =(event)=>{
+    this.setState({searchKeyword:event.target.value})
+  }
   showPublicationModal = () => {
     this.setState({ showPublicationModal: true });
   }
@@ -32,7 +39,11 @@ class Header extends Component {
   hidePublicationModal = () => {
     this.setState({ showPublicationModal: false });
   }
-
+  handleSubmitSearchForm =(event)=>{
+    event.preventDefault()
+    this.props.clearUserPublication()
+    this.props.getUserPublications({search:this.state.searchKeyword})
+  }
   render() {
     const { pathname } = this.props.location;
     return (
@@ -53,8 +64,8 @@ class Header extends Component {
                 <Navbar.Brand className="navbar__brand"><Link to="/home">Eycon</Link></Navbar.Brand>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav" className="navbar-collapse">
-                  <Form inline className="navbar-search-form">
-                    <FormControl size="sm" type="text"
+                  <Form onSubmit={this.handleSubmitSearchForm} inline className="navbar-search-form">
+                    <FormControl onChange={this.handleSearch} size="sm" type="text"
                       className="mr-sm-2 navbar-search-form__control"
                       style={{ backgroundColor: '#f2f2f2' }}
                     />
@@ -111,4 +122,4 @@ class Header extends Component {
   }
 }
 
-export default withRouter(Header);
+export default (withRouter(Header));
