@@ -88,9 +88,9 @@ class Header extends Component {
                       id="basic-nav-dropdown"
                       className="navbar-dropdown"
                     >
-                      {(pathname === '/home') &&
+                      {(pathname !== '/profile')  &&
                         <Link className="dropdown-item navbar-dropdown__item" to="/profile">Profile</Link>}
-                      {(pathname === '/profile') &&
+                      {(pathname !== '/home') &&
                         <Link className="dropdown-item navbar-dropdown__item" to="/home">Home</Link>}
                       <NavDropdown.Item
                         href="#"
