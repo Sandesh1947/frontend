@@ -3,8 +3,10 @@ import { connect } from 'react-redux';
 
 import Header from './Header';
 import Attachment from '../generic/Attachment';
-import { publishPost ,getUserPublications,clearUserPublication} from '../../actions/userInfoActions';
+import { publishPost } from '../../actions/userInfoActions';
 import { logout } from '../../actions/accountAction';
+import { submitSearchKeyword } from '../../actions/searchAction'
+import { withRouter } from 'react-router-dom';
 class HeaderContainer extends Component {
   onSubmitPublication = ({ text, pieceFile, pieceType, attachment }) => {
     const post = new FormData();
@@ -22,6 +24,12 @@ class HeaderContainer extends Component {
     }
     this.props.publishPost(post);
   }
+  onSubmitSearchKeyword = (keyword) => {
+    this.props.submitSearchKeyword(keyword)
+    this.props.history.push({
+      pathname: '/searchresults/',
+    });
+  }
 
   render() {
     return (
@@ -29,8 +37,7 @@ class HeaderContainer extends Component {
         user={this.props.userInfo.user}
         onSubmitPublication={this.onSubmitPublication}
         logout={this.props.logout}
-        getUserPublications={this.props.getUserPublications}
-        clearUserPublication={this.props.clearUserPublication}
+        onSubmitSearchKeyword={this.onSubmitSearchKeyword}
       />
     );
   }
@@ -40,4 +47,4 @@ const mapStateToProps = state => ({
   userInfo: state.userInfo,
 });
 
-export default connect(mapStateToProps, { publishPost, logout,getUserPublications ,clearUserPublication})(HeaderContainer);
+export default withRouter(connect(mapStateToProps, { publishPost, logout, submitSearchKeyword })(HeaderContainer));

@@ -41,8 +41,7 @@ class Header extends Component {
   }
   handleSubmitSearchForm =(event)=>{
     event.preventDefault()
-    this.props.clearUserPublication()
-    this.props.getUserPublications({search:this.state.searchKeyword})
+    this.props.onSubmitSearchKeyword(this.state.searchKeyword)
   }
   render() {
     const { pathname } = this.props.location;

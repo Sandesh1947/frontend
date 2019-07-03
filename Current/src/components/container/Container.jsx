@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import HeaderContainer from '../header/HeaderContainer';
 import HomeContainer from '../home/HomeContainer';
 import ProfileContainer from '../profile/ProfileContainer';
+import SearchResultsContainer from '../searchresults/searchResultsContainer'
 import { getUserInfo } from '../../actions/userInfoActions';
 
 class Container extends React.Component {
@@ -36,6 +37,7 @@ class Container extends React.Component {
             <Switch>
               <Route path="/profile" component={ProfileContainer} />
               <Route path="/home" component={HomeContainer} />
+              <Route path='/searchresults' component={SearchResultsContainer}/>
             </Switch>
           </section> : !this.state.isLoadingLocalStorage ? <Redirect to="/login" /> : ''}
       </React.Fragment>
