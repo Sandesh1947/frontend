@@ -23,7 +23,7 @@ export default class ImageThumbnail extends Component {
   }
 
   componentDidUpdate(prevProp) {
-    if (this.props.file && this.props.file != prevProp.file) {
+    if (this.props.file && this.props.file !== prevProp.file) {
       this.loadImage();
     }
   }
@@ -48,7 +48,7 @@ export default class ImageThumbnail extends Component {
   render() {
     return (
       <div className="image-thumbnail">
-        <img src={this.state.src} />
+        <img src={this.state.src} alt='thumnail' />
         <FontAwesomeIcon icon={faImage} size="4x" className="fallback" />
         {this.removeIcon}
       </div>

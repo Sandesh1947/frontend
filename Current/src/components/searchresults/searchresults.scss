@@ -1,0 +1,26 @@
+.search-header {
+	font-weight: bold;
+	margin: 0;
+	font-size: 30px;
+}
+.user-image {
+	border-radius: 50%;
+    border: 2px solid #f2f2f2;
+    height: 80px;
+    width: 80px;
+}
+.user-item-container {
+	border-bottom: 1px solid #f2f2f2;
+    padding: 10px;
+}
+.flex-container {
+	display: flex
+}
+.flex-direction-column {
+	flex-direction: column
+}
+.user-details-div {
+	position: relative;
+    left: 10px;
+    top: 2px;
+}
