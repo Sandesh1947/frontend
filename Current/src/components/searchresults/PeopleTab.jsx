@@ -39,17 +39,13 @@ export default class PeopleTab extends React.Component {
         document.removeEventListener('scroll', this.trackScrolling);
     }
     loadMoreData = () => {
-        console.log(this.state)
         if (this.state.noMoreData && this.state.loading) {
             return;
         }
         this.setState({ loading: true })
-        console.log('in load more people')
         peopleSearch({ 'page': this.state.page + 1,'search' :this.props.keyword }).then(
             (res) => {
-                console.log(res)
-                if (res && res.data) {
-                    console.log(this.state.searchResults.concat(res.data))
+                if (res && res.data.length !==0) {
                     this.setState({ searchResults: this.state.searchResults.concat(res.data), loading: false })
                 }
                 else {

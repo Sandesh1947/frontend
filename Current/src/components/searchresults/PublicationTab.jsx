@@ -46,7 +46,7 @@ export default class PubicationsTab extends React.Component {
         this.setState({ loading: true })
         publicationSearch({ 'page': this.state.page + 1,'search' :this.props.keyword }).then(
             (res) => {
-                if (res && res.data) {
+                if (res && res.data.length !==0) {
                     this.setState({ searchResults: this.state.searchResults.concat(res.data), loading: false })
                 }
                 else {
