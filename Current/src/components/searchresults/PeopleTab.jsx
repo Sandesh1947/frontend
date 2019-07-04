@@ -39,7 +39,7 @@ export default class PeopleTab extends React.Component {
         document.removeEventListener('scroll', this.trackScrolling);
     }
     loadMoreData = () => {
-        if (this.state.noMoreData && this.state.loading) {
+        if (this.state.noMoreData || this.state.loading) {
             return;
         }
         this.setState({ loading: true })
@@ -49,7 +49,7 @@ export default class PeopleTab extends React.Component {
                     this.setState({ searchResults: this.state.searchResults.concat(res.data), loading: false })
                 }
                 else {
-                    this.setState({ noMoreData: true })
+                    this.setState({ noMoreData: true,loading: false })
                 }
             }
         );
