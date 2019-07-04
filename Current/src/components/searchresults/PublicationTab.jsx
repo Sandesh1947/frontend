@@ -19,7 +19,7 @@ export default class PubicationsTab extends React.Component {
         document.addEventListener('scroll', this.trackScrolling);
         if (this.props.keyword) {
             this.setState({loading:true})
-            publicationSearch(this.props.keyword).then(
+            publicationSearch({'search' :this.props.keyword}).then(
                 (res) => {
                     this.setState({ searchResults: res.data, loading: false })
                 }
@@ -29,7 +29,7 @@ export default class PubicationsTab extends React.Component {
     componentDidUpdate(prevProps) {
         if ((this.props.keyword !== prevProps.keyword) && this.props.keyword) {
             this.setState({ loading: true })
-            publicationSearch(this.props.keyword).then(
+            publicationSearch({'search' :this.props.keyword}).then(
                 (res) => {
                     this.setState({ searchResults: res.data, loading: false })
                 }
@@ -44,9 +44,10 @@ export default class PubicationsTab extends React.Component {
             return;
         }
         this.setState({ loading: true })
-        publicationSearch({ page: this.state.page + 1 }).then(
+        publicationSearch({ 'page': this.state.page + 1,'search' :this.props.keyword }).then(
             (res) => {
                 if (res && res.data) {
+                    console.log(this.state.searchResults.concat(res.data))
                     this.setState({ searchResults: this.state.searchResults.concat(res.data), loading: false })
                 }
                 else {

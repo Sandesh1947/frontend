@@ -1,16 +1,16 @@
 import axios from 'axios'
 import { BASE_URL } from '../app.constants';
-export function peopleSearch(keyword) {
+export function peopleSearch(params) {
     return axios({
         method: 'get',
         url: BASE_URL + '/api/searchusers',
-        params: {'search':keyword},
+        params: params,
       });
 }
-export function publicationSearch(keyword) {
+export function publicationSearch(params) {
     return axios({
         method: 'get',
         url: BASE_URL + '/api/searchpublications',
-        params: {'search':keyword},
+        params: params,
       });
 }
