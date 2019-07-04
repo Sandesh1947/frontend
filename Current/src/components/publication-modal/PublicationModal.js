@@ -13,7 +13,6 @@ import './publicationModal.scss';
 const INITIAL_STATE = {
   text: '',
   attachment: null,
-  attachmentType: null,
   accessType: null,
   workType: null,
 };
@@ -47,15 +46,12 @@ export default class PublicationModal extends Component {
     this.setState({ [e.target.name]: e.target.value });
   }
 
-  onUpload = ({ attachment, attachmentType }) => {
-    this.setState({ attachment, attachmentType });
+  onUpload = attachment => {
+    this.setState({ attachment });
   };
 
   onRemove = () => {
-    this.setState({
-      attachment: null,
-      attachmentType: null,
-    });
+    this.setState({ attachment: null });
   }
 
   onSubmit = () => {
@@ -115,9 +111,7 @@ export default class PublicationModal extends Component {
             </Card>
             <div className="publication-card__attachments">
               <Attachment
-                types={['image', 'video', 'geo']}
                 attachment={this.state.attachment}
-                attachmentType={this.state.attachmentType}
                 onUpload={this.onUpload}
                 onRemove={this.onRemove}
               />

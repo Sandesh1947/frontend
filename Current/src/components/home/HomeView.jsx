@@ -48,7 +48,6 @@ export default class HomeView extends React.Component {
                         <Attachment
                           types={['image', 'video']}
                           attachment={this.props.avatar}
-                          attachmentType={this.props.avatarType}
                           onUpload={this.props.onFileUpload}
                           onRemove={this.props.onRemoveUpload}
                         />

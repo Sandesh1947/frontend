@@ -4,13 +4,12 @@ import { connect } from 'react-redux';
 import { getUserInfo, getUserPublications, getUserFollowers, publishPost } from '../../actions/userInfoActions';
 import Loader from '../Loader/Loader';
 import { likePublication, promotePublication } from '../../actions/userPublicationAction';
+import Attachment from '../generic/Attachment';
 
 class HomeContainer extends React.Component {
   state = {
     avatar: null,
     publication_text: '',
-    publication_img: '0',
-    publication_vid: '0',
     lastScrollPos: 0,
     page: 1,
   }
@@ -48,30 +47,20 @@ class HomeContainer extends React.Component {
     this.setState({ lastScrollPos: scrolled });
   }
 
-  onFileUpload = ({ attachment: avatar, attachmentType: avatarType }) => {
-    if (!avatar) {
-      return;
-    }
-
-    if (avatarType === 'image') {
-      // TODO: get rid of weird 1/0 flags in state, they are only needed on the server, right?
-      this.setState({ avatar, avatarType, publication_img: '1', publication_vid: '0' });
-    } else if (avatarType === 'video') {
-      this.setState({ avatar, avatarType, publication_img: '0', publication_vid: '1' });
-    } else {
-      this.removeUpload();
-    }
+  onFileUpload = avatar => {
+    this.setState({ avatar });
   }
 
   removeUpload = () => {
-    this.setState({ avatar: null, avatarType: null, publication_img: '0', publication_vid: '0' });
+    this.setState({ avatar: null });
   }
 
   onSubmitPublication = () => {
     if (!this.state.avatar) {
       this.props.publishPost({
-        publication_img: this.state.publication_img,
-        publication_vid: this.state.publication_vid,
+        publication_img: '0',
+        publication_vid: '0',
+        publication_doc: '0',
         publication_text: this.state.publication_text,
       });
       return;
@@ -79,8 +68,9 @@ class HomeContainer extends React.Component {
     const formData = new FormData();
     formData.append('post', this.state.avatar);
     formData.append('publication_text', this.state.publication_text);
-    formData.append('publication_img', this.state.publication_img);
-    formData.append('publication_vid', this.state.publication_vid);
+    formData.append('publication_img', Attachment.isImage(this.state.avatar));
+    formData.append('publication_vid', Attachment.isVideo(this.state.avatar));
+    formData.append('publication_doc', Attachment.isVideo(this.state.avatar));
     this.props.publishPost(formData);
   }
 
@@ -100,7 +90,6 @@ class HomeContainer extends React.Component {
               userPublications={userPublications.publications}
               userInfo={userInfo}
               avatar={this.state.avatar}
-              avatarType={this.state.avatarType}
               onFileUpload={this.onFileUpload}
               onRemoveUpload={this.removeUpload}
               submitPublication={this.onSubmitPublication}
