@@ -25,14 +25,16 @@ class HeaderContainer extends Component {
     this.props.publishPost(post);
   }
   onSubmitSearchKeyword = (keyword) => {
-    let query = {'search':keyword}
-    this.props.history.push({
-      pathname: '/searchresults/',
-      search: queryString.stringify(Object.assign({},query))
-    });
+    if(keyword) {
+      let query = {'search':keyword}
+      this.props.history.push({
+        pathname: '/searchresults/',
+        search: queryString.stringify(Object.assign({},query))
+      });
+    }
   }
-  redirectToSearchPage() {
-    if (this.props.location.pathname !== '/searchresults/')
+  redirectToSearchPage(keyword) {
+    if (this.props.location.pathname !== '/searchresults/' && keyword !=='')
       this.props.history.push({
         pathname: '/searchresults/',
       });

@@ -31,7 +31,7 @@ class Header extends Component {
   }
   handleSearch =(event)=>{
     this.setState({searchKeyword:event.target.value})
-    this.props.redirectPage()
+    this.props.redirectPage(event.target.value)
   }
   showPublicationModal = () => {
     this.setState({ showPublicationModal: true });
