@@ -6,17 +6,24 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import PubicationsTab from './PublicationTab'
 import PeopleTab from './PeopleTab'
+import queryString from 'query-string'
+import isEqual from 'lodash/isEqual';
 export default class SearchResultsView extends React.Component {
     constructor(props) {
         super(props)
-        this.state = { 'selectedTab': 'people' }
+        this.state = { 'selectedTab': 'people',keyword:queryString.parse(props.location.search).search }
+    }
+    componentDidUpdate(prevProps) {
+        if(!isEqual(this.props.location.search,prevProps.location.search)) {
+            this.setState({keyword:queryString.parse(this.props.location.search).search})
+        }
     }
     render() {
         return (
             <Container>
                 <Row>
                     <Col md={1}></Col>
-                    <Col md={10}><h2 className='search-header mb-2'>Search Results for "{this.props.keyword.keyword}"</h2></Col>
+                    <Col md={10}><h2 className='search-header mb-2'>Search Results {this.state.keyword && <span>for "{this.state.keyword}"</span>}</h2></Col>
                     <Col md={1}></Col>
                 </Row>
                 <Row className='mt-3'>
@@ -28,10 +35,10 @@ export default class SearchResultsView extends React.Component {
                             onSelect={key => this.setState({ 'selectedTab': key })}
                         >
                             <Tab eventKey="people" title="People" unmountOnExit={true}>
-                                <PeopleTab keyword={this.props.keyword}/>
+                                <PeopleTab keyword={this.state.keyword} />
                             </Tab>
                             <Tab eventKey="publications" title="Pulibcations" unmountOnExit={true}>
-                                <PubicationsTab keyword={this.props.keyword}/>
+                                <PubicationsTab keyword={this.state.keyword} />
                             </Tab>
                         </Tabs>
                     </Col>

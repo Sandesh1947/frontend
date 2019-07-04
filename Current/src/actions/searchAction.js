@@ -1,23 +1,16 @@
-import {SEARCH_SUBMITTED} from './types'
 import axios from 'axios'
 import { BASE_URL } from '../app.constants';
-
-export function submitSearchKeyword(keyword) {
-    return (
-        { type: SEARCH_SUBMITTED, keyword: keyword }
-    )
-}
-export function peopleSearch(keywordObj) {
+export function peopleSearch(keyword) {
     return axios({
         method: 'get',
         url: BASE_URL + '/api/searchusers',
-        params: {'search':keywordObj.keyword},
+        params: {'search':keyword},
       });
 }
-export function publicationSearch(keywordObj) {
+export function publicationSearch(keyword) {
     return axios({
         method: 'get',
         url: BASE_URL + '/api/searchpublications',
-        params: {'search':keywordObj.keyword},
+        params: {'search':keyword},
       });
 }

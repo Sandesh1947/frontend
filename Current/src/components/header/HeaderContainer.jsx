@@ -5,8 +5,8 @@ import Header from './Header';
 import Attachment from '../generic/Attachment';
 import { publishPost } from '../../actions/userInfoActions';
 import { logout } from '../../actions/accountAction';
-import { submitSearchKeyword } from '../../actions/searchAction'
 import { withRouter } from 'react-router-dom';
+import queryString from 'query-string'
 class HeaderContainer extends Component {
   onSubmitPublication = ({ text, pieceFile, pieceType, attachment }) => {
     const post = new FormData();
@@ -25,12 +25,20 @@ class HeaderContainer extends Component {
     this.props.publishPost(post);
   }
   onSubmitSearchKeyword = (keyword) => {
-    this.props.submitSearchKeyword(keyword)
-    this.props.history.push({
-      pathname: '/searchresults/',
-    });
+    if(keyword) {
+      let query = {'search':keyword}
+      this.props.history.push({
+        pathname: '/searchresults/',
+        search: queryString.stringify(Object.assign({},query))
+      });
+    }
   }
-
+  redirectToSearchPage(keyword) {
+    if (this.props.location.pathname !== '/searchresults/' && keyword !=='')
+      this.props.history.push({
+        pathname: '/searchresults/',
+      });
+  }
   render() {
     return (
       <Header
@@ -38,6 +46,7 @@ class HeaderContainer extends Component {
         onSubmitPublication={this.onSubmitPublication}
         logout={this.props.logout}
         onSubmitSearchKeyword={this.onSubmitSearchKeyword}
+        redirectPage={this.redirectToSearchPage.bind(this)}
       />
     );
   }
@@ -47,4 +56,4 @@ const mapStateToProps = state => ({
   userInfo: state.userInfo,
 });
 
-export default withRouter(connect(mapStateToProps, { publishPost, logout, submitSearchKeyword })(HeaderContainer));
+export default withRouter(connect(mapStateToProps, { publishPost, logout })(HeaderContainer));
