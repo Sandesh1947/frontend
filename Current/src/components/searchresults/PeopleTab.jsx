@@ -15,6 +15,7 @@ export default class PeopleTab extends React.Component {
         }
     }
     componentDidMount() {
+        document.addEventListener('scroll', this.trackScrolling);
         if (this.props.keyword) {
             this.setState({loading:true})
             peopleSearch({'search' :this.props.keyword}).then(
@@ -38,6 +39,7 @@ export default class PeopleTab extends React.Component {
         document.removeEventListener('scroll', this.trackScrolling);
     }
     loadMoreData = () => {
+        console.log(this.state)
         if (this.state.noMoreData && this.state.loading) {
             return;
         }
