@@ -14,14 +14,16 @@ export default class PubicationsTab extends React.Component {
 
     componentDidMount() {
         document.addEventListener('scroll', this.trackScrolling);
-        publicationSearch(this.props.keyword).then(
-            (res) => {
-                this.setState({ searchResults: res.data, loading: false })
-            }
-        )
+        if (this.props.keyword) {
+            publicationSearch(this.props.keyword).then(
+                (res) => {
+                    this.setState({ searchResults: res.data, loading: false })
+                }
+            )
+        }
     }
     componentDidUpdate(prevProps) {
-        if (this.props.keyword !== prevProps.keyword) {
+        if ((this.props.keyword !== prevProps.keyword) && this.props.keyword) {
             this.setState({ loading: true })
             publicationSearch(this.props.keyword).then(
                 (res) => {
@@ -30,7 +32,9 @@ export default class PubicationsTab extends React.Component {
             )
         }
     }
-
+    componentWillUnmount() {
+        document.removeEventListener('scroll', this.trackScrolling);
+    }
     loadMoreData = () => {
         if (this.state.noMoreData && this.state.loading) {
             return;
@@ -39,7 +43,7 @@ export default class PubicationsTab extends React.Component {
         publicationSearch({ page: this.state.page + 1 }).then(
             (res) => {
                 if (res && res.data) {
-                    this.setState({ searchResults: res.data, loading: false })
+                    this.setState({ searchResults: this.state.searchResults.concat(res.data), loading: false })
                 }
                 else {
                     this.setState({ noMoreData: true })
@@ -66,6 +70,7 @@ export default class PubicationsTab extends React.Component {
                 {this.state.searchResults.map((value, index) => {
                     return <ContentCard key={index} id={index} userPublications={value} userPublicationsArray={this.state.searchResults} />
                 })}
+                {this.state.noMoreData &&<div className='text-center'>No more data to load</div>}
             </React.Fragment>
         )
     }
