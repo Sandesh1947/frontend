@@ -26,11 +26,13 @@ class HeaderContainer extends Component {
   }
   onSubmitSearchKeyword = (keyword) => {
     this.props.submitSearchKeyword(keyword)
-    this.props.history.push({
-      pathname: '/searchresults/',
-    });
   }
-
+  redirectToSearchPage() {
+    if (this.props.location.pathname !== '/searchresults/')
+      this.props.history.push({
+        pathname: '/searchresults/',
+      });
+  }
   render() {
     return (
       <Header
@@ -38,6 +40,7 @@ class HeaderContainer extends Component {
         onSubmitPublication={this.onSubmitPublication}
         logout={this.props.logout}
         onSubmitSearchKeyword={this.onSubmitSearchKeyword}
+        redirectPage={this.redirectToSearchPage.bind(this)}
       />
     );
   }
