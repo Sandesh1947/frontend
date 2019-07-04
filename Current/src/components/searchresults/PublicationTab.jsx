@@ -1,12 +1,15 @@
 import React from 'react'
 import ContentCard from '../content-card/content-card';
 import { publicationSearch } from '../../actions/searchAction'
+import Alert from 'react-bootstrap/Alert';
+import Spinner from 'react-bootstrap/Spinner';
+
 export default class PubicationsTab extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
             searchResults: [], lastScrollPos: 0,
-            page: 1, noMoreData: false, loading: true
+            page: 1, noMoreData: false, loading: false
         }
         this.loadMoreData = this.loadMoreData.bind(this);
         this.trackScrolling = this.trackScrolling.bind(this);
@@ -15,6 +18,7 @@ export default class PubicationsTab extends React.Component {
     componentDidMount() {
         document.addEventListener('scroll', this.trackScrolling);
         if (this.props.keyword) {
+            this.setState({loading:true})
             publicationSearch(this.props.keyword).then(
                 (res) => {
                     this.setState({ searchResults: res.data, loading: false })
@@ -70,6 +74,11 @@ export default class PubicationsTab extends React.Component {
                 {this.state.searchResults.map((value, index) => {
                     return <ContentCard key={index} id={index} userPublications={value} userPublicationsArray={this.state.searchResults} />
                 })}
+                 {this.state.loading && <div className='mt-3 font-weight-bold'>
+                    <Alert variant='light'>
+                        <Spinner animation='grow' size='sm' /> Loading...
+                    </Alert>
+                </div>}
                 {this.state.noMoreData &&<div className='text-center'>No more data to load</div>}
             </React.Fragment>
         )

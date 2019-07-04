@@ -3,29 +3,33 @@ import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import { peopleSearch } from '../../actions/searchAction'
 import { BASE_URL } from '../../app.constants';
+import Alert from 'react-bootstrap/Alert';
+import Spinner from 'react-bootstrap/Spinner';
 
 export default class PeopleTab extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
             searchResults: [], lastScrollPos: 0,
-            page: 1, noMoreData: false, loading: true
+            page: 1, noMoreData: false, loading: false
         }
     }
     componentDidMount() {
         if (this.props.keyword) {
+            this.setState({loading:true})
             peopleSearch(this.props.keyword).then(
                 (res) => {
-                    this.setState({ searchResults: res.data })
+                    this.setState({ searchResults: res.data ,loading:false})
                 }
             )
         }
     }
     componentDidUpdate(prevProps) {
         if ((this.props.keyword !== prevProps.keyword) && this.props.keyword) {
+            this.setState({loading:true})
             peopleSearch(this.props.keyword).then(
                 (res) => {
-                    this.setState({ searchResults: res.data })
+                    this.setState({ searchResults: res.data,loading:false })
                 }
             )
         }
@@ -78,6 +82,11 @@ export default class PeopleTab extends React.Component {
                         </Row>
                     )
                 )}
+                {this.state.loading && <div className='mt-3 font-weight-bold'>
+                    <Alert variant='light'>
+                        <Spinner animation='grow' size='sm' /> Loading...
+                    </Alert>
+                </div>}
                 {this.state.noMoreData &&<div className='text-center'>No more data to load</div>}
             </React.Fragment>
         )
