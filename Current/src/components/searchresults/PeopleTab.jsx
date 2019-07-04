@@ -11,6 +11,8 @@ export default class PeopleTab extends React.Component {
     componentDidMount() {
         peopleSearch(this.props.keyword).then(
             (res) =>{
+                console.log('in people')
+                console.log(res)
                 this.setState({searchResullts:res.data})
             }
         )
@@ -19,6 +21,8 @@ export default class PeopleTab extends React.Component {
         if(this.props.keyword !== prevProps.keyword) {
             peopleSearch(this.props.keyword).then(
                 (res) =>{
+                    console.log('in people')
+                    console.log(res)
                     this.setState({searchResullts:res.data})
                 }
             )
