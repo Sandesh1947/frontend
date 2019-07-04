@@ -8,6 +8,8 @@ import {
   userPartnerWatcher,
 } from './userActionSaga';
 import { LikePublicationWatcher, PromotePublicationWatcher } from './userPublicationSaga';
+import { GetWorkTypesWatcher } from './workTypeSaga';
+import { GetAccessTypesWatcher } from './accessTypeSaga';
 
 export default function* rootSaga() {
   yield all([
@@ -19,5 +21,7 @@ export default function* rootSaga() {
     userPartnerWatcher(),
     LikePublicationWatcher(),
     PromotePublicationWatcher(),
+    GetWorkTypesWatcher(),
+    GetAccessTypesWatcher(),
   ]);
 }

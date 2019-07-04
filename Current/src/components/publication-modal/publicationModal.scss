@@ -60,14 +60,14 @@
       margin: 0;
     }
 
-    &.visibility {
+    &.access-type {
       button {
         float: right;
         padding: 0;
         min-width: 120px;
       }
 
-      .visibility__icon {
+      .access-type__icon {
         margin-right: 0.5rem;
       }
     }

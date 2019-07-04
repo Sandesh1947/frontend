@@ -12,11 +12,10 @@ import './publicationModal.scss';
 
 const INITIAL_STATE = {
   text: '',
-  pieceType: null,
   attachment: null,
   attachmentType: null,
-  visibility: 'Public',
-  publicationType: null,
+  accessType: null,
+  workType: null,
 };
 
 /**
@@ -71,21 +70,22 @@ export default class PublicationModal extends Component {
     );
   }
 
-  renderVisibilityItem = visibility => (
+  renderAccessTypeItem = accessType => (
     <React.Fragment>
-      <FontAwesomeIcon icon={visibility === 'Public' ? faGlobe : faKey} className="visibility__icon" />
-      {visibility}
+      {accessType && accessType.type === 'Public' && <FontAwesomeIcon icon={faGlobe} className="access-type__icon" />}
+      {accessType && accessType.type === 'Restricted' && <FontAwesomeIcon icon={faKey} className="access-type__icon" />}
+      {accessType ? accessType.type : ''}
     </React.Fragment>
   )
 
-  renderPublicationTypeItem = publicationType => (
-    <Dropdown.Item onClick={() => this.setState({ publicationType })}>
-      {publicationType}
+  renderWorkTypeItem = workType => (
+    <Dropdown.Item key={workType.id} onClick={() => this.setState({ workType })}>
+      {workType.type}
     </Dropdown.Item>
   )
 
   render() {
-    const { show, onHide } = this.props;
+    const { show, onHide, workTypes = [], accessTypes = [] } = this.props;
     return (
       <Modal show={show} onHide={onHide} centered size="lg" className="publication-modal" aria-labelledby="contained-modal-title-vcenter">
         <Modal.Header closeButton>
@@ -121,21 +121,21 @@ export default class PublicationModal extends Component {
                 onUpload={this.onUpload}
                 onRemove={this.onRemove}
               />
-              <DropdownButton title={this.state.publicationType || 'Forms'} className="publication-card__forms">
-                {this.renderPublicationTypeItem('Essay')}
-                {this.renderPublicationTypeItem('Lyrics')}
-                {this.renderPublicationTypeItem('Poem')}
+              <DropdownButton
+                title={this.state.workType && this.state.workType.type || 'Forms'}
+                className="publication-card__forms"
+              >
+                {workTypes.map(this.renderWorkTypeItem)}
               </DropdownButton>
               <DropdownButton
-                className="flex-grow-1 visibility"
-                title={this.renderVisibilityItem(this.state.visibility)}
+                className="flex-grow-1 access-type"
+                title={this.renderAccessTypeItem(this.state.accessType)}
               >
-                <Dropdown.Item onClick={() => this.setState({ visibility: 'Public' })}>
-                  {this.renderVisibilityItem('Public')}
-                </Dropdown.Item>
-                <Dropdown.Item onClick={() => this.setState({ visibility: 'Restricted' })}>
-                  {this.renderVisibilityItem('Restricted')}
-                </Dropdown.Item>
+                {accessTypes.map(accessType => (
+                  <Dropdown.Item key={accessType.id} onClick={() => this.setState({ accessType })}>
+                    {this.renderAccessTypeItem(accessType)}
+                  </Dropdown.Item>
+                ))}
               </DropdownButton>
             </div>
             <div className="d-flex justify-content-end bbar">

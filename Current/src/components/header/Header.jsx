@@ -21,17 +21,15 @@ import PublicationModal from '../publication-modal/PublicationModal';
 import './header.scss';
 
 class Header extends Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      showPublicationModal: false,
-      searchKeyword:''
-    }
-    this.handleSearch = this.handleSearch.bind(this)
+  state = {
+    showPublicationModal: false,
+    searchKeyword: '',
   }
-  handleSearch =(event)=>{
-    this.setState({searchKeyword:event.target.value})
+
+  handleSearch = event => {
+    this.setState({ searchKeyword: event.target.value });
   }
+
   showPublicationModal = () => {
     this.setState({ showPublicationModal: true });
   }
@@ -39,20 +37,24 @@ class Header extends Component {
   hidePublicationModal = () => {
     this.setState({ showPublicationModal: false });
   }
-  handleSubmitSearchForm =(event)=>{
-    event.preventDefault()
-    this.props.clearUserPublication()
-    this.props.getUserPublications({search:this.state.searchKeyword})
+
+  handleSubmitSearchForm = event => {
+    event.preventDefault();
+    this.props.clearUserPublication();
+    this.props.getUserPublications({ search: this.state.searchKeyword });
   }
+
   render() {
-    const { pathname } = this.props.location;
+    const { user, location, accessTypes, workTypes } = this.props;
     return (
       <header className="header">
         <PublicationModal
-          user={this.props.user}
+          user={user}
           show={this.state.showPublicationModal}
           onShow={this.showPublicationModal}
           onHide={this.hidePublicationModal}
+          accessTypes={accessTypes}
+          workTypes={workTypes}
           // TODO: once posted - hide publication modal, use some new redux action 
           // to notify about publication submit success/failure
           onSubmit={this.props.onSubmitPublication}
@@ -85,13 +87,13 @@ class Header extends Component {
                       <FontAwesomeIcon icon={faBell} className="navbar-right__icon" />
                     </Button>
                     <NavDropdown
-                      title={this.props.user && (this.props.user.first_name + ' ' + this.props.user.last_name)}
+                      title={user && (user.first_name + ' ' + user.last_name)}
                       id="basic-nav-dropdown"
                       className="navbar-dropdown"
                     >
-                      {(pathname === '/home') &&
+                      {(location.pathname === '/home') &&
                         <Link className="dropdown-item navbar-dropdown__item" to="/profile">Profile</Link>}
-                      {(pathname === '/profile') &&
+                      {(location.pathname === '/profile') &&
                         <Link className="dropdown-item navbar-dropdown__item" to="/home">Home</Link>}
                       <NavDropdown.Item
                         href="#"
@@ -108,7 +110,7 @@ class Header extends Component {
                         }}>Logout</NavDropdown.Item>
                     </NavDropdown>
                     <figure className="navbar-avatar">
-                      <Image src={this.props.user && BASE_URL + this.props.user.avatar}
+                      <Image src={user && BASE_URL + user.avatar}
                         className="navbar-avatar__image" />
                     </figure>
                   </Nav>

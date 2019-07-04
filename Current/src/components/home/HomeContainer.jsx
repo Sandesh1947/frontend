@@ -2,7 +2,7 @@ import React from 'react';
 import HomeView from './HomeView';
 import { connect } from 'react-redux';
 import { getUserInfo, getUserPublications, getUserFollowers, publishPost } from '../../actions/userInfoActions';
-import Loader from '../Loader/Loader'
+import Loader from '../Loader/Loader';
 import { likePublication, promotePublication } from '../../actions/userPublicationAction';
 
 class HomeContainer extends React.Component {
@@ -125,7 +125,13 @@ const mapStateToProps = ({ userInfo, userPublications, userFollowers }) => ({
   userFollowers,
 });
 
-export default connect(
-  mapStateToProps,
-  { getUserInfo, getUserPublications, getUserFollowers, publishPost, likePublication, promotePublication }
-)(HomeContainer);
+const mapDispatchersToProps = {
+  getUserInfo,
+  getUserPublications,
+  getUserFollowers,
+  publishPost,
+  likePublication,
+  promotePublication,
+};
+
+export default connect(mapStateToProps, mapDispatchersToProps)(HomeContainer);
