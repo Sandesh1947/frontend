@@ -17,7 +17,7 @@ export default class PeopleTab extends React.Component {
     componentDidMount() {
         if (this.props.keyword) {
             this.setState({loading:true})
-            peopleSearch(this.props.keyword).then(
+            peopleSearch({'search' :this.props.keyword}).then(
                 (res) => {
                     this.setState({ searchResults: res.data ,loading:false})
                 }
@@ -27,7 +27,7 @@ export default class PeopleTab extends React.Component {
     componentDidUpdate(prevProps) {
         if ((this.props.keyword !== prevProps.keyword) && this.props.keyword) {
             this.setState({loading:true})
-            peopleSearch(this.props.keyword).then(
+            peopleSearch({'search' :this.props.keyword}).then(
                 (res) => {
                     this.setState({ searchResults: res.data,loading:false })
                 }
@@ -42,9 +42,10 @@ export default class PeopleTab extends React.Component {
             return;
         }
         this.setState({ loading: true })
-        peopleSearch({ page: this.state.page + 1 }).then(
+        peopleSearch({ 'page': this.state.page + 1,'search' :this.props.keyword }).then(
             (res) => {
                 if (res && res.data) {
+                    console.log(this.state.searchResults.concat(res.data))
                     this.setState({ searchResults: this.state.searchResults.concat(res.data), loading: false })
                 }
                 else {
