@@ -9,9 +9,7 @@ export default class PubicationsTab extends React.Component {
     componentDidMount() {
         publicationSearch(this.props.keyword).then(
             (res) =>{
-                console.log('in publications')
-                console.log(res)
-                this.setState({searchResullts:res.data})
+                this.setState({searchResults:res.data})
             }
         )
     }
@@ -19,9 +17,7 @@ export default class PubicationsTab extends React.Component {
         if(this.props.keyword !== prevProps.keyword) {
             publicationSearch(this.props.keyword).then(
                 (res) =>{
-                    console.log('in publications')
-                    console.log(res)
-                    this.setState({searchResullts:res.data})
+                    this.setState({searchResults:res.data})
                 }
             )
         }
