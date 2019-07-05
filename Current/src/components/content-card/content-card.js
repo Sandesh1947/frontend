@@ -8,6 +8,7 @@ import ReactTimeAgo from 'react-time-ago';
 import { BASE_URL } from '../../app.constants';
 import Popup from "../../components/popup/popup";
 import './content-card.scss';
+import { likePost, promotePost } from '../../actions/publicationAction'
 
 export default class ContentCard extends Component {
 
@@ -16,10 +17,16 @@ export default class ContentCard extends Component {
 
     this.state = {
       postIndex: 0,
-      modalShow: false
+      modalShow: false,
+      updatedLikes: null,
+      updatedPromotes: null,
+      isLiked: false,
+      isPromoted: false
     }
 
     this.handleClose = this.handleClose.bind(this);
+    this.likePost = this.likePost.bind(this)
+    this.promotePost = this.promotePost.bind(this)
   }
 
   handleClose = () => {
@@ -61,7 +68,27 @@ export default class ContentCard extends Component {
   componentWillUnmount() {
     document.removeEventListener("keydown", this.keyDownEvent);
   }
-
+  likePost(id) {
+    likePost(id).then((res) => {
+      this.setState({ updatedLikes: res.data.count, isLiked: true })
+    })
+  }
+  promotePost(id) {
+    promotePost(id).then((res) => {
+      this.setState({ updatedPromotes: res.data.count, isPromoted: true })
+    })
+  }
+  formatCount(count) {
+    if (count < 1000) {
+      return count;
+    }
+    else if (count < 1000000) {
+      return count / 1000 + 'K'
+    }
+    else {
+      return count / 1000000 + 'M'
+    }
+  }
   render() {
     return (
       <div className='content-card'>
@@ -109,11 +136,15 @@ export default class ContentCard extends Component {
           <Card.Footer style={{ margin: '0 -1rem', padding: '1rem 1rem 0', borderTopColor: '#f2f2f2' }}>
             <div className='content-card-footer d-flex justify-content-between'>
               <div className='content-card-footer__item'>
-                <Button className='content-card-footer__button'>Admire</Button>
+                {(this.state.isLiked || this.props.userPublications.liked)? 
+                  <span className='like-done'>{this.formatCount(this.state.updatedLikes ? this.state.updatedLikes : this.props.userPublications.likes)} Like</span> :
+                  <Button onClick={() => { this.likePost(this.props.userPublications.id) }} className='content-card-footer__button'>{this.formatCount(this.state.updatedLikes ? this.state.updatedLikes : this.props.userPublications.likes)} Like</Button> }
               </div>
               <div className='content-card-footer__item'>
-                <Button className='content-card-footer__button'>Promote</Button>
-                <Button className='content-card-footer__button'>Comment</Button>
+              {(this.state.isPromoted || this.props.userPublications.promoted)?
+              <span className='like-done'>{this.formatCount(this.state.updatedLikes ? this.state.updatedLikes : this.props.userPublications.likes)} Promote</span> :
+              <Button onClick={() => { this.promotePost(this.props.userPublications.id) }} className='content-card-footer__button'>{this.formatCount(this.state.updatedPromotes ? this.state.updatedPromotes : this.props.userPublications.promote)} Promote</Button>
+              }
               </div>
             </div>
           </Card.Footer>
