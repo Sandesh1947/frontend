@@ -1,20 +1,23 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Button, Card, DropdownButton, Dropdown, Modal, Form, Image } from 'react-bootstrap';
-import { faGlobe, faKey } from '@fortawesome/free-solid-svg-icons';
+import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { BASE_URL } from '../../app.constants';
 
 import Attachment from '../generic/Attachment';
+import VideoThumbnail from '../generic/VideoThumbnail';
+import ImageThumbnail from '../generic/ImageThumbnail';
 
 import './publicationModal.scss';
 
 const INITIAL_STATE = {
   text: '',
+  pieceFile: null,
+  pieceType: null,
   attachment: null,
-  accessType: null,
-  workType: null,
+  attachmentType: null,
 };
 
 /**
@@ -46,42 +49,87 @@ export default class PublicationModal extends Component {
     this.setState({ [e.target.name]: e.target.value });
   }
 
-  onUpload = attachment => {
-    this.setState({ attachment });
+  onUploadPiece = (e, pieceType) => {
+    if (!e.target.files.length) {
+      return;
+    }
+
+    const pieceFile = Array.from(e.target.files)[0];
+    this.setState({ pieceFile, pieceType });
+  };
+
+  onUpload = ({ attachment, attachmentType }) => {
+    this.setState({ attachment, attachmentType });
   };
 
   onRemove = () => {
-    this.setState({ attachment: null });
+    this.setState({
+      attachment: null,
+      attachmentType: null,
+    });
   }
 
   onSubmit = () => {
     this.props.onSubmit(this.state);
   }
 
+  removePiece = () => {
+    const { pieceType } = this.state;
+    if (pieceType) {
+      // rest file picker so that the same file can be picked again
+      // (o/w change event won't fire for the same file)
+      document.querySelector(`.publication-modal input#piece-${pieceType}`).value = '';
+    }
+
+    this.setState({ pieceFile: null, pieceType: null });
+  }
+
   renderPieceUploadField = type => {
     return (
       <Dropdown.Item as="div">
         {type}
+        <input
+          className="file-picker"
+          title=""
+          type="file"
+          id={`piece-${type}`}
+          onChange={e => this.onUploadPiece(e, type)}
+        />
       </Dropdown.Item>
     );
   }
 
-  renderAccessTypeItem = accessType => (
-    <React.Fragment>
-      {accessType && accessType.type === 'Public' && <FontAwesomeIcon icon={faGlobe} className="access-type__icon" />}
-      {accessType && accessType.type === 'Restricted' && <FontAwesomeIcon icon={faKey} className="access-type__icon" />}
-      {accessType ? accessType.type : ''}
-    </React.Fragment>
-  )
+  get thumbnail() {
+    const { pieceFile } = this.state;
+    if (Attachment.isImage(pieceFile)) {
+      return <ImageThumbnail file={pieceFile} onRemove={this.removePiece} />;
+    }
+    if (Attachment.isVideo(pieceFile)) {
+      return <VideoThumbnail file={pieceFile} onRemove={this.removePiece} />;
+    }
+    return <FontAwesomeIcon icon={faTimes} className="preview__removeIcon" onClick={this.removePiece} />;
+  }
 
-  renderWorkTypeItem = workType => (
-    <Dropdown.Item key={workType.id} onClick={() => this.setState({ workType })}>
-      {workType.type}
-    </Dropdown.Item>
-  )
+  // unfortunately can't reuse Attachment field here for now
+  renderPiece() {
+    const { pieceFile } = this.state;
+    return (
+      <React.Fragment>
+        <span className={`add-piece__label${pieceFile ? ' d-none' : ''}`}>Add Piece</span>
+        <DropdownButton title="Forms" className={pieceFile ? ' d-none' : ''}>
+          {this.renderPieceUploadField('Essay')}
+          {this.renderPieceUploadField('Poem')}
+          {this.renderPieceUploadField('Lyrics')}
+        </DropdownButton>
+        <div className={`preview ${pieceFile ? '' : 'd-none'}`}>
+          {this.thumbnail}
+        </div>
+      </React.Fragment>
+    );
+  }
 
   render() {
-    const { show, onHide, workTypes = [], accessTypes = [] } = this.props;
+    const { show, onHide } = this.props;
     return (
       <Modal show={show} onHide={onHide} centered size="lg" className="publication-modal" aria-labelledby="contained-modal-title-vcenter">
         <Modal.Header closeButton>
@@ -107,31 +155,22 @@ export default class PublicationModal extends Component {
                     />
                   </div>
                 </div>
+                <Attachment
+                  types={['image', 'geo']}
+                  attachment={this.state.attachment}
+                  attachmentType={this.state.attachmentType}
+                  onUpload={this.onUpload}
+                  onRemove={this.onRemove}
+                  className="publication-card__attachments"
+                />
               </Card.Body>
             </Card>
-            <div className="publication-card__attachments">
-              <Attachment
-                attachment={this.state.attachment}
-                onUpload={this.onUpload}
-                onRemove={this.onRemove}
-              />
-              <DropdownButton
-                title={this.state.workType && this.state.workType.type || 'Forms'}
-                className="publication-card__forms"
-              >
-                {workTypes.map(this.renderWorkTypeItem)}
+            <Card className="add-piece justify-content-between">
+              {this.renderPiece()}
+              <DropdownButton className="flex-grow-1 visibility" title="Public">
+                <Dropdown.Item>Public</Dropdown.Item>
               </DropdownButton>
-              <DropdownButton
-                className="flex-grow-1 access-type"
-                title={this.renderAccessTypeItem(this.state.accessType)}
-              >
-                {accessTypes.map(accessType => (
-                  <Dropdown.Item key={accessType.id} onClick={() => this.setState({ accessType })}>
-                    {this.renderAccessTypeItem(accessType)}
-                  </Dropdown.Item>
-                ))}
-              </DropdownButton>
-            </div>
+            </Card>
             <div className="d-flex justify-content-end bbar">
               <Button
                 onClick={this.onSubmit}

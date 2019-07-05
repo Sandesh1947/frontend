@@ -1,16 +1,15 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import { faPaperclip } from '@fortawesome/free-solid-svg-icons';
+import { faFilm, faImage, faMapMarkerAlt, faFile } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import VideoThumbnail from './VideoThumbnail';
 import ImageThumbnail from './ImageThumbnail';
-import DocumentThumbnail from './DocumentThumbnail';
 
 import './Attachment.scss';
 
-let fileInputId = 1;
+let TEMP_HACK = 1;
 
 /**
  * This component is used to upload documents and files.
@@ -19,9 +18,21 @@ class Attachment extends Component {
   static propTypes = {
     /**
      * This callback function is executed when file is attached.
-     * The only argument is attached file
+     * The only argument is object with the following keys:
+     * 
+     * * `attachment` - attached file
+     * * `attachmentType` - attachment type {String}
      */
     onUpload: PropTypes.func.isRequired,
+
+    /**
+     * file and document types to accept.
+     * If there's only one type - provide a string, e.g. `image`
+     * o/w use array, e.g. [`image`, `video`]
+     */
+    types: PropTypes.oneOfType([
+      PropTypes.string, PropTypes.arrayOf(PropTypes.oneOf(['image', 'video', 'geo'])),
+    ]).isRequired,
 
     /**
      * Optional function which is used to remove already attached file/document.
@@ -34,74 +45,92 @@ class Attachment extends Component {
      * Attached file
      */
     attachment: PropTypes.object,
+
+    /**
+     * Attached file type
+     */
+    attachmentType: PropTypes.oneOf(['image', 'video', 'geo']),
   }
 
   static isImage = file => file && (file.type === 'image/jpeg' || file.type === 'image/png');
   static isVideo = file => file && file.type === 'video/mp4';
-  static isDocument = file => file && !Attachment.isVideo(file) && !Attachment.isImage(file);
 
   componentDidMount() {
-    fileInputId++;
+    TEMP_HACK++;
   }
 
   onFileUpload = e => {
     if (!e.target.files.length) {
       return;
     }
+
     const attachment = Array.from(e.target.files)[0];
-    this.props.onUpload(attachment);
+    let attachmentInfo;
+    if (Attachment.isImage(attachment)) {
+      attachmentInfo = { attachment, attachmentType: 'image' };
+    } else if (Attachment.isVideo(attachment)) {
+      attachmentInfo = { attachment, attachmentType: 'video' };
+    } else {
+      attachmentInfo = { attachment: null, attachmentType: null };
+    }
+    this.props.onUpload(attachmentInfo);
   }
 
-  get uploadIcon() {
-    return this.props.attachment
-      ? null
-      : (
-        <div key={fileInputId} className="btn attachment__button">
-          <label htmlFor={fileInputId} className="m-0 p-0 attachment__label">
-            <FontAwesomeIcon icon={faPaperclip} size="2x" className="cursor-pointer attachment__icon" />
-          </label>
-          <input
-            className="d-none"
-            type="file"
-            id={fileInputId}
-            name={fileInputId}
-            onChange={this.onFileUpload}
-          />
-        </div>
-      );
-  }
+  renderField = type => {
+    const { attachmentType, attachment } = this.props;
+    if (attachmentType != null && attachmentType !== type) {
+      return null;
+    }
 
-  get videoThumbnail() {
-    return Attachment.isVideo(this.props.attachment)
-      ? <VideoThumbnail file={this.props.attachment} onRemove={this.props.onRemove} />
-      : null;
-  }
+    if (attachment) {
+      if (attachmentType === 'video') {
+        return <VideoThumbnail key={type} file={attachment} onRemove={this.props.onRemove} />;
+      }
+      if (attachmentType === 'image') {
+        return <ImageThumbnail key={type} file={attachment} onRemove={this.props.onRemove} />;
+      }
+    }
 
-  get imageThumbnail() {
-    return Attachment.isImage(this.props.attachment)
-      ? <ImageThumbnail file={this.props.attachment} onRemove={this.props.onRemove} />
-      : null;
-  }
-
-  get documentThumbnail() {
-    return Attachment.isDocument(this.props.attachment)
-      ? <DocumentThumbnail file={this.props.attachment} onRemove={this.props.onRemove} />
-      : null;
+    return (
+      <div key={type + TEMP_HACK} className="btn attachment__button">
+        <label htmlFor={type + TEMP_HACK} className="m-0 p-0 attachment__label">
+          <FontAwesomeIcon icon={IMGAGES[type]} size="2x" className="cursor-pointer attachment__icon" />
+        </label>
+        <input
+          className="d-none"
+          type="file"
+          id={type + TEMP_HACK}
+          name={type + TEMP_HACK}
+          onChange={this.onFileUpload}
+          accept={FORMATS[type]}
+        />
+      </div>
+    );
   }
 
   render() {
-    const { onUpload, onRemove, attachment, ...otherProps } = this.props;
+    const { types, onUpload, onRemove, attachment, attachmentType, ...otherProps } = this.props;
     return (
       <div {...otherProps}>
         <div className="attachment">
-          {this.videoThumbnail}
-          {this.imageThumbnail}
-          {this.documentThumbnail}
-          {this.uploadIcon}
+          {[].concat(types).map(this.renderField)}
         </div>
       </div>
     );
   }
 }
+
+const FORMATS = {
+  image: 'image/x-png,image/jpeg',
+  video: 'video/mp4',
+  any: '*',
+};
+
+const IMGAGES = {
+  image: faImage,
+  video: faFilm,
+  geo: faMapMarkerAlt,
+  any: faFile,
+};
 
 export default Attachment;
