@@ -25,12 +25,18 @@ class Header extends Component {
     super(props)
     this.state = {
       showPublicationModal: false,
-      searchKeyword:''
+      searchKeyword: ''
     }
     this.handleSearch = this.handleSearch.bind(this)
   }
-  handleSearch =(event)=>{
-    this.setState({searchKeyword:event.target.value})
+
+  componentDidMount() {
+    // Header is mounted only once - request user publications here
+    this.props.getUserPublications();
+  }
+
+  handleSearch = event => {
+    this.setState({ searchKeyword: event.target.value });
     this.props.redirectPage(event.target.value)
   }
   showPublicationModal = () => {
@@ -40,7 +46,7 @@ class Header extends Component {
   hidePublicationModal = () => {
     this.setState({ showPublicationModal: false });
   }
-  handleSubmitSearchForm =(event)=>{
+  handleSubmitSearchForm = (event) => {
     event.preventDefault()
     this.props.onSubmitSearchKeyword(this.state.searchKeyword)
   }
@@ -49,13 +55,9 @@ class Header extends Component {
     return (
       <header className="header">
         <PublicationModal
-          user={this.props.user}
           show={this.state.showPublicationModal}
           onShow={this.showPublicationModal}
           onHide={this.hidePublicationModal}
-          // TODO: once posted - hide publication modal, use some new redux action 
-          // to notify about publication submit success/failure
-          onSubmit={this.props.onSubmitPublication}
         />
         <Container>
           <Row>
@@ -89,13 +91,13 @@ class Header extends Component {
                       id="basic-nav-dropdown"
                       className="navbar-dropdown"
                     >
-                      {(pathname !== '/profile')  &&
-                      <NavDropdown.Item className="navbar-dropdown__item">
-                        <Link to="/profile">Profile</Link>
+                      {(pathname !== '/profile') &&
+                        <NavDropdown.Item className="navbar-dropdown__item">
+                          <Link to="/profile">Profile</Link>
                         </NavDropdown.Item>}
                       {(pathname !== '/home') &&
-                      <NavDropdown.Item className="navbar-dropdown__item">
-                        <Link to="/home">Home</Link>
+                        <NavDropdown.Item className="navbar-dropdown__item">
+                          <Link to="/home">Home</Link>
                         </NavDropdown.Item>}
                       <NavDropdown.Item
                         href="#"
