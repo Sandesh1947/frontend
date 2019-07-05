@@ -36,7 +36,7 @@ class HomeContainer extends React.Component {
   }
 
   loadMoreData = () => {
-    if (this.props.userPublications.noMoreData && this.props.userPublications.loading) {
+    if (this.props.userPublications.noMoreData || this.props.userPublications.loading) {
       return;
     }
     this.props.getUserPublications({ page: this.state.page + 1 });
@@ -47,7 +47,7 @@ class HomeContainer extends React.Component {
     const scrollable = document.documentElement.scrollHeight - window.innerHeight;
     const scrolled = window.scrollY;
 
-    if (!this.props.userPublications.noMoreData && !this.props.userPublications.loading
+    if ((!this.props.userPublications.noMoreData && !this.props.userPublications.loading)
       && this.state.lastScrollPos < scrolled && Math.ceil(scrolled) >= scrollable - 100) {
       this.loadMoreData();
     }
@@ -112,6 +112,7 @@ class HomeContainer extends React.Component {
             onRemoveUpload={this.removeUpload}
             submit={this.onSubmit}
             handlePublicatioText={this.handlePublicatioText}
+            noMoreData={this.props.userPublications.noMoreData}
             stateFields={this.state}
           />
           :this.props.userPublications.loading &&<Loader/>

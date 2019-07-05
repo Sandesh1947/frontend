@@ -56,7 +56,7 @@ export default class HomeView extends React.Component {
               {this.props.userPublications && this.props.userPublications.map((value, index) => {
                 return <ContentCard key={index} id={index} user={this.props.userInfo.user} userPublications={value} userPublicationsArray={this.props.userPublications} loadMoreData={this.loadMoreData} />;
               })}
-
+              {this.props.noMoreData &&<div className='text-center mt-1'>No more data to load</div>}
               {this.props.loading && <div className="mt-3 font-weight-bold">
                 <Alert variant="light">
                   <Spinner animation="grow" size="sm" /> Loading...

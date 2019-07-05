@@ -31,7 +31,7 @@ class ProfileContainer extends React.Component {
   }
 
   loadMoreData = () => {
-    if (this.props.userPublications.noMoreData && this.props.userPublications.loading) {
+    if (this.props.userPublications.noMoreData || this.props.userPublications.loading) {
       return;
     }
     this.props.getUserPublications({ page: this.state.page + 1 });
@@ -43,7 +43,7 @@ class ProfileContainer extends React.Component {
     const scrolled = window.scrollY;
     const { userPublications } = this.props;
 
-    if (!userPublications.noMoreData && !userPublications.loading
+    if ((!userPublications.noMoreData || !userPublications.loading)
       && this.state.lastScrollPos < scrolled && Math.ceil(scrolled) >= scrollable - 100) {
       this.loadMoreData();
     }
