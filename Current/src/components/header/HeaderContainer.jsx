@@ -8,6 +8,11 @@ import { getUserPublications, clearUserPublication } from '../../actions/userPub
 import { logout } from '../../actions/accountAction';
 
 class HeaderContainer extends Component {
+  componentDidMount() {
+    // Header is mounted only once - request user publications here
+    this.props.getUserPublications();
+  }
+
   onSubmitSearchKeyword = (keyword) => {
     if (keyword) {
       let query = { 'search': keyword };
@@ -17,7 +22,8 @@ class HeaderContainer extends Component {
       });
     }
   }
-  redirectToSearchPage(keyword) {
+
+  redirectToSearchPage = keyword => {
     if (this.props.location.pathname !== '/searchresults/' && keyword !== '') {
       this.props.history.push({
         pathname: '/searchresults/',
@@ -33,7 +39,7 @@ class HeaderContainer extends Component {
         onSubmitPublication={this.onSubmitPublication}
         logout={this.props.logout}
         onSubmitSearchKeyword={this.onSubmitSearchKeyword}
-        redirectPage={this.redirectToSearchPage.bind(this)}
+        redirectPage={this.redirectToSearchPage}
       />
     );
   }

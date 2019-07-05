@@ -30,15 +30,11 @@ class Header extends Component {
     this.handleSearch = this.handleSearch.bind(this)
   }
 
-  componentDidMount() {
-    // Header is mounted only once - request user publications here
-    this.props.getUserPublications();
-  }
-
   handleSearch = event => {
     this.setState({ searchKeyword: event.target.value });
     this.props.redirectPage(event.target.value)
   }
+
   showPublicationModal = () => {
     this.setState({ showPublicationModal: true });
   }
@@ -50,7 +46,9 @@ class Header extends Component {
     event.preventDefault()
     this.props.onSubmitSearchKeyword(this.state.searchKeyword)
   }
+
   render() {
+    const { user } = this.props;
     const { pathname } = this.props.location;
     return (
       <header className="header">
@@ -87,7 +85,7 @@ class Header extends Component {
                       <FontAwesomeIcon icon={faBell} className="navbar-right__icon" />
                     </Button>
                     <NavDropdown
-                      title={this.props.user && (this.props.user.first_name + ' ' + this.props.user.last_name)}
+                      title={user && (user.first_name + ' ' + user.last_name)}
                       id="basic-nav-dropdown"
                       className="navbar-dropdown"
                     >
@@ -114,7 +112,7 @@ class Header extends Component {
                         }}>Logout</NavDropdown.Item>
                     </NavDropdown>
                     <figure className="navbar-avatar">
-                      <Image src={this.props.user && BASE_URL + this.props.user.avatar}
+                      <Image src={user && BASE_URL + user.avatar}
                         className="navbar-avatar__image" />
                     </figure>
                   </Nav>

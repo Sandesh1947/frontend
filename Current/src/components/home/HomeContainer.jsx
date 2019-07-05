@@ -46,7 +46,6 @@ class HomeContainer extends React.Component {
 
   render() {
     const { userPublications, userInfo, userFollowers } = this.props;
-    const { avatar, avatarType } = this.state;
     return (
       <React.Fragment>
         {
@@ -65,7 +64,7 @@ class HomeContainer extends React.Component {
             />
             : this.props.userPublications.loading && <Loader />
         }
-      </React.Fragment>
+      </React.Fragment >
     );
   }
 }

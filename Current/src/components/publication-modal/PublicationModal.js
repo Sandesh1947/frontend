@@ -23,7 +23,7 @@ export default class PublicationModal extends Component {
   }
 
   render() {
-    const { show, onHide } = this.props;
+    const { show, onHide, workTypes = [], accessTypes = [] } = this.props;
     return (
       <Modal
         show={show}
