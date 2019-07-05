@@ -2,8 +2,8 @@ import React from 'react';
 import ProfileView from './ProfileView';
 import './profile.scss';
 import { connect } from 'react-redux';
-import { getUserInfo, getUserPublications, getUserFollowers, getPartners } from '../../actions/userInfoActions';
-import { likePublication, promotePublication } from '../../actions/userPublicationAction';
+import { getUserInfo, getUserFollowers, getPartners } from '../../actions/userInfoActions';
+import { likePublication, promotePublication, getUserPublications } from '../../actions/userPublicationAction';
 
 class ProfileContainer extends React.Component {
   state = {
@@ -14,9 +14,6 @@ class ProfileContainer extends React.Component {
   componentDidMount() {
     if (!this.props.userInfo.user) {
       this.props.getUserInfo();
-    }
-    if (this.props.userPublications.publications.length === 0) {
-      this.props.getUserPublications();
     }
     if (this.props.userFollowers.followers.length === 0) {
       this.props.getUserFollowers();

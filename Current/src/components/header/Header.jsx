@@ -26,6 +26,11 @@ class Header extends Component {
     searchKeyword: '',
   }
 
+  componentDidMount() {
+    // Header is mounted only once - request user publications here
+    this.props.getUserPublications();
+  }
+
   handleSearch = event => {
     this.setState({ searchKeyword: event.target.value });
   }
@@ -45,19 +50,13 @@ class Header extends Component {
   }
 
   render() {
-    const { user, location, accessTypes, workTypes } = this.props;
+    const { user, location } = this.props;
     return (
       <header className="header">
         <PublicationModal
-          user={user}
           show={this.state.showPublicationModal}
           onShow={this.showPublicationModal}
           onHide={this.hidePublicationModal}
-          accessTypes={accessTypes}
-          workTypes={workTypes}
-          // TODO: once posted - hide publication modal, use some new redux action 
-          // to notify about publication submit success/failure
-          onSubmit={this.props.onSubmitPublication}
         />
         <Container>
           <Row>
