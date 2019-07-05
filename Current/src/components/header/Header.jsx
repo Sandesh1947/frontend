@@ -90,9 +90,13 @@ class Header extends Component {
                       className="navbar-dropdown"
                     >
                       {(pathname !== '/profile')  &&
-                        <Link className="dropdown-item navbar-dropdown__item" to="/profile">Profile</Link>}
+                      <NavDropdown.Item className="navbar-dropdown__item">
+                        <Link to="/profile">Profile</Link>
+                        </NavDropdown.Item>}
                       {(pathname !== '/home') &&
-                        <Link className="dropdown-item navbar-dropdown__item" to="/home">Home</Link>}
+                      <NavDropdown.Item className="navbar-dropdown__item">
+                        <Link to="/home">Home</Link>
+                        </NavDropdown.Item>}
                       <NavDropdown.Item
                         href="#"
                         className="navbar-dropdown__item"
