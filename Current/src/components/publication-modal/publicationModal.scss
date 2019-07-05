@@ -40,10 +40,14 @@
     }
 
     &__attachments {
-      margin-top: 0.5rem;
-      margin-left: 4rem;
-      display: inline-block;
-      vertical-align: top;
+      display: flex;
+      align-items: center;
+      padding: 0rem 1rem 0.5rem 5rem;
+      border-bottom: 1px solid #ced4da;
+    }
+
+    &__forms {
+      margin-left: 0.5rem;
     }
 
     &__control {
@@ -51,56 +55,37 @@
     }
   }
   
-  .add-piece {
-    padding: 1rem;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    padding-left: 5rem;
-    
-    &__label {
-      font-weight: normal;
+  .dropdown {
+    button {
+      @extend %dropdown-button;
+      margin: 0;
     }
 
-    .dropdown {
+    &.access-type {
       button {
-        @extend %dropdown-button
+        float: right;
+        padding: 0;
+        min-width: 120px;
       }
 
-      &.visibility {
-        button {
-          float: right;
-        }
-      }
-
-      .dropdown-item {
-        position: relative;
-        overflow: hidden;
-        
-        .file-picker {
-          opacity: 0;
-          position: absolute;
-          top: 0; right: 0; bottom: 0; left: 0;
-          cursor: pointer;
-
-          &::-webkit-file-upload-button {
-            cursor:pointer;
-          }
-        }
+      .access-type__icon {
+        margin-right: 0.5rem;
       }
     }
 
-    .preview {
+    .dropdown-item {
       position: relative;
-
-      img {
-        max-width: 150px;
-        max-height: 150px;
-        border-radius: 10px;
-      }
+      overflow: hidden;
       
-      &__removeIcon {
-        @include roundIcon;
+      .file-picker {
+        opacity: 0;
+        position: absolute;
+        top: 0; right: 0; bottom: 0; left: 0;
+        cursor: pointer;
+
+        &::-webkit-file-upload-button {
+          cursor:pointer;
+        }
       }
     }
   }
@@ -110,7 +95,9 @@
   }
 
   &__button {
-    @extend %button
+    @extend %button;
+    margin: 0;
+    min-width: 140px;
   }
 
 }

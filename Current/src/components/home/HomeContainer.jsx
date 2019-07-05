@@ -2,24 +2,16 @@ import React from 'react';
 import HomeView from './HomeView';
 import { connect } from 'react-redux';
 import { getUserInfo, getUserPublications, getUserFollowers, publishPost } from '../../actions/userInfoActions';
-import Loader from '../Loader/Loader'
+import Loader from '../Loader/Loader';
+import { likePublication, promotePublication } from '../../actions/userPublicationAction';
+import Attachment from '../generic/Attachment';
 
 class HomeContainer extends React.Component {
-  constructor() {
-    super(...arguments);
-
-    this.state = {
-      avatar: null,
-      publication_text: '',
-      publication_img: '0',
-      publication_vid: '0',
-      lastScrollPos: 0,
-      page: 1,
-    };
-
-    this.loadMoreData = this.loadMoreData.bind(this);
-    this.trackScrolling = this.trackScrolling.bind(this);
-    this.handlePublicatioText = this.handlePublicatioText.bind(this);
+  state = {
+    avatar: null,
+    publication_text: '',
+    lastScrollPos: 0,
+    page: 1,
   }
 
   componentDidMount() {
@@ -55,30 +47,20 @@ class HomeContainer extends React.Component {
     this.setState({ lastScrollPos: scrolled });
   }
 
-  onFileUpload = ({ attachment: avatar, attachmentType: avatarType }) => {
-    if (!avatar) {
-      return;
-    }
-
-    if (avatarType === 'image') {
-      // TODO: get rid of weird 1/0 flags in state, they are only needed on the server, right?
-      this.setState({ avatar, avatarType, publication_img: '1', publication_vid: '0' });
-    } else if (avatarType === 'video') {
-      this.setState({ avatar, avatarType, publication_img: '0', publication_vid: '1' });
-    } else {
-      this.removeUpload();
-    }
+  onFileUpload = avatar => {
+    this.setState({ avatar });
   }
 
   removeUpload = () => {
-    this.setState({ avatar: null, avatarType: null, publication_img: '0', publication_vid: '0' });
+    this.setState({ avatar: null });
   }
 
-  onSubmit = () => {
+  onSubmitPublication = () => {
     if (!this.state.avatar) {
       this.props.publishPost({
-        publication_img: this.state.publication_img,
-        publication_vid: this.state.publication_vid,
+        publication_img: '0',
+        publication_vid: '0',
+        publication_doc: '0',
         publication_text: this.state.publication_text,
       });
       return;
@@ -86,37 +68,42 @@ class HomeContainer extends React.Component {
     const formData = new FormData();
     formData.append('post', this.state.avatar);
     formData.append('publication_text', this.state.publication_text);
-    formData.append('publication_img', this.state.publication_img);
-    formData.append('publication_vid', this.state.publication_vid);
+    formData.append('publication_img', Attachment.isImage(this.state.avatar));
+    formData.append('publication_vid', Attachment.isVideo(this.state.avatar));
+    formData.append('publication_doc', Attachment.isVideo(this.state.avatar));
     this.props.publishPost(formData);
   }
 
-  handlePublicatioText(e) {
+  onPublicationTextChange = e => {
     this.setState({ publication_text: e.target.value });
   }
 
   render() {
     const { userPublications, userInfo, userFollowers } = this.props;
-    const { avatar, avatarType } = this.state;
     return (
       <React.Fragment>
-        {userInfo.user
-          ? <HomeView
-            loading={userPublications.loading}
-            userFollowers={userFollowers.followers}
-            userPublications={userPublications.publications}
-            userInfo={userInfo}
-            avatar={avatar}
-            avatarType={avatarType}
-            onFileUpload={this.onFileUpload}
-            onRemoveUpload={this.removeUpload}
-            submit={this.onSubmit}
-            handlePublicatioText={this.handlePublicatioText}
-            stateFields={this.state}
-          />
-          :this.props.userPublications.loading &&<Loader/>
+        {
+          userInfo.user
+            ? <HomeView
+              loading={userPublications.loading}
+              userFollowers={userFollowers.followers}
+              userPublications={userPublications.publications}
+              userInfo={userInfo}
+              avatar={this.state.avatar}
+              onFileUpload={this.onFileUpload}
+              onRemoveUpload={this.removeUpload}
+              submitPublication={this.onSubmitPublication}
+              promotePublication={this.props.promotePublication}
+              likePublication={this.props.likePublication}
+              onPublicationTextChange={this.onPublicationTextChange}
+              // TODO: `stateFields` doesn't like good
+              // maybe keep state inside HomeView and only pass down acitons
+              // instead of tracking underlying component state here???
+              stateFields={this.state}
+            />
+            : this.props.userPublications.loading && <Loader />
         }
-      </React.Fragment>
+      </React.Fragment >
     );
   }
 }
@@ -126,7 +113,14 @@ const mapStateToProps = ({ userInfo, userPublications, userFollowers }) => ({
   userPublications,
   userFollowers,
 });
-export default connect(
-  mapStateToProps,
-  { getUserInfo, getUserPublications, getUserFollowers, publishPost }
-)(HomeContainer);
+
+const mapDispatchersToProps = {
+  getUserInfo,
+  getUserPublications,
+  getUserFollowers,
+  publishPost,
+  likePublication,
+  promotePublication,
+};
+
+export default connect(mapStateToProps, mapDispatchersToProps)(HomeContainer);
