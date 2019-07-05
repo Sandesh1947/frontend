@@ -1,0 +1,90 @@
+@import '../../style/abstract/abstract';
+
+.publication-form {
+  border-top: none;
+  border-bottom: none;
+  background-color: $c-lightest;
+
+  .card {
+    border-radius: 0;
+    border: 0;
+  }
+  
+  .navbar-avatar {
+    margin-right: 1rem;
+    min-width: 3rem;
+    min-height: 3rem;
+    width: 3rem;
+    height: 3rem;
+  }
+
+  &__body {
+    padding: 1rem;
+  }
+
+  &__textarea {
+    height: 7rem;
+    resize: none;
+  }
+
+  &__attachments {
+    display: flex;
+    align-items: center;
+    padding: 0rem 1rem 0.5rem 5rem;
+  }
+
+  &__forms {
+    margin-left: 0.5rem;
+  }
+
+  &__control {
+    width: 100%;
+  }
+  
+  .dropdown {
+    button {
+      @extend %dropdown-button;
+      margin: 0;
+    }
+
+    &.access-type {
+      button {
+        float: right;
+        padding: 0;
+        min-width: 120px;
+      }
+
+      .access-type__icon {
+        margin-right: 0.5rem;
+      }
+    }
+
+    .dropdown-item {
+      position: relative;
+      overflow: hidden;
+      
+      .file-picker {
+        opacity: 0;
+        position: absolute;
+        top: 0; right: 0; bottom: 0; left: 0;
+        cursor: pointer;
+
+        &::-webkit-file-upload-button {
+          cursor:pointer;
+        }
+      }
+    }
+  }
+
+  .bbar {
+    border-top: 1px solid #ced4da;
+    padding: 1rem;
+  }
+
+  .publish-button__work,
+  .publish-button__update {
+    @extend %button;
+    margin: 0;
+    min-width: 140px;
+  }
+}

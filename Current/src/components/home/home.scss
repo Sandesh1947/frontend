@@ -1,5 +1,12 @@
 @import '../../style/abstract/abstract';
 
+.content {
+  .publication-form {
+    border: 1px solid $c-neutral;
+    margin-top: 1rem;
+  }
+}
+
 .posting-card-wrapper {
   border: none;
 }
