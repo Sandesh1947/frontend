@@ -1,16 +1,27 @@
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import ReactTimeAgo from 'react-time-ago';
+import { Button, Card, Image } from 'react-bootstrap';
 import { faEllipsisH } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React, { Component } from 'react';
-import Button from 'react-bootstrap/Button';
-import Card from 'react-bootstrap/Card';
-import Image from 'react-bootstrap/Image';
-import ReactTimeAgo from 'react-time-ago';
+
+import Popup from '../../components/popup/popup';
+
 import { BASE_URL } from '../../app.constants';
-import Popup from "../../components/popup/popup";
 import './content-card.scss';
 import { likePost, promotePost } from '../../actions/publicationAction'
 
 export default class ContentCard extends Component {
+  static propTypes = {
+    user: PropTypes.object.isRequired,
+    userPublication: PropTypes.object,
+    userPublications: PropTypes.array.isRequired,
+    postIndex: PropTypes.number.isRequired,
+
+    loadMoreData: PropTypes.func.isRequired,
+    onLike: PropTypes.func.isRequired,
+    onPromote: PropTypes.func.isRequired,
+  }
 
   constructor(props) {
     super(props);
@@ -40,17 +51,17 @@ export default class ContentCard extends Component {
   }
 
   onNextClick = () => {
-    if (this.state.postIndex < this.props.userPublicationsArray.length - 1) {
+    if (this.state.postIndex < this.props.userPublications.length - 1) {
       this.setState({ postIndex: this.state.postIndex + 1 });
     }
 
-    if (this.state.postIndex === this.props.userPublicationsArray.length - 1) {
+    if (this.state.postIndex === this.props.userPublications.length - 1) {
       this.props.loadMoreData();
     }
   }
 
-  onClick = () => {
-    this.setState({ modalShow: true, postIndex: this.props.id });
+  showPopup = () => {
+    this.setState({ modalShow: true, postIndex: this.props.postIndex });
   }
 
   keyDownEvent = (e) => {
@@ -62,11 +73,11 @@ export default class ContentCard extends Component {
   }
 
   componentDidMount() {
-    document.addEventListener("keydown", this.keyDownEvent);
+    document.addEventListener('keydown', this.keyDownEvent);
   }
 
   componentWillUnmount() {
-    document.removeEventListener("keydown", this.keyDownEvent);
+    document.removeEventListener('keydown', this.keyDownEvent);
   }
   likePost(id) {
     likePost(id).then((res) => {
@@ -90,46 +101,55 @@ export default class ContentCard extends Component {
     }
   }
   render() {
+    const { user, userPublication, userPublications } = this.props;
+
     return (
-      <div className='content-card'>
-        <Popup show={this.state.modalShow} onHide={this.handleClose} onPrevClick={this.onPrevClick} onNextClick={this.onNextClick} userPublications={this.props.userPublicationsArray[this.state.postIndex]} />
+      <div className="content-card">
+        <Popup
+          show={this.state.modalShow}
+          onHide={this.handleClose}
+          onPrevClick={this.onPrevClick}
+          onNextClick={this.onNextClick}
+          user={user}
+          userPublication={userPublications[this.state.postIndex]}
+        />
         <Card style={{ border: 'none' }}>
           <Card.Header style={{ padding: 0 }}>
-            <div className='d-flex justify-content-between'>
+            <div className="d-flex justify-content-between">
               <div>
-                <div className='d-flex'>
-                  <Image className='content-card__avatar'
-                    src={this.props.userPublications && BASE_URL + this.props.userPublications.avatar} />
-                  <span className='d-flex flex-column'>
+                <div className="d-flex">
+                  <Image className="content-card__avatar"
+                    src={userPublication && BASE_URL + userPublication.avatar} />
+                  <span className="d-flex flex-column">
                     <h6
-                      className='content-card__username'>{this.props.userPublications && (this.props.userPublications.first_name + ' ' + this.props.userPublications.last_name)}</h6>
-                    {this.props.userPublications && !isNaN(Date.parse(this.props.userPublications.created_at)) &&
-                      <p className='content-card__date'><ReactTimeAgo
-                        date={new Date(this.props.userPublications.created_at)} /></p>}
+                      className="content-card__username">{userPublication && (userPublication.first_name + ' ' + userPublication.last_name)}</h6>
+                    {userPublication && !isNaN(Date.parse(userPublication.created_at)) &&
+                      <p className="content-card__date"><ReactTimeAgo
+                        date={new Date(userPublication.created_at)} /></p>}
                   </span>
                 </div>
               </div>
-              <div className='d-flex justify-content-end text-right right flex-column'>
-                <a href='#' className='content-card__button'>
-                  <FontAwesomeIcon icon={faEllipsisH} className='content-card__icon' />
+              <div className="d-flex justify-content-end text-right right flex-column">
+                <a href="#" className="content-card__button">
+                  <FontAwesomeIcon icon={faEllipsisH} className="content-card__icon" />
                 </a>
-                <p className='content-card__public'>Public</p>
+                <p className="content-card__public">Public</p>
               </div>
             </div>
           </Card.Header>
           <Card.Body style={{ padding: '1rem 0' }}>
-            {this.props.userPublications && this.props.userPublications.publication_text && (
-              <p className='content-card__text'>
-                {this.props.userPublications.publication_text}
+            {userPublication && userPublication.publication_text && (
+              <p className="content-card__text">
+                {userPublication.publication_text}
               </p>
             )}
 
-            {this.props.userPublications && this.props.userPublications.publication_img === '1' &&
-              <Image className='content-card__image' src={BASE_URL + this.props.userPublications.post} onClick={this.onClick} />
+            {userPublication && userPublication.publication_img === '1' &&
+              <Image className="content-card__image" src={BASE_URL + userPublication.post} onClick={this.showPopup} />
             }
 
-            {this.props.userPublications && this.props.userPublications.publication_vid === '1' && (
-              <Image className='content-card__image' src={BASE_URL + this.props.userPublications.vid_thumbnail} onClick={this.onClick} />
+            {userPublication && userPublication.publication_vid === '1' && (
+              <Image className="content-card__image" src={BASE_URL + userPublication.vid_thumbnail} onClick={this.showPopup} />
             )}
 
           </Card.Body>
@@ -150,6 +170,6 @@ export default class ContentCard extends Component {
           </Card.Footer>
         </Card>
       </div>
-    )
+    );
   }
 }

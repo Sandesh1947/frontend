@@ -1,13 +1,19 @@
 import { combineReducers } from 'redux';
-import LoginStateReducer from './loginReducer'
-import UserDetailReducer from './userDetailReducer'
-import UserPublicationReducer from './userPublicationReducer'
-import UserFollowersReducer from './userFollowersReducer'
-import UserPartnersReducer from './userPartnersReducer'
+import logindata from './loginReducer';
+import userInfo from './userDetailReducer';
+import userPublications from './userPublicationReducer';
+import userFollowers from './userFollowersReducer';
+import userPartners from './userPartnersReducer';
+import workTypes from './workTypeReducer';
+import accessTypes from './accessTypeReducer';
+
+
 export default combineReducers({
-    logindata: LoginStateReducer,
-    userInfo:UserDetailReducer,
-    userPublications:UserPublicationReducer,
-    userFollowers:UserFollowersReducer,
-    userPartners:UserPartnersReducer,
-})
+  logindata,
+  userInfo,
+  userPublications,
+  userFollowers,
+  userPartners,
+  workTypes,
+  accessTypes,
+});
