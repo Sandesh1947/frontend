@@ -162,7 +162,7 @@ export default class ContentCard extends Component {
               </div>
               <div className='content-card-footer__item'>
               {(this.state.isPromoted || userPublication.promoted)?
-              <span className='like-done'>{this.formatCount(this.state.updatedLikes ? this.state.updatedPromotes : userPublication.promote)} Promote</span> :
+              <span className='like-done'>{this.formatCount(this.state.updatedPromotes ? this.state.updatedPromotes : userPublication.promote)} Promote</span> :
               <Button onClick={() => { this.promotePost(userPublication.id) }} className='content-card-footer__button'>{this.formatCount(this.state.updatedPromotes ? this.state.updatedPromotes : userPublication.promote)} Promote</Button>
               }
               </div>
