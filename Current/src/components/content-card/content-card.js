@@ -9,7 +9,7 @@ import Popup from '../../components/popup/popup';
 
 import { BASE_URL } from '../../app.constants';
 import './content-card.scss';
-import { likePost, promotePost } from '../../actions/publicationAction'
+import { likePost, promotePost } from '../../actions/userPublicationAction'
 
 export default class ContentCard extends Component {
   static propTypes = {
@@ -17,10 +17,6 @@ export default class ContentCard extends Component {
     userPublication: PropTypes.object,
     userPublications: PropTypes.array.isRequired,
     postIndex: PropTypes.number.isRequired,
-
-    loadMoreData: PropTypes.func.isRequired,
-    onLike: PropTypes.func.isRequired,
-    onPromote: PropTypes.func.isRequired,
   }
 
   constructor(props) {
@@ -107,7 +103,6 @@ export default class ContentCard extends Component {
   }
   render() {
     const { user, userPublication, userPublications } = this.props;
-
     return (
       <div className="content-card">
         <Popup
@@ -161,14 +156,14 @@ export default class ContentCard extends Component {
           <Card.Footer style={{ margin: '0 -1rem', padding: '1rem 1rem 0', borderTopColor: '#f2f2f2' }}>
             <div className='content-card-footer d-flex justify-content-between'>
               <div className='content-card-footer__item'>
-                {(this.state.isLiked || this.props.userPublications.liked)? 
-                  <span className='like-done'>{this.formatCount(this.state.updatedLikes ? this.state.updatedLikes : this.props.userPublications.likes)} Like</span> :
-                  <Button onClick={() => { this.likePost(this.props.userPublications.id) }} className='content-card-footer__button'>{this.formatCount(this.state.updatedLikes ? this.state.updatedLikes : this.props.userPublications.likes)} Like</Button> }
+                {(this.state.isLiked || userPublication.liked)? 
+                  <span className='like-done'>{this.formatCount(this.state.updatedLikes ? this.state.updatedLikes : userPublication.likes)} Like</span> :
+                  <Button onClick={() => { this.likePost(userPublication.id) }} className='content-card-footer__button'>{this.formatCount(this.state.updatedLikes ? this.state.updatedLikes : userPublication.likes)} Like</Button> }
               </div>
               <div className='content-card-footer__item'>
-              {(this.state.isPromoted || this.props.userPublications.promoted)?
-              <span className='like-done'>{this.formatCount(this.state.updatedLikes ? this.state.updatedLikes : this.props.userPublications.likes)} Promote</span> :
-              <Button onClick={() => { this.promotePost(this.props.userPublications.id) }} className='content-card-footer__button'>{this.formatCount(this.state.updatedPromotes ? this.state.updatedPromotes : this.props.userPublications.promote)} Promote</Button>
+              {(this.state.isPromoted || userPublication.promoted)?
+              <span className='like-done'>{this.formatCount(this.state.updatedLikes ? this.state.updatedPromotes : userPublication.promote)} Promote</span> :
+              <Button onClick={() => { this.promotePost(userPublication.id) }} className='content-card-footer__button'>{this.formatCount(this.state.updatedPromotes ? this.state.updatedPromotes : userPublication.promote)} Promote</Button>
               }
               </div>
             </div>
