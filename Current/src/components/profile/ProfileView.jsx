@@ -23,8 +23,6 @@ export default class ProfileView extends React.Component {
                 loading={this.props.loading}
                 user={this.props.userInfo.user}
                 userPublications={this.props.userPublications}
-                likePublication={this.props.likePublication}
-                promotePublication={this.props.promotePublication}
               />
             </Col>
           </Row>

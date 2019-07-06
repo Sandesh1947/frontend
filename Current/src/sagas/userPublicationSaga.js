@@ -1,12 +1,10 @@
 import axios from 'axios';
-import { takeEvery, takeLatest, call, put } from 'redux-saga/effects';
+import { takeLatest,put } from 'redux-saga/effects';
 
 import Attachment from '../components/generic/Attachment';
 import { getUserPublications } from '../actions/userPublicationAction';
 import { BASE_URL } from '../app.constants';
 import {
-  PROMOTE_PUBLICATION,
-  LIKE_PUBLICATION,
   ERROR_OCCUR,
   POST_PUBLICATION,
   GET_USER_PUBLICATIONS,
@@ -14,26 +12,6 @@ import {
   FETCHED_USER_PUBLICATIONS,
   NO_MORE_USER_PUBLICATIONS,
 } from '../actions/types';
-
-const callAPI = (method, data) => axios.post(`${BASE_URL}/api/userpublication/${method}`, data);
-
-function* LikePublication(action) {
-  try {
-    const response = yield call(callAPI, 'like', action.data);
-    // yield put({ type: LIKED_PUBLICATION, payload: response.data });
-  } catch (error) {
-    console.warn(error);
-  }
-}
-
-function* PromotePublication(action) {
-  try {
-    const response = yield call(callAPI, 'promote', action.data);
-    // yield put({ type: PROMOTED_PUBLICATION, payload: response.data });
-  } catch (error) {
-    console.warn(error);
-  }
-}
 
 // posting user publication saga
 function* postPublication(action) {
@@ -83,15 +61,6 @@ function* getUserPublicationsWorker(action) {
   } catch (error) {
     yield put({ type: ERROR_OCCUR, payload: { message: 'Something went wrong. Please try again later' } });
   }
-}
-
-
-export function* LikePublicationWatcher() {
-  yield takeEvery(LIKE_PUBLICATION, LikePublication);
-}
-
-export function* PromotePublicationWatcher() {
-  yield takeEvery(PROMOTE_PUBLICATION, PromotePublication);
 }
 
 export function* PublishPostWatcher() {

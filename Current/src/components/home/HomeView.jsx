@@ -34,8 +34,6 @@ export default class HomeView extends React.Component {
                   userPublication={userPublication}
                   userPublications={this.props.userPublications}
                   loadMoreData={this.loadMoreData}
-                  likePublication={() => this.props.likePublication({ id: userPublication.id })}
-                  promotePublication={() => this.props.promotePublication({ id: userPublication.id })}
                 />
               ))}
 

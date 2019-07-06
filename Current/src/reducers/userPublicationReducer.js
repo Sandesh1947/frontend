@@ -3,8 +3,6 @@ import {
   FETCHED_USER_PUBLICATIONS,
   NO_MORE_USER_PUBLICATIONS,
   CLEAR_USER_PUBLICATIONS,
-  PROMOTE_PUBLICATION,
-  LIKE_PUBLICATION,
 } from '../actions/types';
 
 const initialState = {

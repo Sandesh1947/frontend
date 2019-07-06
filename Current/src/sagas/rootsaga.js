@@ -6,8 +6,6 @@ import {
   userPartnerWatcher,
 } from './userActionSaga';
 import {
-  LikePublicationWatcher,
-  PromotePublicationWatcher,
   UserPublicationWatcher,
   PublishPostWatcher,
 } from './userPublicationSaga';
@@ -20,8 +18,6 @@ export default function* rootSaga() {
     userInfoWatcher(),
     userFollowerWatcher(),
     userPartnerWatcher(),
-    LikePublicationWatcher(),
-    PromotePublicationWatcher(),
     UserPublicationWatcher(),
     PublishPostWatcher(),
     GetWorkTypesWatcher(),

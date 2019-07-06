@@ -73,7 +73,7 @@ class Publication extends Component {
   get workTypeDropdown() {
     return this.props.publicationType === 'work' && (
       <DropdownButton
-        title={this.state.workType && this.state.workType.type || 'Forms'}
+        title={this.state.workType ? this.state.workType.type :'Forms'}
         className="publication-form__forms"
       >
         {this.props.workTypes.map(this.renderWorkTypeItem)}

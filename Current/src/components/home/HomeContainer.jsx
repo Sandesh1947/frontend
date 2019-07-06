@@ -3,7 +3,7 @@ import HomeView from './HomeView';
 import { connect } from 'react-redux';
 import Loader from '../Loader/Loader';
 import { getUserInfo, getUserFollowers } from '../../actions/userInfoActions';
-import { likePublication, promotePublication, getUserPublications } from '../../actions/userPublicationAction';
+import { getUserPublications } from '../../actions/userPublicationAction';
 
 class HomeContainer extends React.Component {
   state = {
@@ -55,8 +55,6 @@ class HomeContainer extends React.Component {
               userFollowers={userFollowers.followers}
               userPublications={userPublications.publications || []}
               userInfo={userInfo}
-              promotePublication={this.props.promotePublication}
-              likePublication={this.props.likePublication}
               // TODO: `stateFields` doesn't like good
               // maybe keep state inside HomeView and only pass down acitons
               // instead of tracking underlying component state here???
@@ -79,8 +77,6 @@ const mapDispatchersToProps = {
   getUserInfo,
   getUserPublications,
   getUserFollowers,
-  likePublication,
-  promotePublication,
 };
 
 export default connect(mapStateToProps, mapDispatchersToProps)(HomeContainer);
