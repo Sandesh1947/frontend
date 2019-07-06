@@ -36,7 +36,7 @@ class HomeContainer extends React.Component {
     const scrollable = document.documentElement.scrollHeight - window.innerHeight;
     const scrolled = window.scrollY;
 
-    if (!this.props.userPublications.noMoreData || !this.props.userPublications.loading
+    if (!this.props.userPublications.noMoreData && !this.props.userPublications.loading
       && this.state.lastScrollPos < scrolled && Math.ceil(scrolled) >= scrollable - 100) {
       this.loadMoreData();
     }
