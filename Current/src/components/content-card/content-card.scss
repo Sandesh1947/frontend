@@ -73,6 +73,9 @@
       background: none;
       border: none;
     }
+    &:focus{
+      box-shadow: none !important;
+    }
   }
 }
 .like-done {
