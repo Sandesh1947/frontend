@@ -24,9 +24,19 @@ const INITIAL_STATE = {
 class Publication extends Component {
   static propTypes = {
     publicationType: PropTypes.oneOf(['update', 'work']).isRequired,
+    workTypes: PropTypes.array,
+    accessTypes: PropTypes.array,
   }
 
   state = INITIAL_STATE
+
+  static getDerivedStateFromProps(props, state) {
+    const derived = {};
+    if (props.accessTypes && props.accessTypes.length && !state.accessType) {
+      derived.accessType = props.accessTypes.find(t => t.type === 'Public');
+    }
+    return derived;
+  }
 
   isValid() {
     const { text, attachment, accessType, workType } = this.state;
@@ -49,7 +59,6 @@ class Publication extends Component {
       this.props.getAccessTypes();
     }
   }
-
 
   onPublicationTextChange = e => {
     this.setState({ [e.target.name]: e.target.value });
@@ -88,7 +97,7 @@ class Publication extends Component {
     return this.props.publicationType === 'work' && (
       <DropdownButton
         title={this.state.workType ? this.state.workType.type : 'Forms'}
-        className="publication-form__forms"
+        className="publication-form__work-type"
       >
         {this.props.workTypes.map(this.renderWorkTypeItem)}
       </DropdownButton>
