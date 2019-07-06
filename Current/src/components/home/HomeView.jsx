@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Alert, Col, Container, Image, Row, Spinner } from 'react-bootstrap';
 
 import ContentCard from '../content-card/content-card';
@@ -9,11 +8,6 @@ import Publication from '../publication/Publication';
 import './home.scss';
 
 export default class HomeView extends React.Component {
-  static propTypes = {
-    onPublicationTextChange: PropTypes.func.isRequired,
-    submitPublication: PropTypes.func.isRequired,
-  }
-
   render() {
     return (
       <section style={{ backgroundColor: '#f2f2f2', paddingBottom: '2rem' }}> {/** TODO: extract styles to scss */}
