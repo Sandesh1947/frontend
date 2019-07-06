@@ -17,6 +17,7 @@
     max-height: 150px;
     border-radius: $border-radius;
     z-index: 1;
+    cursor: pointer;
   }
 
   .remove-icon {
@@ -30,5 +31,19 @@
     left: 0;
     color: $c-dark;
     z-index: 0;
+  }
+
+}
+
+.play-video-modal {
+  background-color: rgba(0,0,0,0.5);
+
+  .modal-header {
+    padding: 1rem;
+    background: $c-light;
+  }
+
+  .modal-body {
+    padding: 1rem;
   }
 }

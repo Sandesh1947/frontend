@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { faFilm, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { BigPlayButton, LoadingSpinner, Player } from 'video-react';
+import { Modal } from 'react-bootstrap';
 
 import './VideoThumbnail.scss';
 
@@ -32,6 +34,25 @@ export default class VideoThumbnail extends Component {
 
   state = {
     ready: false,
+    playInOverlay: false,
+  }
+
+  componentWillMount() {
+    this.setSrc();
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.file && this.props.file && this.props.file !== prevProps.file) {
+      this.setSrc();
+    }
+  }
+
+  setSrc() {
+    this.setState({ src: URL.createObjectURL(this.props.file) });
+  }
+
+  get src() {
+    return this.props.src || this.state.src;
   }
 
   videoRef = React.createRef();
@@ -46,11 +67,26 @@ export default class VideoThumbnail extends Component {
       this.setState({ ready: true });
     });
 
-    video.addEventListener('loadedmetadata', (...args) => {
+    video.addEventListener('loadedmetadata', () => {
       canvas.width = video.videoWidth;
       canvas.height = video.videoHeight;
-      video.currentTime = this.props.captureTime;
+      if (Number.isFinite(video.duration)) {
+        video.currentTime = this.props.captureTime;
+      } else {
+        // failed to parse this video, show close icon
+        this.setState({ ready: true });
+      }
     });
+  }
+
+  playInOverlay = () => {
+    if (this.state.ready) {
+      this.setState({ playInOverlay: true });
+    }
+  }
+
+  closeOverlay = () => {
+    this.setState({ playInOverlay: false });
   }
 
   get removeIcon() {
@@ -60,17 +96,30 @@ export default class VideoThumbnail extends Component {
     return <FontAwesomeIcon icon={faTimes} className="remove-icon" onClick={this.props.onRemove} />;
   }
 
-  get src() {
-    return this.props.src || URL.createObjectURL(this.props.file);
-  }
-
   render() {
     return (
       <div className="video-thumbnail">
         <video ref={this.videoRef} src={this.src} type="video/mp4" />
-        <canvas ref={this.canvasRef} />
+        <canvas ref={this.canvasRef} onClick={this.playInOverlay} />
         <FontAwesomeIcon icon={faFilm} size="4x" className="fallback" />
         {this.removeIcon}
+        <Modal
+          show={this.state.playInOverlay}
+          onHide={this.closeOverlay}
+          className="play-video-modal"
+          centered
+        >
+          <Modal.Header closeButton>
+            <div>Video Player</div>
+          </Modal.Header>
+          <Modal.Body>
+            <Player autoPlay={true}>
+              <source src={this.src} />
+              <BigPlayButton position="center" />
+              <LoadingSpinner />
+            </Player>
+          </Modal.Body>
+        </Modal>
       </div>
     );
   }
