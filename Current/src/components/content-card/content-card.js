@@ -90,14 +90,19 @@ export default class ContentCard extends Component {
     })
   }
   formatCount(count) {
-    if (count < 1000) {
-      return count;
-    }
-    else if (count < 1000000) {
-      return count / 1000 + 'K'
+    if(count) {
+      if (count < 1000) {
+        return count;
+      }
+      else if (count < 1000000) {
+        return count / 1000 + 'K'
+      }
+      else {
+        return count / 1000000 + 'M'
+      }
     }
     else {
-      return count / 1000000 + 'M'
+      return ''
     }
   }
   render() {
