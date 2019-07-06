@@ -10,8 +10,6 @@ import './home.scss';
 
 export default class HomeView extends React.Component {
   static propTypes = {
-    likePublication: PropTypes.func.isRequired,
-    promotePublication: PropTypes.func.isRequired,
     onPublicationTextChange: PropTypes.func.isRequired,
     submitPublication: PropTypes.func.isRequired,
   }
