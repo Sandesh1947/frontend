@@ -6,8 +6,8 @@ import userFollowers from './userFollowersReducer';
 import userPartners from './userPartnersReducer';
 import workTypes from './workTypeReducer';
 import accessTypes from './accessTypeReducer';
-
-
+import likedUsers from './likedUsersReducer'
+import promotedUsers from './promotedUsersReducer'
 export default combineReducers({
   logindata,
   userInfo,
@@ -16,4 +16,6 @@ export default combineReducers({
   userPartners,
   workTypes,
   accessTypes,
+  likedUsers,
+  promotedUsers
 });

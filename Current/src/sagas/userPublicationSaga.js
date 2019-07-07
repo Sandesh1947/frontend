@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { takeLatest,put } from 'redux-saga/effects';
+import { takeLatest, put } from 'redux-saga/effects';
 
 import Attachment from '../components/generic/Attachment';
 import { getUserPublications } from '../actions/userPublicationAction';
@@ -11,6 +11,15 @@ import {
   FETCHING_USER_PUBLICATIONS,
   FETCHED_USER_PUBLICATIONS,
   NO_MORE_USER_PUBLICATIONS,
+  FETCHING_LIKED_USERS,
+  FETCHING_PROMOTED_USERS,
+  FETCHED_LIKED_USERS,
+  FETCHED_PROMOTED_USERS,
+  NO_MORE_PROMOTED_USERS,
+  NO_MORE_LIKED_USERS,
+  FETCH_PROMOTED_USERS,
+  FETCH_LIKED_USERS
+
 } from '../actions/types';
 
 // posting user publication saga
@@ -63,10 +72,51 @@ function* getUserPublicationsWorker(action) {
   }
 }
 
+function* getLikedUsers(action) {
+  try {
+    yield put({ type: FETCHING_LIKED_USERS });
+    const pubResponse = yield axios.get(BASE_URL + '/api/likedby/' + action.id, {
+      params: action.query
+    });
+    if (pubResponse && pubResponse.data) {
+      yield put({ type: FETCHED_LIKED_USERS, payload: pubResponse });
+    } else {
+      yield put({ type: NO_MORE_LIKED_USERS });
+    }
+
+  } catch (error) {
+    yield put({ type: ERROR_OCCUR, payload: { message: 'Something went wrong. Please try again later' } });
+  }
+}
+function* getPromotedUsers(action) {
+  try {
+    yield put({ type: FETCHING_PROMOTED_USERS });
+    const pubResponse = yield axios.get(BASE_URL + '/api/promotedby/' + action.id, {
+      params: action.query
+    });
+    if (pubResponse && pubResponse.data) {
+      yield put({ type: FETCHED_PROMOTED_USERS, payload: pubResponse });
+    } else {
+      yield put({ type: NO_MORE_PROMOTED_USERS });
+    }
+
+  } catch (error) {
+    yield put({ type: ERROR_OCCUR, payload: { message: 'Something went wrong. Please try again later' } });
+  }
+}
+
+
 export function* PublishPostWatcher() {
   yield takeLatest(POST_PUBLICATION, postPublication);
 }
 
 export function* UserPublicationWatcher() {
   yield takeLatest(GET_USER_PUBLICATIONS, getUserPublicationsWorker);
+}
+
+export function* getLikedUserWatcher() {
+  yield takeLatest(FETCH_LIKED_USERS, getLikedUsers);
+}
+export function* getPromotedUserWatcher() {
+  yield takeLatest(FETCH_PROMOTED_USERS, getPromotedUsers);
 }
