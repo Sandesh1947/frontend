@@ -1,7 +1,7 @@
 import React from 'react'
 import PromotedOrLikedUsersView from './PromotedOrLikedUsersView'
 import { connect } from 'react-redux'
-import { fetchLikedUsers, fetchPromotedUsers } from '../../actions/userPublicationAction'
+import { fetchLikedUsers, fetchPromotedUsers,clearLikedUsers,clearPromotedUsers } from '../../actions/userPublicationAction'
 import './modal.scss'
 class PromotedOrLikedUsersContainer extends React.Component {
     constructor() {
@@ -27,6 +27,10 @@ class PromotedOrLikedUsersContainer extends React.Component {
             this.props.fetchPromotedUsers(this.props.id)
         }
     }
+    componentWillUnmount() {
+        this.props.clearLikedUsers()
+        this.props.clearPromotedUsers()
+    }
     render() {
         return (
             <PromotedOrLikedUsersView loadMore={this.loadMore} {...this.props} />
@@ -39,7 +43,9 @@ const mapStateToProps = state => ({
 });
 const mapDispatchersToProps = {
     fetchLikedUsers,
-    fetchPromotedUsers
+    fetchPromotedUsers,
+    clearPromotedUsers,
+    clearLikedUsers
 };
 
 export default connect(mapStateToProps, mapDispatchersToProps)(PromotedOrLikedUsersContainer)
