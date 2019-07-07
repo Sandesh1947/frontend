@@ -1,12 +1,16 @@
-.modal-content {
+.promoted-liked-users-modal {
+  .modal-content {
     height: 70vh !important;
     overflow: auto !important;
-}
-.load-more-link {
+  }
+
+  .load-more-link {
     cursor: pointer;
     color: #1818d4;
     text-align: center;
+    
     &:hover {
-    text-decoration: underline;
+      text-decoration: underline;
     }
+  }
 }
