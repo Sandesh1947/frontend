@@ -10,9 +10,11 @@ import {
 import axios from 'axios'
 import { BASE_URL } from '../app.constants';
 
+// TODO: this is not a redux/flux action, this is just an api call which is not reflected to redux store/history
 export function likePost(postId) {
   return axios.get(BASE_URL + '/api/userpublications/likes/' + postId + '/')
 }
+// TODO: this is not a redux/flux action, this is just an api call which is not reflected to redux store/history
 export function promotePost(postId) {
   return axios.get(BASE_URL + '/api/userpublications/promotes/' + postId + '/')
 }

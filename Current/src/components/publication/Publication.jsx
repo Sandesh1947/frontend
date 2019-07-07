@@ -24,6 +24,31 @@ const INITIAL_STATE = {
 class Publication extends Component {
   static propTypes = {
     publicationType: PropTypes.oneOf(['update', 'work']).isRequired,
+    workTypes: PropTypes.array,
+    accessTypes: PropTypes.array,
+  }
+
+  state = INITIAL_STATE
+
+  static getDerivedStateFromProps(props, state) {
+    const derived = {};
+    if (props.accessTypes && props.accessTypes.length && !state.accessType) {
+      derived.accessType = props.accessTypes.find(t => t.type === 'Public');
+    }
+    return derived;
+  }
+
+  isValid() {
+    const { text, attachment, accessType, workType } = this.state;
+    // either text or attachment should be provided
+    if (!text && !attachment) {
+      return false;
+    }
+    if (this.props.publicationType === 'work') {
+      // when publication is opened via "Create+" user has to select access type and work type.
+      return accessType && workType;
+    }
+    return this.props.publicationType === 'update';
   }
 
   componentDidMount() {
@@ -34,8 +59,6 @@ class Publication extends Component {
       this.props.getAccessTypes();
     }
   }
-
-  state = INITIAL_STATE
 
   onPublicationTextChange = e => {
     this.setState({ [e.target.name]: e.target.value });
@@ -73,8 +96,8 @@ class Publication extends Component {
   get workTypeDropdown() {
     return this.props.publicationType === 'work' && (
       <DropdownButton
-        title={this.state.workType ? this.state.workType.type :'Forms'}
-        className="publication-form__forms"
+        title={this.state.workType ? this.state.workType.type : 'Forms'}
+        className="publication-form__work-type"
       >
         {this.props.workTypes.map(this.renderWorkTypeItem)}
       </DropdownButton>
@@ -101,6 +124,7 @@ class Publication extends Component {
       <div className="d-flex justify-content-end bbar">
         <Button
           onClick={this.onSubmit}
+          disabled={!this.isValid()}
           className="publish-button__work">Publish</Button>
       </div>
     );
@@ -110,6 +134,7 @@ class Publication extends Component {
     return this.props.publicationType === 'update' && (
       <div className="d-flex flex-grow-1 justify-content-end">
         <Button
+          disabled={!this.isValid()}
           onClick={this.onSubmit}
           className="publish-button__update">Publish</Button>
       </div>

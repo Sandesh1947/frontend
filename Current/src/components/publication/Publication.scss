@@ -33,8 +33,15 @@
     padding: 0rem 1rem 0.5rem 5rem;
   }
 
-  &__forms {
+  &__work-type {
     margin-left: 0.5rem;
+
+    .dropdown-toggle::before {
+      content: '*';
+      color: red;
+      margin-right: 5px;
+      font-size: 16px;
+    }
   }
 
   &__control {
