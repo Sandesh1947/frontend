@@ -7,9 +7,9 @@ import ReactTimeAgo from 'react-time-ago';
 import { BigPlayButton, LoadingSpinner, Player } from 'video-react';
 import { BASE_URL } from '../../app.constants';
 import './popup.scss';
-
-export default class Popup extends Component {
-
+import {connect} from 'react-redux'
+import {fetchPromotedUsers,clearPromotedUsers } from '../../actions/userPublicationAction'
+class Popup extends Component {
   onModalShow = () => {
     // TODO: use react refs instead
     var prev = document.getElementsByClassName('carousel-control-prev')[0];
@@ -18,9 +18,14 @@ export default class Popup extends Component {
     modal.prepend(prev);
     modal.append(next);
   }
-
+  componentDidMount() {
+    this.props.fetchPromotedUsers(this.props.id);
+  }
+  componentWillUnmount() {
+    this.props.clearPromotedUsers()
+  }
   render() {
-    const { userPublication, show, onHide } = this.props;
+    const { userPublication, show, onHide ,updatedLikes,updatedPromotes,promotedUsers} = this.props;
     return (
       <Modal show={show} onShow={this.onModalShow} onHide={onHide} >
         <div className="carousel-control-prev" role="button" onClick={this.props.onPrevClick}>
@@ -61,23 +66,22 @@ export default class Popup extends Component {
             </Player>
           )}
           <div className="d-flex justify-content-between align-items-center mt-1">
-            <span className="like"><FontAwesomeIcon icon={['far', 'heart']} color="#bebebe" /> {userPublication.likes}</span>
+            <span className="like"><FontAwesomeIcon icon={['far', 'heart']} color="#bebebe" /> {this.props.formatCount(updatedLikes ? updatedLikes : userPublication.likes)}</span>
             <span className="like" style={{ color: '#bebebe', fontWeight: '400' }}>|</span>
             <span className="d-flex align-items-center">
-              <span className="like"><FontAwesomeIcon icon={['fas', 'share']} color="#bebebe" /> {userPublication.promote}</span>
+              <span className="like"><FontAwesomeIcon icon={['fas', 'share']} color="#bebebe" /> {this.props.formatCount(updatedPromotes ? updatedPromotes : userPublication.promote)}</span>
               <span className="like d-flex align-items-center">&nbsp;Promoted by&nbsp;&nbsp;&nbsp;&nbsp;
-                <Image className="promoted-by-image" src={require('../../assets/avatar.png')} />
-                <Image className="promoted-by-image" src={require('../../assets/avatar.png')} />
-                <Image className="promoted-by-image" src={require('../../assets/avatar.png')} />
-                <Image className="promoted-by-image" src={require('../../assets/avatar.png')} />
+                {promotedUsers.users.slice(0,4).map((user) => (
+                      <Image className="promoted-by-image" src={BASE_URL + user.avatar} />
+                ))}
               </span>
             </span>
           </div>
         </Modal.Body>
         <Modal.Footer>
           <div className="d-flex w-100 footer-buttons">
-            <Button variant="light">Like</Button>
-            <Button variant="light">Promote</Button>
+            <Button disabled={userPublication.liked || this.props.isLiked} onClick={() => this.props.likePost(userPublication.id)} variant="light">Like</Button>
+            <Button disabled={userPublication.promoted || this.props.isPromoted} onClick={() => this.props.promotePost(userPublication.id)}  variant="light">Promote</Button>
           </div>
           <div className="d-flex w-100">
             <Image className="footer-avatar" src={userPublication && BASE_URL + userPublication.avatar} />
@@ -87,3 +91,11 @@ export default class Popup extends Component {
     );
   }
 }
+const mapStateToProps = state => ({
+  promotedUsers: state.promotedUsers,
+});
+const mapDispatchersToProps = {
+  clearPromotedUsers,
+  fetchPromotedUsers
+};
+export default connect(mapStateToProps,mapDispatchersToProps)  (Popup)
