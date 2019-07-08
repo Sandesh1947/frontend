@@ -19,7 +19,7 @@ class Popup extends Component {
     modal.append(next);
   }
   componentDidMount() {
-    this.props.fetchPromotedUsers(this.props.id);
+    this.props.fetchPromotedUsers(this.props.userPublication.id);
   }
   componentWillUnmount() {
     this.props.clearPromotedUsers()
