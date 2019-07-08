@@ -22,17 +22,17 @@ import './header.scss';
 
 class Header extends Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
       showPublicationModal: false,
-      searchKeyword: ''
-    }
-    this.handleSearch = this.handleSearch.bind(this)
+      searchKeyword: '',
+    };
+    this.handleSearch = this.handleSearch.bind(this);
   }
 
   handleSearch = event => {
     this.setState({ searchKeyword: event.target.value });
-    this.props.redirectPage(event.target.value)
+    this.props.redirectPage(event.target.value);
   }
 
   showPublicationModal = () => {
@@ -42,9 +42,10 @@ class Header extends Component {
   hidePublicationModal = () => {
     this.setState({ showPublicationModal: false });
   }
+
   handleSubmitSearchForm = (event) => {
-    event.preventDefault()
-    this.props.onSubmitSearchKeyword(this.state.searchKeyword)
+    event.preventDefault();
+    this.props.onSubmitSearchKeyword(this.state.searchKeyword);
   }
 
   render() {

@@ -23,7 +23,7 @@ export default class PublicationModal extends Component {
   }
 
   render() {
-    const { show, onHide, workTypes = [], accessTypes = [] } = this.props;
+    const { show, onHide } = this.props;
     return (
       <Modal
         show={show}
@@ -36,7 +36,7 @@ export default class PublicationModal extends Component {
           <div className="header-title">Create a publication</div>
         </Modal.Header>
         <Modal.Body>
-          <Publication publicationType="work" />
+          <Publication publicationType="work" onSubmit={this.props.onHide} />
         </Modal.Body>
       </Modal>
     );

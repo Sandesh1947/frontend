@@ -3,6 +3,8 @@ import {
   FETCHED_USER_PUBLICATIONS,
   NO_MORE_USER_PUBLICATIONS,
   CLEAR_USER_PUBLICATIONS,
+  POST_PUBLICATION,
+  POSTED_PUBLICATION,
 } from '../actions/types';
 
 const initialState = {
@@ -37,6 +39,17 @@ const userPublicationReducer = (state = initialState, action) => {
         loading: false,
         noMoreData: true,
       };
+    case POST_PUBLICATION:
+      return {
+        ...state,
+        posting: true,
+      };
+    case POSTED_PUBLICATION: {
+      return {
+        ...state,
+        posting: false,
+      };
+    }
     default: return state;
   }
 };

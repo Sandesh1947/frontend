@@ -19,6 +19,7 @@ const INITIAL_STATE = {
   attachment: null,
   accessType: null,
   workType: null,
+  posting: false,
 };
 
 class Publication extends Component {
@@ -26,6 +27,7 @@ class Publication extends Component {
     publicationType: PropTypes.oneOf(['update', 'work']).isRequired,
     workTypes: PropTypes.array,
     accessTypes: PropTypes.array,
+    onSubmit: PropTypes.func,
   }
 
   state = INITIAL_STATE
@@ -36,6 +38,20 @@ class Publication extends Component {
       derived.accessType = props.accessTypes.find(t => t.type === 'Public');
     }
     return derived;
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.posting !== this.props.posting) {
+      if (this.props.posting) {
+        this.setState({ posting: true });
+      } else {
+        if (this.props.onSubmit) {
+          this.props.onSubmit();
+        } else {
+          this.setState(INITIAL_STATE);
+        }
+      }
+    }
   }
 
   isValid() {
@@ -159,6 +175,7 @@ class Publication extends Component {
                   as="textarea"
                   rows="3"
                   name="text"
+                  value={this.state.text}
                   onChange={this.onPublicationTextChange}
                 />
               </div>
@@ -181,10 +198,11 @@ class Publication extends Component {
   }
 }
 
-const mapStateToProps = ({ userInfo, workTypes, accessTypes }) => ({
+const mapStateToProps = ({ userInfo, workTypes, accessTypes, userPublications }) => ({
   user: userInfo.user,
   workTypes: workTypes.workTypes || [],
   accessTypes: accessTypes.accessTypes || [],
+  posting: userPublications.posting,
 });
 
 const mapDispatchersToProps = {
