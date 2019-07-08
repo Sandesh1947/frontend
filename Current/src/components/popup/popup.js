@@ -1,7 +1,6 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { Component } from 'react';
 import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
 import Image from 'react-bootstrap/Image';
 import Modal from 'react-bootstrap/Modal';
 import ReactTimeAgo from 'react-time-ago';
@@ -22,7 +21,6 @@ export default class Popup extends Component {
 
   render() {
     const { userPublication, show, onHide } = this.props;
-
     return (
       <Modal show={show} onShow={this.onModalShow} onHide={onHide} >
         <div className="carousel-control-prev" role="button" onClick={this.props.onPrevClick}>
@@ -63,10 +61,10 @@ export default class Popup extends Component {
             </Player>
           )}
           <div className="d-flex justify-content-between align-items-center mt-1">
-            <span className="like"><FontAwesomeIcon icon={['far', 'heart']} color="#bebebe" /> 3260</span>
+            <span className="like"><FontAwesomeIcon icon={['far', 'heart']} color="#bebebe" /> {userPublication.likes}</span>
             <span className="like" style={{ color: '#bebebe', fontWeight: '400' }}>|</span>
             <span className="d-flex align-items-center">
-              <span className="like"><FontAwesomeIcon icon={['fas', 'share']} color="#bebebe" /> 3260</span>
+              <span className="like"><FontAwesomeIcon icon={['fas', 'share']} color="#bebebe" /> {userPublication.promote}</span>
               <span className="like d-flex align-items-center">&nbsp;Promoted by&nbsp;&nbsp;&nbsp;&nbsp;
                 <Image className="promoted-by-image" src={require('../../assets/avatar.png')} />
                 <Image className="promoted-by-image" src={require('../../assets/avatar.png')} />
@@ -83,7 +81,6 @@ export default class Popup extends Component {
           </div>
           <div className="d-flex w-100">
             <Image className="footer-avatar" src={userPublication && BASE_URL + userPublication.avatar} />
-            <Form.Control type="text" placeholder="Add comment" />
           </div>
         </Modal.Footer>
       </Modal>
