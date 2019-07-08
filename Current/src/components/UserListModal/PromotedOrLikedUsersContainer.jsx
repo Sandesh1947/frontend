@@ -1,8 +1,8 @@
-import React from 'react';
-import PromotedOrLikedUsersView from './PromotedOrLikedUsersView';
-import { connect } from 'react-redux';
-import { fetchLikedUsers, fetchPromotedUsers } from '../../actions/userPublicationAction';
-
+import React from 'react'
+import PromotedOrLikedUsersView from './PromotedOrLikedUsersView'
+import { connect } from 'react-redux'
+import { fetchLikedUsers, fetchPromotedUsers,clearLikedUsers,clearPromotedUsers } from '../../actions/userPublicationAction'
+import './modal.scss'
 class PromotedOrLikedUsersContainer extends React.Component {
   constructor() {
     super();
@@ -25,19 +25,25 @@ class PromotedOrLikedUsersContainer extends React.Component {
       this.props.fetchPromotedUsers(this.props.id);
     }
   }
-  render() {
-    return (
-      <PromotedOrLikedUsersView loadMore={this.loadMore} {...this.props} />
-    );
-  }
+   componentWillUnmount() {
+        this.props.clearLikedUsers()
+        this.props.clearPromotedUsers()
+   }
+   render() {
+        return (
+            <PromotedOrLikedUsersView loadMore={this.loadMore} {...this.props} />
+        )
+   }
 }
 const mapStateToProps = state => ({
   likedUsers: state.likedUsers,
   promotedUsers: state.promotedUsers,
 });
 const mapDispatchersToProps = {
-  fetchLikedUsers,
-  fetchPromotedUsers,
+    fetchLikedUsers,
+    fetchPromotedUsers,
+    clearPromotedUsers,
+    clearLikedUsers
 };
 
 export default connect(mapStateToProps, mapDispatchersToProps)(PromotedOrLikedUsersContainer);

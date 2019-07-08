@@ -3,7 +3,9 @@ import {
   GET_USER_PUBLICATIONS,
   CLEAR_USER_PUBLICATIONS,
   FETCH_LIKED_USERS,
-  FETCH_PROMOTED_USERS
+  FETCH_PROMOTED_USERS,
+  CLEAR_LIKED_USERS,
+  CLEAR_PROMOTED_USERS
 } from './types';
 import axios from 'axios'
 import { BASE_URL } from '../app.constants';
@@ -22,3 +24,5 @@ export const clearUserPublication = () => ({ type: CLEAR_USER_PUBLICATIONS });
 
 export const  fetchLikedUsers = (id,query) => ({type:FETCH_LIKED_USERS,query:query,id:id})
 export const  fetchPromotedUsers = (id,query) => ({type:FETCH_PROMOTED_USERS,query:query,id:id})
+export const clearLikedUsers = () => ({ type: CLEAR_LIKED_USERS });
+export const clearPromotedUsers = () => ({ type: CLEAR_PROMOTED_USERS });
