@@ -72,7 +72,7 @@ export default class PubicationsTab extends React.Component {
         return (
             <React.Fragment>
                 {this.state.searchResults.map((value, index) => {
-                    return <ContentCard key={index} id={index} userPublications={value} userPublicationsArray={this.state.searchResults} />
+                    return <ContentCard key={index} id={index} userPublication={value} userPublications={this.state.searchResults} />
                 })}
                  {this.state.loading && <div className='mt-3 font-weight-bold'>
                     <Alert variant='light'>
