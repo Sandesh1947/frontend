@@ -71,8 +71,8 @@ class Popup extends Component {
             <span className="d-flex align-items-center">
               <span className="like"><FontAwesomeIcon icon={['fas', 'share']} color="#bebebe" /> {this.props.formatCount(updatedPromotes ? updatedPromotes : userPublication.promote)}</span>
               <span className="like d-flex align-items-center">&nbsp;Promoted by&nbsp;&nbsp;&nbsp;&nbsp;
-                {promotedUsers.users.slice(0,4).map((user) => (
-                      <Image className="promoted-by-image" src={BASE_URL + user.avatar} />
+                {promotedUsers.users.slice(0,4).map((user,key) => (
+                      <Image key={key}className="promoted-by-image" src={BASE_URL + user.avatar} />
                 ))}
               </span>
             </span>
