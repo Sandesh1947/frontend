@@ -21,12 +21,11 @@ export default class ContentCard extends Component {
 
   constructor(props) {
     super(props);
-
     this.state = {
       postIndex: 0,
       modalShow: false,
-      updatedLikes: null,
-      updatedPromotes: null,
+      likeCount: props.userPublication.likes,
+      promoteCount: props.userPublication.promote,
       isLiked: false,
       isPromoted: false,
       openUsersList:false,
@@ -80,13 +79,23 @@ export default class ContentCard extends Component {
     document.removeEventListener('keydown', this.keyDownEvent);
   }
   likePost(id) {
-    likePost(id).then((res) => {
-      this.setState({ updatedLikes: res.data.count, isLiked: true })
+    this.setState({ likeCount:(this.state.likeCount + 1)})
+    likePost(id).then(
+      (res) => {
+      this.setState({ likeCount: res.data.count, isLiked: true })
+    },
+    ()=>{
+      this.setState({ likeCount:(this.state.likeCount - 1)})
     })
   }
   promotePost(id) {
-    promotePost(id).then((res) => {
-      this.setState({ updatedPromotes: res.data.count, isPromoted: true })
+    this.setState({ promoteCount:(this.state.promoteCount + 1)})
+    promotePost(id).then(
+      (res) => {
+      this.setState({ promoteCount: res.data.count, isPromoted: true })
+    },
+    ()=>{
+      this.setState({ promoteCount:(this.state.promoteCount - 1)})
     })
   }
   formatCount(count) {
@@ -125,8 +134,8 @@ export default class ContentCard extends Component {
           userPublication={userPublications[this.state.postIndex]}
           likePost = {this.likePost}
           promotePost = {this.promotePost}
-          updatedLikes = {this.state.updatedLikes}
-          updatedPromotes = {this.state.updatedPromotes}
+          likeCount = {this.state.likeCount}
+          promoteCount = {this.state.promoteCount}
           isLiked = {this.state.isLiked}
           isPromoted = {this.state.isPromoted}
           formatCount={this.formatCount}
@@ -161,6 +170,7 @@ export default class ContentCard extends Component {
                 {userPublication.publication_text}
               </p>
             )}
+             <Image className="content-card__image" src={require('../../assets/avatar.png')}  onClick={this.showPopup} />
             {userPublication && userPublication.publication_img === '1' &&
               <Image className="content-card__image" src={BASE_URL + userPublication.post} onClick={this.showPopup} />
             }
@@ -174,13 +184,13 @@ export default class ContentCard extends Component {
             <div className='content-card-footer d-flex justify-content-between'>
               <div className='content-card-footer__item'>
                 {(this.state.isLiked || userPublication.liked)? 
-                  <span><span onClick={() => {this.handleOpenUsersList('liked',userPublication.id)}} className='count-value'>{this.formatCount(this.state.updatedLikes ? this.state.updatedLikes : userPublication.likes)}</span> <span className='count-value like-done '>Like</span></span> :
-                  <span><span className='count-value' onClick={() => {this.handleOpenUsersList('liked',userPublication.id)}}>{this.formatCount(this.state.updatedLikes ? this.state.updatedLikes : userPublication.likes)} </span> <span onClick={() => { this.likePost(userPublication.id) }} className='count-value'>Like</span> </span>}
+                  <span><span onClick={() => {this.handleOpenUsersList('liked',userPublication.id)}} className='count-value'>{this.formatCount(this.state.likeCount)}</span> <span className='count-value like-done '>Like</span></span> :
+                  <span><span className='count-value' onClick={() => {this.handleOpenUsersList('liked',userPublication.id)}}>{this.formatCount(this.state.likeCount)} </span> <span onClick={() => { this.likePost(userPublication.id) }} className='count-value'>Like</span> </span>}
               </div>
               <div className='content-card-footer__item'>
               {(this.state.isPromoted || userPublication.promoted)?
-              <span><span onClick={() => {this.handleOpenUsersList('promotes',userPublication.id)}} className='count-value'>{this.formatCount(this.state.updatedPromotes ? this.state.updatedPromotes : userPublication.promote)}</span> <span className='count-value like-done '>Promote</span></span> :
-              <span><span onClick={() => {this.handleOpenUsersList('promotes',userPublication.id)}} className='count-value'>{this.formatCount(this.state.updatedPromotes ? this.state.updatedPromotes : userPublication.promote)}</span><span onClick={() => { this.promotePost(userPublication.id) }} className='count-value'> Promote</span></span>
+              <span><span onClick={() => {this.handleOpenUsersList('promotes',userPublication.id)}} className='count-value'>{this.formatCount(this.state.promoteCount)}</span> <span className='count-value like-done '>Promote</span></span> :
+              <span><span onClick={() => {this.handleOpenUsersList('promotes',userPublication.id)}} className='count-value'>{this.formatCount(this.state.promoteCount)}</span><span onClick={() => { this.promotePost(userPublication.id) }} className='count-value'> Promote</span></span>
               }
               </div>
             </div>
