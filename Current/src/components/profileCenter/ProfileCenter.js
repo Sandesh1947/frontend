@@ -6,10 +6,10 @@ import Alert from 'react-bootstrap/Alert';
 import Spinner from 'react-bootstrap/Spinner';
 import titleTop from '../../assets/title-top.png';
 import ContentCard from '../content-card/content-card';
-import './right.scss';
+import './profileCenter.scss';
 import isEqual from 'lodash/isEqual';
 
-export default class Right extends Component {
+export default class ProfileCenter extends Component {
   constructor() {
     super()
     this.state = { selectedTab: 'updates', workPublication: [], updatedPublication: [] }

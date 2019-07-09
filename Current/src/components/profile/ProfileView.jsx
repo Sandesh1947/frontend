@@ -3,8 +3,8 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Container from 'react-bootstrap/Container';
 import Left from '../left/left';
-import Right from '../right/right';
-
+import ProfileCenter from '../profileCenter/ProfileCenter';
+import Button from 'react-bootstrap/Button'
 export default class ProfileView extends React.Component {
   render() {
     return (
@@ -19,11 +19,14 @@ export default class ProfileView extends React.Component {
               />
             </Col>
             <Col md={6}>
-              <Right
+              <ProfileCenter
                 loading={this.props.loading}
                 user={this.props.userInfo.user}
                 userPublications={this.props.userPublications}
               />
+            </Col>
+            <Col md={3}>
+            <Button  variant="secondary" className='mt-2' size="lg">Edit Profile</Button>
             </Col>
           </Row>
         </Container>
