@@ -123,6 +123,13 @@ export default class ContentCard extends Component {
           onNextClick={this.onNextClick}
           user={user}
           userPublication={userPublications[this.state.postIndex]}
+          likePost = {this.likePost}
+          promotePost = {this.promotePost}
+          updatedLikes = {this.state.updatedLikes}
+          updatedPromotes = {this.state.updatedPromotes}
+          isLiked = {this.state.isLiked}
+          isPromoted = {this.state.isPromoted}
+          formatCount={this.formatCount}
         />
         <Card style={{ border: 'none' }}>
           <Card.Header style={{ padding: 0 }}>
@@ -154,7 +161,6 @@ export default class ContentCard extends Component {
                 {userPublication.publication_text}
               </p>
             )}
-
             {userPublication && userPublication.publication_img === '1' &&
               <Image className="content-card__image" src={BASE_URL + userPublication.post} onClick={this.showPopup} />
             }
