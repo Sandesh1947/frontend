@@ -1,15 +1,37 @@
 import React, { Component } from 'react';
 import Image from 'react-bootstrap/Image';
-import ButtonGroup from 'react-bootstrap/ButtonGroup';
-import Button from 'react-bootstrap/Button';
-import Dropdown from 'react-bootstrap/Dropdown';
+import Tabs from 'react-bootstrap/Tabs'
+import Tab from 'react-bootstrap/Tab'
 import Alert from 'react-bootstrap/Alert';
 import Spinner from 'react-bootstrap/Spinner';
 import titleTop from '../../assets/title-top.png';
 import ContentCard from '../content-card/content-card';
 import './right.scss';
+import isEqual from 'lodash/isEqual';
 
 export default class Right extends Component {
+  constructor() {
+    super()
+    this.state = { selectedTab: 'updates', workPublication: [], updatedPublication: [] }
+    this.getUpdates = this.getUpdates.bind(this)
+    this.getWorks = this.getWorks.bind(this)
+  }
+  componentDidMount() {
+    this.setState({ workPublication: this.getWorks() })
+    this.setState({ updatedPublication: this.getUpdates() })
+  }
+  componentDidUpdate(prevProps) {
+    if(!isEqual(prevProps,this.props)) {
+      this.setState({ workPublication: this.getWorks() })
+      this.setState({ updatedPublication: this.getUpdates() })
+    }
+  }
+  getWorks() {
+    return this.props.userPublications.filter((publication) => publication.works === 1)
+  }
+  getUpdates() {
+    return this.props.userPublications.filter((publication) => publication.updates === 1)
+  }
   render() {
     return (
       <div className="right">
@@ -17,33 +39,37 @@ export default class Right extends Component {
           <Image src={titleTop} className="title-img__image" />
         </figure>
 
-        <div className="button-group categories">
-          <ButtonGroup size="lg" className="categories-list categories__item">
-            <Button className="categories-list__item" variant="light" style={{ fontSize: '.875rem', background: 'none', border: '3px solid transparent', padding: '.75rem 1rem' }}>Publications</Button>
-            <Button className="categories-list__item" variant="light" style={{ fontSize: '.875rem', background: 'none', border: '3px solid transparent', padding: '.75rem 1rem' }}>Audience</Button>
-            <Button className="categories-list__item" variant="light" style={{ fontSize: '.875rem', background: 'none', border: '3px solid transparent', padding: '.75rem 1rem' }}>Influence</Button>
-            <Button className="categories-list__item" variant="light" style={{ fontSize: '.875rem', background: 'none', border: '3px solid transparent', padding: '.75rem 1rem' }}>Partners</Button>
-          </ButtonGroup>
-          <Dropdown className="right-dropdown categories__item">
-            <Dropdown.Toggle variant="light" id="dropdown-basic" className="right-dropdown__toggle" style={{ fontSize: '.875rem', fontWeight: 'bold', background: 'none', border: '3px solid transparent', padding: '.75rem 1rem' }}>
-              More
-            </Dropdown.Toggle>
-            <Dropdown.Menu className="right-dropdown-menu">
-              <Dropdown.Item className="right-dropdown-menu__item" href="#/action-1" style={{ fontSize: '1rem' }}>Action</Dropdown.Item>
-              <Dropdown.Item className="right-dropdown-menu__item" href="#/action-2" style={{ fontSize: '1rem' }}>Another action</Dropdown.Item>
-              <Dropdown.Item className="right-dropdown-menu__item" href="#/action-3" style={{ fontSize: '1rem' }}>Something else</Dropdown.Item>
-            </Dropdown.Menu>
-          </Dropdown>
-        </div>
-        {this.props.userPublications.map((userPublication, index) => (
-          <ContentCard
-            key={index}
-            postIndex={index}
-            user={this.props.user}
-            userPublication={userPublication}
-            userPublications={this.props.userPublications}
-          />
-        ))}
+        <Tabs
+          id="controlled-tab-example"
+          activeKey={this.state.selectedTab}
+          onSelect={key => this.setState({ 'selectedTab': key })}
+        >
+          <Tab eventKey="updates" title="Updates" unmountOnExit={true}>
+            {this.state.updatedPublication.map((userPublication, index) => (
+              <ContentCard
+                key={index}
+                postIndex={index}
+                user={this.props.user}
+                userPublication={userPublication}
+                userPublications={this.props.userPublications}
+              />
+            ))}
+          </Tab>
+          <Tab eventKey="works" title="Works" unmountOnExit={true}>
+            {this.state.workPublication.map((userPublication, index) => (
+              <ContentCard
+                key={index}
+                postIndex={index}
+                user={this.props.user}
+                userPublication={userPublication}
+                userPublications={this.props.userPublications}
+              />
+            ))}
+          </Tab>
+          <Tab eventKey="audience" title="Audience" unmountOnExit={true}>
+            <div>Audience</div>
+          </Tab>
+        </Tabs>
 
         {this.props.loading && <div className="mt-3 font-weight-bold">
           <Alert variant="light">

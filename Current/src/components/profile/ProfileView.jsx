@@ -11,14 +11,14 @@ export default class ProfileView extends React.Component {
       <section style={{ backgroundColor: '#f2f2f2' }}>
         <Container className="content">
           <Row>
-            <Col md={{ span: 3, offset: 1 }}>
+            <Col md={3}>
               <Left
                 partners={this.props.userPartners}
                 followers={this.props.userFollowers}
                 user={this.props.userInfo.user}
               />
             </Col>
-            <Col md={7}>
+            <Col md={6}>
               <Right
                 loading={this.props.loading}
                 user={this.props.userInfo.user}
