@@ -25,7 +25,7 @@ class Popup extends Component {
     this.props.clearPromotedUsers()
   }
   render() {
-    const { userPublication, show, onHide ,updatedLikes,updatedPromotes,promotedUsers} = this.props;
+    const { userPublication, show, onHide ,likeCount,promoteCount,promotedUsers} = this.props;
     return (
       <Modal show={show} onShow={this.onModalShow} onHide={onHide} >
         <div className="carousel-control-prev" role="button" onClick={this.props.onPrevClick}>
@@ -66,10 +66,10 @@ class Popup extends Component {
             </Player>
           )}
           <div className="d-flex justify-content-between align-items-center mt-1">
-            <span className="like"><FontAwesomeIcon icon={['far', 'heart']} color="#bebebe" /> {this.props.formatCount(updatedLikes ? updatedLikes : userPublication.likes)}</span>
+            <span className="like"><FontAwesomeIcon icon={['far', 'heart']} color="#bebebe" /> {this.props.formatCount(likeCount)}</span>
             <span className="like" style={{ color: '#bebebe', fontWeight: '400' }}>|</span>
             <span className="d-flex align-items-center">
-              <span className="like"><FontAwesomeIcon icon={['fas', 'share']} color="#bebebe" /> {this.props.formatCount(updatedPromotes ? updatedPromotes : userPublication.promote)}</span>
+              <span className="like"><FontAwesomeIcon icon={['fas', 'share']} color="#bebebe" /> {this.props.formatCount(promoteCount)}</span>
               <span className="like d-flex align-items-center">&nbsp;Promoted by&nbsp;&nbsp;&nbsp;&nbsp;
                 {promotedUsers.users.slice(0,4).map((user,key) => (
                       <Image key={key}className="promoted-by-image" src={BASE_URL + user.avatar} />
