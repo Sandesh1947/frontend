@@ -10,7 +10,6 @@ function sampleLogin() {
 }
 
 function callLoginApi(data) {
-  console.log(data);
   return axios.post(BASE_URL + '/api/authenticate/', data);
 }
 

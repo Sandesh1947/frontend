@@ -37,7 +37,7 @@ export default class SearchResultsView extends React.Component {
                             <Tab eventKey="people" title="People" unmountOnExit={true}>
                                 <PeopleTab keyword={this.state.keyword} />
                             </Tab>
-                            <Tab eventKey="publications" title="Pulibcations" unmountOnExit={true}>
+                            <Tab eventKey="publications" title="Publications" unmountOnExit={true}>
                                 <PubicationsTab keyword={this.state.keyword} />
                             </Tab>
                         </Tabs>

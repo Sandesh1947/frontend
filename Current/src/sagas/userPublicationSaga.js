@@ -24,6 +24,10 @@ import {
   NO_MORE_LIKED_USERS,
   FETCH_PROMOTED_USERS,
   FETCH_LIKED_USERS,
+  FETCHING_OTHER_USER_PUBLICATIONS ,
+  GET_OTHER_USER_PUBLICATIONS,
+  NO_MORE_OTHER_USER_PUBLICATIONS,
+  FETCHED_OTHER_USER_PUBLICATIONS ,
 
 } from '../actions/types';
 
@@ -113,6 +117,24 @@ function* getPromotedUsers(action) {
 }
 
 
+function* getOtherUserPublicationsWorker(action) {
+  try {
+    yield put({ type: FETCHING_OTHER_USER_PUBLICATIONS  });
+    const pubResponse = yield axios.get(BASE_URL + '/api/otheruserpublications/'+action.id+'/', {
+      params: action.query ? action.query(action) : null,
+    });
+    if (pubResponse && pubResponse.data) {
+      yield put({ type: FETCHED_OTHER_USER_PUBLICATIONS, payload: pubResponse });
+    } else {
+      yield put({ type: NO_MORE_OTHER_USER_PUBLICATIONS });
+    }
+
+  } catch (error) {
+    yield put({ type: ERROR_OCCUR, payload: { message: 'Something went wrong. Please try again later' } });
+  }
+}
+
+
 export function* PublishPostWatcher() {
   yield takeLatest(POST_PUBLICATION, postPublication);
 }
@@ -126,4 +148,7 @@ export function* getLikedUserWatcher() {
 }
 export function* getPromotedUserWatcher() {
   yield takeLatest(FETCH_PROMOTED_USERS, getPromotedUsers);
+}
+export function* otherUserPublicationWatcher() {
+  yield takeLatest(GET_OTHER_USER_PUBLICATIONS, getOtherUserPublicationsWorker);
 }
