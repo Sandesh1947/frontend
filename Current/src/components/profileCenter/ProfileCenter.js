@@ -27,10 +27,10 @@ export default class ProfileCenter extends Component {
     }
   }
   getWorks() {
-    return this.props.userPublications.filter((publication) => publication.publication_type === 2)
+    return this.props.userPublications.filter((publication) => publication.publication_type === "2")
   }
   getUpdates() {
-    return this.props.userPublications.filter((publication) => publication.publication_type === 1)
+    return this.props.userPublications.filter((publication) => publication.publication_type === "1")
   }
   render() {
     return (

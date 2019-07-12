@@ -169,7 +169,7 @@ export default class ContentCard extends Component {
 
                     >
                       <Popover id="popover-contained" title="View Profile">
-                        <strong><Link to={{pathname:'/profile/',search: queryString.stringify(Object.assign({}, {user_id:user.id})),state:{current_user:userPublication.current_user}}}>Click to view profile of {user.first_name}</Link></strong>
+                        <strong><Link to={{pathname:'/profile/',search: queryString.stringify(Object.assign({}, {user_id:userPublication.user_id})),state:{current_user:userPublication.current_user}}}>Click to view profile of {user.first_name}</Link></strong>
                       </Popover>
                     </Overlay>
                     {userPublication && !isNaN(Date.parse(userPublication.created_at)) &&
@@ -192,6 +192,7 @@ export default class ContentCard extends Component {
                 {userPublication.publication_text}
               </p>
             )}
+             <Image className="content-card__image" src={require('../../assets/avatar.png')}  onClick={this.showPopup} />
             {userPublication && userPublication.publication_img === '1' &&
               <Image className="content-card__image" src={BASE_URL + userPublication.post} onClick={this.showPopup} />
             }

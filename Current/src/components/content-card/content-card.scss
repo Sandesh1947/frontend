@@ -19,6 +19,7 @@
   &__username {
     @extend %h3;
     color: $c-darkest;
+    cursor: pointer;
   }
   &__date {
     @extend %small;

@@ -9,7 +9,6 @@ import './modal.scss';
 
 class PromotedOrLikedUsersView extends React.Component {
   render() {
-    console.log(this.props)
     const { likedUsers, type, promotedUsers } = this.props;
     return (
       <Modal show={true} onHide={this.props.close} className="promoted-liked-users-modal">
