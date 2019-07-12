@@ -1,16 +1,17 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import ReactTimeAgo from 'react-time-ago';
-import {Card, Image } from 'react-bootstrap';
+import {Card, Image,Popover,Overlay } from 'react-bootstrap';
 import { faEllipsisH } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import Popup from '../../components/popup/popup';
-
+import {Link} from 'react-router-dom'
 import { BASE_URL } from '../../app.constants';
 import './content-card.scss';
 import { likePost, promotePost } from '../../actions/userPublicationAction'
 import PromotedOrLikedUsersContainer from '../UserListModal/PromotedOrLikedUsersContainer'
+import queryString from 'query-string';
 export default class ContentCard extends Component {
   static propTypes = {
     user: PropTypes.object.isRequired,
@@ -30,13 +31,16 @@ export default class ContentCard extends Component {
       isPromoted: false,
       openUsersList:false,
       typeOfInterest:'',
-      publicationId:null
+      publicationId:null,
+      showPopOver:false
     }
     this.handleOpenUsersList = this.handleOpenUsersList.bind(this)
     this.handleCloseUsersList = this.handleCloseUsersList.bind(this)
     this.handleClose = this.handleClose.bind(this);
     this.likePost = this.likePost.bind(this)
     this.promotePost = this.promotePost.bind(this)
+    this.handlePopOver =this.handlePopOver.bind(this)
+    this.refList =null;
   }
 
   handleClose = () => {
@@ -121,6 +125,14 @@ export default class ContentCard extends Component {
   handleCloseUsersList() {
     this.setState({typeOfInterest:'',openUsersList:false})
   }
+  handlePopOver(user) {
+    if(user.current_user!==1 && !this.state.showPopOver) {
+        this.setState({showPopOver:true})
+    }
+    else {
+        this.setState({showPopOver:false})
+    }
+}
   render() {
     const { user, userPublication, userPublications } = this.props;
     return (
@@ -149,7 +161,17 @@ export default class ContentCard extends Component {
                     src={userPublication && BASE_URL + userPublication.avatar} />
                   <span className="d-flex flex-column">
                     <h6
-                      className="content-card__username">{userPublication && (userPublication.first_name + ' ' + userPublication.last_name)}</h6>
+                     ref={refList => this.refList = refList} onClick={() => this.handlePopOver(userPublication)} className="content-card__username">{userPublication && (userPublication.first_name + ' ' + userPublication.last_name)}</h6>
+                    <Overlay
+                      show={this.state.showPopOver}
+                      target={this.refList}
+                      placement="bottom"
+
+                    >
+                      <Popover id="popover-contained" title="View Profile">
+                        <strong><Link to={{pathname:'/profile/',search: queryString.stringify(Object.assign({}, {user_id:user.id})),state:{current_user:userPublication.current_user}}}>Click to view profile of {user.first_name}</Link></strong>
+                      </Popover>
+                    </Overlay>
                     {userPublication && !isNaN(Date.parse(userPublication.created_at)) &&
                       <p className="content-card__date"><ReactTimeAgo
                         date={new Date(userPublication.created_at)} /></p>}

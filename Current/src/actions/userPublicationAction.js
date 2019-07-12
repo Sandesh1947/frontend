@@ -3,6 +3,8 @@ import {
   POSTED_PUBLICATION,
   GET_USER_PUBLICATIONS,
   CLEAR_USER_PUBLICATIONS,
+  GET_OTHER_USER_PUBLICATIONS,
+  CLEAR_OTHER_USER_PUBLICATIONS,
   FETCH_LIKED_USERS,
   FETCH_PROMOTED_USERS,
   CLEAR_LIKED_USERS,
@@ -28,3 +30,7 @@ export const fetchLikedUsers = (id, query) => ({ type: FETCH_LIKED_USERS, query,
 export const fetchPromotedUsers = (id, query) => ({ type: FETCH_PROMOTED_USERS, query, id });
 export const clearLikedUsers = () => ({ type: CLEAR_LIKED_USERS });
 export const clearPromotedUsers = () => ({ type: CLEAR_PROMOTED_USERS });
+
+
+export const getOtherUserPublications = id => ({ type: GET_OTHER_USER_PUBLICATIONS, id });
+export const clearOtherUserPublication = () => ({ type: CLEAR_OTHER_USER_PUBLICATIONS });

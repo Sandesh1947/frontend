@@ -4,12 +4,14 @@ import {
   userInfoWatcher,
   userFollowerWatcher,
   userPartnerWatcher,
+  otherUserInfoWatcher
 } from './userActionSaga';
 import {
   UserPublicationWatcher,
   PublishPostWatcher,
   getLikedUserWatcher,
-  getPromotedUserWatcher
+  getPromotedUserWatcher,
+  otherUserPublicationWatcher
 } from './userPublicationSaga';
 import { GetWorkTypesWatcher } from './workTypeSaga';
 import { GetAccessTypesWatcher } from './accessTypeSaga';
@@ -25,6 +27,8 @@ export default function* rootSaga() {
     GetWorkTypesWatcher(),
     GetAccessTypesWatcher(),
     getPromotedUserWatcher(),
-    getLikedUserWatcher()
+    getLikedUserWatcher(),
+    otherUserInfoWatcher(),
+    otherUserPublicationWatcher()
   ]);
 }
