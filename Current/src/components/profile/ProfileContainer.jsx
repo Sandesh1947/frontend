@@ -26,7 +26,6 @@ class ProfileContainer extends React.Component {
       this.props.getOtherUserPublications(user)
     }
     else {
-      this.props.getUserPublications();
       if (!this.props.userInfo.user) {
         this.props.getUserInfo();
       }
