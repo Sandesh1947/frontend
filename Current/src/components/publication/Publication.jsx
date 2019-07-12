@@ -35,7 +35,7 @@ class Publication extends Component {
   static getDerivedStateFromProps(props, state) {
     const derived = {};
     if (props.accessTypes && props.accessTypes.length && !state.accessType) {
-      derived.accessType = props.accessTypes.find(t => t.type === 'Public');
+      derived.accessType = props.accessTypes.find(t => t.accesstype === 'Public');
     }
     return derived;
   }
@@ -97,22 +97,22 @@ class Publication extends Component {
 
   renderAccessTypeItem = accessType => (
     <React.Fragment>
-      {accessType && accessType.type === 'Public' && <FontAwesomeIcon icon={faGlobe} className="access-type__icon" />}
-      {accessType && accessType.type === 'Restricted' && <FontAwesomeIcon icon={faKey} className="access-type__icon" />}
-      {accessType ? accessType.type : ''}
+      {accessType && accessType.accesstype === 'Public' && <FontAwesomeIcon icon={faGlobe} className="access-type__icon" />}
+      {accessType && accessType.accesstype === 'Restricted' && <FontAwesomeIcon icon={faKey} className="access-type__icon" />}
+      {accessType ? accessType.accesstype : ''}
     </React.Fragment>
   )
 
   renderWorkTypeItem = workType => (
     <Dropdown.Item key={workType.id} onClick={() => this.setState({ workType })}>
-      {workType.type}
+      {workType.worktype}
     </Dropdown.Item>
   )
 
   get workTypeDropdown() {
     return this.props.publicationType === 'work' && (
       <DropdownButton
-        title={this.state.workType ? this.state.workType.type : 'Forms'}
+        title={this.state.workType ? this.state.workType.worktype : 'Forms'}
         className="publication-form__work-type"
       >
         {this.props.workTypes.map(this.renderWorkTypeItem)}
