@@ -10,7 +10,7 @@ import DocumentThumbnail from './DocumentThumbnail';
 
 import './Attachment.scss';
 
-let fileInputId = 1;
+let fileInputId = 0;
 
 /**
  * This component is used to upload documents and files.
@@ -40,7 +40,8 @@ class Attachment extends Component {
   static isVideo = file => file && file.type === 'video/mp4';
   static isDocument = file => file && !Attachment.isVideo(file) && !Attachment.isImage(file);
 
-  componentDidMount() {
+  constructor() {
+    super(...arguments);
     fileInputId++;
   }
 
