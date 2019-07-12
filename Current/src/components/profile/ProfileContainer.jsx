@@ -14,6 +14,8 @@ class ProfileContainer extends React.Component {
       page: 1,
       isCurrentUser: 1
     }
+    this.trackScrolling = this.trackScrolling.bind(this)
+    this.loadMoreData = this.loadMoreData.bind(this)
   }
   componentDidMount() {
     const location = this.props.location
@@ -56,7 +58,7 @@ class ProfileContainer extends React.Component {
   trackScrolling = () => {
     const scrollable = document.documentElement.scrollHeight - window.innerHeight;
     const scrolled = window.scrollY;
-    const userPublications = []
+    let userPublications = []
     if (this.state.isCurrentUser === 1)
       userPublications = this.props.userPublications;
     else
