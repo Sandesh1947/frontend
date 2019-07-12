@@ -16,8 +16,6 @@ class ProfileContainer extends React.Component {
   componentDidMount() {
     const location = this.props.location
     if(location.state && location.state.current_user) {
-      console.log(location)
-      console.log('in other userprofile')
       this.setState({isCurrentUser:location.state.current_user})
       let user = queryString.parse(location.search).user_id
       this.props.getOtherUserProfile(user)

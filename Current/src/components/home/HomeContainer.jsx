@@ -26,10 +26,8 @@ class HomeContainer extends React.Component {
 
   loadMoreData = () => {
     if (this.props.userPublications.noMoreData || this.props.userPublications.loading) {
-      console.log('in scrolling return')
       return;
     }
-    console.log('after return scrolling')
     this.props.getUserPublications({ page: this.state.page + 1 });
     this.setState({ page: this.state.page + 1 });
   }
@@ -37,11 +35,8 @@ class HomeContainer extends React.Component {
   trackScrolling = () => {
     const scrollable = document.documentElement.scrollHeight - window.innerHeight;
     const scrolled = window.scrollY;
-    console.log('loadmore data before if')
-    console.log(this.props.userPublications)
     if (!this.props.userPublications.noMoreData && !this.props.userPublications.loading
       && this.state.lastScrollPos < scrolled && Math.ceil(scrolled) >= scrollable - 100) {
-        console.log('loadmore data')
       this.loadMoreData();
     }
 
