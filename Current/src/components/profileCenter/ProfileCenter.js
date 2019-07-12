@@ -30,10 +30,6 @@ export default class ProfileCenter extends Component {
     return this.props.userPublications.filter((publication) => publication.publication_type === 2)
   }
   getUpdates() {
-    console.log('in updates')
-    console.log(this.props.currentUserState)
-    console.log(this.props.userPublications)
-    console.log(this.props.userPublications.filter((publication) => publication.publication_type === 1))
     return this.props.userPublications.filter((publication) => publication.publication_type === 1)
   }
   render() {
