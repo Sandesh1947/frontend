@@ -192,7 +192,6 @@ export default class ContentCard extends Component {
                 {userPublication.publication_text}
               </p>
             )}
-             <Image className="content-card__image" src={require('../../assets/avatar.png')}  onClick={this.showPopup} />
             {userPublication && userPublication.publication_img === '1' &&
               <Image className="content-card__image" src={BASE_URL + userPublication.post} onClick={this.showPopup} />
             }
