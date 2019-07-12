@@ -1,18 +1,18 @@
 import React from 'react'
-import Col from 'react-bootstrap/Col';
-import Row from 'react-bootstrap/Row';
+import {Col,Alert,Spinner,Row,Popover,Overlay} from 'react-bootstrap';
 import { peopleSearch } from '../../actions/searchAction'
 import { BASE_URL } from '../../app.constants';
-import Alert from 'react-bootstrap/Alert';
-import Spinner from 'react-bootstrap/Spinner';
-
+import {Link} from 'react-router-dom'
+import queryString from 'query-string';
 export default class PeopleTab extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
             searchResults: [], lastScrollPos: 0,
-            page: 1, noMoreData: false, loading: false
+            page: 1, noMoreData: false, loading: false,showPopOver:[]
         }
+        this.handlePopOver =this.handlePopOver.bind(this)
+        this.refList =[];
     }
     componentDidMount() {
         document.addEventListener('scroll', this.trackScrolling);
@@ -67,6 +67,18 @@ export default class PeopleTab extends React.Component {
 
         this.setState({ lastScrollPos: scrolled });
     }
+    handlePopOver(user,key) {
+        if(user.current_user===1 && !this.state.showPopOver[key]) {
+            let currentState = this.state.showPopOver
+            currentState[key] = true
+            this.setState({showPopOver:currentState})
+        }
+        else {
+            let currentState = this.state.showPopOver
+            currentState[key] = false
+            this.setState({showPopOver:currentState})
+        }
+    }
     render() {
         return (
             <React.Fragment>
@@ -76,7 +88,17 @@ export default class PeopleTab extends React.Component {
                             <Col className='flex-container' md={4}>
                                 <span><img className='user-image' src={BASE_URL + user.avatar} alt='avatar' /></span>
                                 <div className='flex-container flex-direction-column user-details-div'>
-                                    <span>{user.first_name} {user.last_name}</span>
+                                    <span  ref={refList => this.refList[key] = refList} onClick={() => this.handlePopOver(user,key)}>{user.first_name} {user.last_name}</span>
+                                    <Overlay
+                                        show={this.state.showPopOver[key]}
+                                        target={this.refList[key]}
+                                        placement="bottom"
+
+                                    >
+                                        <Popover id="popover-contained" title="View Profile">
+                                            <strong><Link to={{pathname:'/profile/?user='+user.id,search: queryString.stringify(Object.assign({}, {user_id:user.id})),state:{current_user:user.current_user}}}>Click to view profile of {user.first_name}</Link></strong>
+                                        </Popover>
+                                    </Overlay>
                                     <span>@{user.email}</span>
                                 </div>
                             </Col>
