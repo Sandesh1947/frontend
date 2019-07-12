@@ -18,6 +18,7 @@ class ProfileContainer extends React.Component {
   componentDidMount() {
     const location = this.props.location
     if (location.state && location.state.current_user) {
+      console.log('state')
       this.setState({ isCurrentUser: location.state.current_user })
       let user = queryString.parse(location.search).user_id
       this.props.getOtherUserProfile(user)
@@ -71,6 +72,7 @@ class ProfileContainer extends React.Component {
   }
 
   render() {
+    console.log(this.state)
     const { userPartners, userPublications, userFollowers, userInfo, otherUserInfo, otherUserPublications } = this.props;
     return (
       <ProfileView
