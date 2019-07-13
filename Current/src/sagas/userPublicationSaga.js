@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { takeLatest, put } from 'redux-saga/effects';
-
+import isEmpty from 'lodash/isEmpty';
 import { BASE_URL } from '../app.constants';
 import Attachment from '../components/generic/Attachment';
 import {
@@ -73,9 +73,10 @@ function* getUserPublicationsWorker(action) {
       params: action.query
     });
     yield console.log('####in saga',pubResponse.data)
-    if (pubResponse && pubResponse.data !==[]) {
+    if (!isEmpty(pubResponse.data)) {
       yield put({ type: FETCHED_USER_PUBLICATIONS, payload: pubResponse });
     } else {
+      console.log('in no more data')
       yield put({ type: NO_MORE_USER_PUBLICATIONS });
     }
 
@@ -124,7 +125,7 @@ function* getOtherUserPublicationsWorker(action) {
     const pubResponse = yield axios.get(BASE_URL + '/api/otheruserpublications/'+action.id+'/', {
       params:action.query
     });
-    if (pubResponse && pubResponse.data !==[]) {
+    if (!isEmpty(pubResponse.data))  {
       yield put({ type: FETCHED_OTHER_USER_PUBLICATIONS, payload: pubResponse });
     } else {
       yield put({ type: NO_MORE_OTHER_USER_PUBLICATIONS });
