@@ -47,8 +47,10 @@ class ProfileContainer extends React.Component {
     if (this.props.userPublications.noMoreData || this.props.userPublications.loading) {
       return;
     }
-    if (this.state.isCurrentUser === 1)
+    if (this.state.isCurrentUser === 1) {
+      console.log('page (inside loadmore):',this.state.page)
       this.props.getUserPublications({ page: this.state.page + 1 });
+    }
     else
       this.props.getOtherUserPublications({ page: this.state.page + 1 });
     this.setState({ page: this.state.page + 1 });
@@ -72,6 +74,7 @@ class ProfileContainer extends React.Component {
   }
 
   render() {
+    console.log('page (inside render):',this.state.page)
     const { userPartners, userPublications, userFollowers, userInfo, otherUserInfo, otherUserPublications } = this.props;
     return (
       <ProfileView
