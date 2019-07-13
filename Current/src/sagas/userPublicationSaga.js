@@ -72,6 +72,7 @@ function* getUserPublicationsWorker(action) {
     const pubResponse = yield axios.get(BASE_URL + '/api/userpublications', {
       params: action.query
     });
+    yield console.log('####in saga',pubResponse.data)
     if (pubResponse && pubResponse.data !==[]) {
       yield put({ type: FETCHED_USER_PUBLICATIONS, payload: pubResponse });
     } else {
