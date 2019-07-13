@@ -27,6 +27,7 @@ class HomeContainer extends React.Component {
     if (this.props.userPublications.noMoreData || this.props.userPublications.loading) {
       return;
     }
+    console.log('#### home page',this.props.userPublications)
     this.props.getUserPublications({ page: this.props.userPublications.page + 1 });
     this.props.userPublications.page = this.props.userPublications.page + 1  
   }

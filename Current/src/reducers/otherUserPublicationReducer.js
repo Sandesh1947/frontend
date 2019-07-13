@@ -18,14 +18,14 @@ import {
         return {
           publications: state.publications.concat(action.payload.data),
           loading: false,
-          noMoreData: false,
+          noMoreData: state.noMoreData,
           page:state.page
         };
       case FETCHING_OTHER_USER_PUBLICATIONS:
         return {
           publications: state.publications,
           loading: true,
-          noMoreData: false,
+          noMoreData: state.noMoreData,
           page:state.page
         };
       case NO_MORE_OTHER_USER_PUBLICATIONS:
@@ -39,7 +39,7 @@ import {
         return {
           publications: [],
           loading: false,
-          noMoreData: true,
+          noMoreData: state.noMoreData,
           page:state.page
         };
       default: return state;
