@@ -72,11 +72,9 @@ function* getUserPublicationsWorker(action) {
     const pubResponse = yield axios.get(BASE_URL + '/api/userpublications', {
       params: action.query
     });
-    yield console.log('####in saga',pubResponse.data)
     if (!isEmpty(pubResponse.data)) {
       yield put({ type: FETCHED_USER_PUBLICATIONS, payload: pubResponse });
     } else {
-      console.log('in no more data')
       yield put({ type: NO_MORE_USER_PUBLICATIONS });
     }
 
