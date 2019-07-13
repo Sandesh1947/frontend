@@ -72,7 +72,7 @@ function* getUserPublicationsWorker(action) {
     const pubResponse = yield axios.get(BASE_URL + '/api/userpublications', {
       params: action.query
     });
-    if (pubResponse && pubResponse.data) {
+    if (pubResponse && pubResponse.data !==[]) {
       yield put({ type: FETCHED_USER_PUBLICATIONS, payload: pubResponse });
     } else {
       yield put({ type: NO_MORE_USER_PUBLICATIONS });
@@ -123,7 +123,7 @@ function* getOtherUserPublicationsWorker(action) {
     const pubResponse = yield axios.get(BASE_URL + '/api/otheruserpublications/'+action.id+'/', {
       params:action.query
     });
-    if (pubResponse && pubResponse.data) {
+    if (pubResponse && pubResponse.data !==[]) {
       yield put({ type: FETCHED_OTHER_USER_PUBLICATIONS, payload: pubResponse });
     } else {
       yield put({ type: NO_MORE_OTHER_USER_PUBLICATIONS });

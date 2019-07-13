@@ -11,7 +11,6 @@ class ProfileContainer extends React.Component {
     super()
     this.state = {
       lastScrollPos: 0,
-      page: 1,
       isCurrentUser: 1
     }
     this.trackScrolling = this.trackScrolling.bind(this)
@@ -48,12 +47,12 @@ class ProfileContainer extends React.Component {
       return;
     }
     if (this.state.isCurrentUser === 1) {
-      console.log('page (inside loadmore):',this.state.page)
-      this.props.getUserPublications({ page: this.state.page + 1 });
+      this.props.getUserPublications({ page: this.props.userPublications.page + 1 });
+      this.props.userPublications.page = this.props.userPublications.page + 1  
     }
     else
-      this.props.getOtherUserPublications({ page: this.state.page + 1 });
-    this.setState({ page: this.state.page + 1 });
+      this.props.getOtherUserPublications({ page: this.props.otherUserPublications.page + 1   });
+      this.props.otherUserPublications.page = this.props.otherUserPublications.page + 1  
   }
 
   trackScrolling = () => {
