@@ -126,7 +126,7 @@ export default class ContentCard extends Component {
     this.setState({typeOfInterest:'',openUsersList:false})
   }
   handlePopOver(user) {
-    if(user.current_user!==1 && !this.state.showPopOver) {
+    if(user.currentuser!==1 && !this.state.showPopOver) {
         this.setState({showPopOver:true})
     }
     else {
@@ -169,7 +169,7 @@ export default class ContentCard extends Component {
 
                     >
                       <Popover id="popover-contained" title="View Profile">
-                        <strong><Link to={{pathname:'/profile/',search: queryString.stringify(Object.assign({}, {user_id:userPublication.user_id})),state:{current_user:userPublication.current_user}}}>Click to view profile of {userPublication.first_name}</Link></strong>
+                        <strong><Link to={{pathname:'/profile/',search: queryString.stringify(Object.assign({}, {user_id:userPublication.user_id})),state:{currentuser:userPublication.currentuser}}}>Click to view profile of {userPublication.first_name}</Link></strong>
                       </Popover>
                     </Overlay>
                     {userPublication && !isNaN(Date.parse(userPublication.created_at)) &&
