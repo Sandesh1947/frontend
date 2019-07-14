@@ -68,7 +68,7 @@ export default class PeopleTab extends React.Component {
         this.setState({ lastScrollPos: scrolled });
     }
     handlePopOver(user,key) {
-        if(user.currentuser ===1 && !this.state.showPopOver[key]) {
+        if(user.currentuser ===0 && !this.state.showPopOver[key]) {
             let currentState = this.state.showPopOver
             currentState[key] = true
             this.setState({showPopOver:currentState})

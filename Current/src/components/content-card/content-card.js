@@ -126,7 +126,7 @@ export default class ContentCard extends Component {
     this.setState({typeOfInterest:'',openUsersList:false})
   }
   handlePopOver(user) {
-    if(user.currentuser!==1 && !this.state.showPopOver) {
+    if(user.currentuser ===0 && !this.state.showPopOver) {
         this.setState({showPopOver:true})
     }
     else {
