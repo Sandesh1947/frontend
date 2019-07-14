@@ -46,7 +46,6 @@ class ProfileContainer extends React.Component {
     if (this.props.userPublications.noMoreData || this.props.userPublications.loading) {
       return;
     }
-    console.log('#### prfile page',this.props.userPublications)
     if (this.state.isCurrentUser === 1) {
       this.props.getUserPublications({ page: this.props.userPublications.page + 1 });
       this.props.userPublications.page = this.props.userPublications.page + 1  
