@@ -32,7 +32,7 @@ export default class ContentCard extends Component {
       openUsersList:false,
       typeOfInterest:'',
       publicationId:null,
-      showPopOver:false
+      showPopOver:[]
     }
     this.handleOpenUsersList = this.handleOpenUsersList.bind(this)
     this.handleCloseUsersList = this.handleCloseUsersList.bind(this)
@@ -77,6 +77,16 @@ export default class ContentCard extends Component {
 
   componentDidMount() {
     document.addEventListener('keydown', this.keyDownEvent);
+    document.addEventListener('click',(event) => {
+      let currentState = this.state.showPopOver
+      if(event.target.id !=='username-content') {
+          currentState.forEach((element,key) => {
+              if(currentState[key])
+              currentState[key] = false
+          });
+          this.setState({showPopOver:currentState})
+      }
+  })
   }
 
   componentWillUnmount() {
@@ -125,13 +135,17 @@ export default class ContentCard extends Component {
   handleCloseUsersList() {
     this.setState({typeOfInterest:'',openUsersList:false})
   }
-  handlePopOver(user) {
-    if(user.currentuser ===0 && !this.state.showPopOver) {
-        this.setState({showPopOver:true})
-    }
-    else {
-        this.setState({showPopOver:false})
-    }
+  handlePopOver(user,key) {
+    if(user.currentuser ===0 && !this.state.showPopOver[key]) {
+      let currentState = this.state.showPopOver
+      currentState[key] = true
+      this.setState({showPopOver:currentState})
+  }
+  else {
+      let currentState = this.state.showPopOver
+      currentState[key] = false
+      this.setState({showPopOver:currentState})
+  }
 }
   render() {
     const { user, userPublication, userPublications } = this.props;
@@ -161,9 +175,9 @@ export default class ContentCard extends Component {
                     src={userPublication && BASE_URL + userPublication.avatar} />
                   <span className="d-flex flex-column">
                     <h6
-                     ref={refList => this.refList = refList} onClick={() => this.handlePopOver(userPublication)} className="content-card__username">{userPublication && (userPublication.first_name + ' ' + userPublication.last_name)}</h6>
+                     id='username-content' ref={refList => this.refList = refList} onClick={() => this.handlePopOver(userPublication,this.props.postIndex)} className="content-card__username">{userPublication && (userPublication.first_name + ' ' + userPublication.last_name)}</h6>
                     <Overlay
-                      show={this.state.showPopOver}
+                      show={this.state.showPopOver[this.props.postIndex]}
                       target={this.refList}
                       placement="bottom"
 
