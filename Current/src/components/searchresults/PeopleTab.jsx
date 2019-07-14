@@ -24,6 +24,16 @@ export default class PeopleTab extends React.Component {
                 }
             )
         }
+        document.addEventListener('click',(event) => {
+            let currentState = this.state.showPopOver
+            if(event.target.id !=='username') {
+                currentState.forEach((element,key) => {
+                    if(currentState[key])
+                    currentState[key] = false
+                });
+                this.setState({showPopOver:currentState})
+            }
+        })
     }
     componentDidUpdate(prevProps) {
         if ((this.props.keyword !== prevProps.keyword) && this.props.keyword) {
@@ -88,7 +98,7 @@ export default class PeopleTab extends React.Component {
                             <Col className='flex-container' md={4}>
                                 <span><img className='user-image' src={BASE_URL + user.avatar} alt='avatar' /></span>
                                 <div className='flex-container flex-direction-column user-details-div'>
-                                    <span className='search-username'  ref={refList => this.refList[key] = refList} onClick={() => this.handlePopOver(user,key)}>{user.first_name} {user.last_name}</span>
+                                    <span id='username' className='search-username'  ref={refList => this.refList[key] = refList} onClick={() => this.handlePopOver(user,key)}>{user.first_name} {user.last_name}</span>
                                     <Overlay
                                         show={this.state.showPopOver[key]}
                                         target={this.refList[key]}
