@@ -18,13 +18,17 @@ class ProfileContainer extends React.Component {
   }
   componentDidMount() {
     const location = this.props.location
+    console.log('#### profilecontainer')
+    console.log(location)
     if (location.state && location.state.currentuser) {
+      console.log('in if')
       this.setState({ isCurrentUser: location.state.currentuser })
       let user = queryString.parse(location.search).user_id
       this.props.getOtherUserProfile(user)
       this.props.getOtherUserPublications(user)
     }
     else {
+      console.log('in ele')
       if (!this.props.userInfo.user) {
         this.props.getUserInfo();
       }

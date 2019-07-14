@@ -88,7 +88,7 @@ export default class PeopleTab extends React.Component {
                             <Col className='flex-container' md={4}>
                                 <span><img className='user-image' src={BASE_URL + user.avatar} alt='avatar' /></span>
                                 <div className='flex-container flex-direction-column user-details-div'>
-                                    <span  ref={refList => this.refList[key] = refList} onClick={() => this.handlePopOver(user,key)}>{user.first_name} {user.last_name}</span>
+                                    <span className='search-username'  ref={refList => this.refList[key] = refList} onClick={() => this.handlePopOver(user,key)}>{user.first_name} {user.last_name}</span>
                                     <Overlay
                                         show={this.state.showPopOver[key]}
                                         target={this.refList[key]}
