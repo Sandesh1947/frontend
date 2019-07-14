@@ -7,6 +7,8 @@ import './left.scss';
 
 export default class Left extends Component {
   render() {
+    console.log('##in left')
+    console.log(this.props.user)
     return (
       <div className='left'>
         <Image src={this.props.user && BASE_URL + this.props.user.avatar} className='left__avatar' />
