@@ -12,6 +12,7 @@ export default class PeopleTab extends React.Component {
             page: 1, noMoreData: false, loading: false,showPopOver:[]
         }
         this.handlePopOver =this.handlePopOver.bind(this)
+        this.handleBodyClick = this.handleBodyClick.bind(this)
         this.refList =[];
     }
     componentDidMount() {
@@ -24,16 +25,7 @@ export default class PeopleTab extends React.Component {
                 }
             )
         }
-        document.addEventListener('click',(event) => {
-            let currentState = this.state.showPopOver
-            if(event.target.id !=='username') {
-                currentState.forEach((element,key) => {
-                    if(currentState[key])
-                    currentState[key] = false
-                });
-                this.setState({showPopOver:currentState})
-            }
-        })
+         document.addEventListener('click', this.handleBodyClick)
     }
     componentDidUpdate(prevProps) {
         if ((this.props.keyword !== prevProps.keyword) && this.props.keyword) {
@@ -47,7 +39,18 @@ export default class PeopleTab extends React.Component {
     }
     componentWillUnmount() {
         document.removeEventListener('scroll', this.trackScrolling);
+        document.removeEventListener('click',this.handleBodyClick)
     }
+    handleBodyClick(event) {
+        let currentState = this.state.showPopOver
+        if(event.target.id !=='username') {
+            currentState.forEach((element,key) => {
+                if(currentState[key])
+                currentState[key] = false
+            });
+            this.setState({showPopOver:currentState})
+        }
+      }
     loadMoreData = () => {
         if (this.state.noMoreData || this.state.loading) {
             return;

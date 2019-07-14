@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import ReactTimeAgo from 'react-time-ago';
-import {Card, Image,Popover,Overlay } from 'react-bootstrap';
+import { Card, Image, Popover, Overlay } from 'react-bootstrap';
 import { faEllipsisH } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import Popup from '../../components/popup/popup';
-import {Link} from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { BASE_URL } from '../../app.constants';
 import './content-card.scss';
 import { likePost, promotePost } from '../../actions/userPublicationAction'
@@ -29,18 +29,19 @@ export default class ContentCard extends Component {
       promoteCount: props.userPublication.promote,
       isLiked: false,
       isPromoted: false,
-      openUsersList:false,
-      typeOfInterest:'',
-      publicationId:null,
-      showPopOver:[]
+      openUsersList: false,
+      typeOfInterest: '',
+      publicationId: null,
+      showPopOver: []
     }
     this.handleOpenUsersList = this.handleOpenUsersList.bind(this)
     this.handleCloseUsersList = this.handleCloseUsersList.bind(this)
     this.handleClose = this.handleClose.bind(this);
     this.likePost = this.likePost.bind(this)
     this.promotePost = this.promotePost.bind(this)
-    this.handlePopOver =this.handlePopOver.bind(this)
-    this.refList =null;
+    this.handlePopOver = this.handlePopOver.bind(this)
+    this.handleBodyClick = this.handleBodyClick.bind(this)
+    this.refList = null;
   }
 
   handleClose = () => {
@@ -74,46 +75,48 @@ export default class ContentCard extends Component {
       this.onPrevClick();
     }
   }
-
+  handleBodyClick(event) {
+    let currentState = this.state.showPopOver
+    if (event.target.id !== 'username-content') {
+      currentState.forEach((element, key) => {
+        if (currentState[key])
+          currentState[key] = false
+      });
+      this.setState({ showPopOver: currentState })
+    }
+  }
   componentDidMount() {
     document.addEventListener('keydown', this.keyDownEvent);
-    document.addEventListener('click',(event) => {
-      let currentState = this.state.showPopOver
-      if(event.target.id !=='username-content') {
-          currentState.forEach((element,key) => {
-              if(currentState[key])
-              currentState[key] = false
-          });
-          this.setState({showPopOver:currentState})
-      }
-  })
+    document.addEventListener('click', this.handleBodyClick)
+
   }
 
   componentWillUnmount() {
     document.removeEventListener('keydown', this.keyDownEvent);
+    document.removeEventListener('click',this.handleBodyClick);
   }
   likePost(id) {
-    this.setState({ likeCount:(this.state.likeCount + 1)})
+    this.setState({ likeCount: (this.state.likeCount + 1) })
     likePost(id).then(
       (res) => {
-      this.setState({ likeCount: res.data.count, isLiked: true })
-    },
-    ()=>{
-      this.setState({ likeCount:(this.state.likeCount - 1)})
-    })
+        this.setState({ likeCount: res.data.count, isLiked: true })
+      },
+      () => {
+        this.setState({ likeCount: (this.state.likeCount - 1) })
+      })
   }
   promotePost(id) {
-    this.setState({ promoteCount:(this.state.promoteCount + 1)})
+    this.setState({ promoteCount: (this.state.promoteCount + 1) })
     promotePost(id).then(
       (res) => {
-      this.setState({ promoteCount: res.data.count, isPromoted: true })
-    },
-    ()=>{
-      this.setState({ promoteCount:(this.state.promoteCount - 1)})
-    })
+        this.setState({ promoteCount: res.data.count, isPromoted: true })
+      },
+      () => {
+        this.setState({ promoteCount: (this.state.promoteCount - 1) })
+      })
   }
   formatCount(count) {
-    if(count) {
+    if (count) {
       if (count < 1000) {
         return count;
       }
@@ -129,24 +132,24 @@ export default class ContentCard extends Component {
     }
   }
 
-  handleOpenUsersList(typeOfInterest,id) {
-    this.setState({typeOfInterest:typeOfInterest,openUsersList:true,publicationId:id})
+  handleOpenUsersList(typeOfInterest, id) {
+    this.setState({ typeOfInterest: typeOfInterest, openUsersList: true, publicationId: id })
   }
   handleCloseUsersList() {
-    this.setState({typeOfInterest:'',openUsersList:false})
+    this.setState({ typeOfInterest: '', openUsersList: false })
   }
-  handlePopOver(user,key) {
-    if(user.currentuser ===0 && !this.state.showPopOver[key]) {
+  handlePopOver(user, key) {
+    if (user.currentuser === 0 && !this.state.showPopOver[key]) {
       let currentState = this.state.showPopOver
       currentState[key] = true
-      this.setState({showPopOver:currentState})
-  }
-  else {
+      this.setState({ showPopOver: currentState })
+    }
+    else {
       let currentState = this.state.showPopOver
       currentState[key] = false
-      this.setState({showPopOver:currentState})
+      this.setState({ showPopOver: currentState })
+    }
   }
-}
   render() {
     const { user, userPublication, userPublications } = this.props;
     return (
@@ -158,12 +161,12 @@ export default class ContentCard extends Component {
           onNextClick={this.onNextClick}
           user={user}
           userPublication={userPublications[this.state.postIndex]}
-          likePost = {this.likePost}
-          promotePost = {this.promotePost}
-          likeCount = {this.state.likeCount}
-          promoteCount = {this.state.promoteCount}
-          isLiked = {this.state.isLiked}
-          isPromoted = {this.state.isPromoted}
+          likePost={this.likePost}
+          promotePost={this.promotePost}
+          likeCount={this.state.likeCount}
+          promoteCount={this.state.promoteCount}
+          isLiked={this.state.isLiked}
+          isPromoted={this.state.isPromoted}
           formatCount={this.formatCount}
         />
         <Card style={{ border: 'none' }}>
@@ -175,7 +178,7 @@ export default class ContentCard extends Component {
                     src={userPublication && BASE_URL + userPublication.avatar} />
                   <span className="d-flex flex-column">
                     <h6
-                     id='username-content' ref={refList => this.refList = refList} onClick={() => this.handlePopOver(userPublication,this.props.postIndex)} className="content-card__username">{userPublication && (userPublication.first_name + ' ' + userPublication.last_name)}</h6>
+                      id='username-content' ref={refList => this.refList = refList} onClick={() => this.handlePopOver(userPublication, this.props.postIndex)} className="content-card__username">{userPublication && (userPublication.first_name + ' ' + userPublication.last_name)}</h6>
                     <Overlay
                       show={this.state.showPopOver[this.props.postIndex]}
                       target={this.refList}
@@ -183,7 +186,7 @@ export default class ContentCard extends Component {
 
                     >
                       <Popover id="popover-contained" title="View Profile">
-                        <strong><Link to={{pathname:'/profile/',search: queryString.stringify(Object.assign({}, {user_id:userPublication.user_id})),state:{currentuser:userPublication.currentuser}}}>Click to view profile of {userPublication.first_name}</Link></strong>
+                        <strong><Link to={{ pathname: '/profile/', search: queryString.stringify(Object.assign({}, { user_id: userPublication.user_id })), state: { currentuser: userPublication.currentuser } }}>Click to view profile of {userPublication.first_name}</Link></strong>
                       </Popover>
                     </Overlay>
                     {userPublication && !isNaN(Date.parse(userPublication.created_at)) &&
@@ -218,20 +221,20 @@ export default class ContentCard extends Component {
           <Card.Footer style={{ margin: '0 -1rem', padding: '1rem 1rem 0', borderTopColor: '#f2f2f2' }}>
             <div className='content-card-footer d-flex justify-content-between'>
               <div className='content-card-footer__item'>
-                {(this.state.isLiked || userPublication.liked)? 
-                  <span><span onClick={() => {this.handleOpenUsersList('liked',userPublication.id)}} className='count-value'>{this.formatCount(this.state.likeCount)}</span> <span className='count-value like-done '>Like</span></span> :
-                  <span><span className='count-value' onClick={() => {this.handleOpenUsersList('liked',userPublication.id)}}>{this.formatCount(this.state.likeCount)} </span> <span onClick={() => { this.likePost(userPublication.id) }} className='count-value'>Like</span> </span>}
+                {(this.state.isLiked || userPublication.liked) ?
+                  <span><span onClick={() => { this.handleOpenUsersList('liked', userPublication.id) }} className='count-value'>{this.formatCount(this.state.likeCount)}</span> <span className='count-value like-done '>Like</span></span> :
+                  <span><span className='count-value' onClick={() => { this.handleOpenUsersList('liked', userPublication.id) }}>{this.formatCount(this.state.likeCount)} </span> <span onClick={() => { this.likePost(userPublication.id) }} className='count-value'>Like</span> </span>}
               </div>
               <div className='content-card-footer__item'>
-              {(this.state.isPromoted || userPublication.promoted)?
-              <span><span onClick={() => {this.handleOpenUsersList('promotes',userPublication.id)}} className='count-value'>{this.formatCount(this.state.promoteCount)}</span> <span className='count-value like-done '>Promote</span></span> :
-              <span><span onClick={() => {this.handleOpenUsersList('promotes',userPublication.id)}} className='count-value'>{this.formatCount(this.state.promoteCount)}</span><span onClick={() => { this.promotePost(userPublication.id) }} className='count-value'> Promote</span></span>
-              }
+                {(this.state.isPromoted || userPublication.promoted) ?
+                  <span><span onClick={() => { this.handleOpenUsersList('promotes', userPublication.id) }} className='count-value'>{this.formatCount(this.state.promoteCount)}</span> <span className='count-value like-done '>Promote</span></span> :
+                  <span><span onClick={() => { this.handleOpenUsersList('promotes', userPublication.id) }} className='count-value'>{this.formatCount(this.state.promoteCount)}</span><span onClick={() => { this.promotePost(userPublication.id) }} className='count-value'> Promote</span></span>
+                }
               </div>
             </div>
           </Card.Footer>
         </Card>
-        {this.state.openUsersList &&<PromotedOrLikedUsersContainer close={this.handleCloseUsersList} type={this.state.typeOfInterest} id={this.state.publicationId}/>}
+        {this.state.openUsersList && <PromotedOrLikedUsersContainer close={this.handleCloseUsersList} type={this.state.typeOfInterest} id={this.state.publicationId} />}
       </div>
     );
   }

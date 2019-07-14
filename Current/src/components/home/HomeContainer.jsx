@@ -3,7 +3,7 @@ import HomeView from './HomeView';
 import { connect } from 'react-redux';
 import Loader from '../Loader/Loader';
 import { getUserInfo, getUserFollowers } from '../../actions/userInfoActions';
-import { getUserPublications } from '../../actions/userPublicationAction';
+import { getUserPublications ,clearUserPublication} from '../../actions/userPublicationAction';
 
 class HomeContainer extends React.Component {
   state = {
@@ -11,12 +11,12 @@ class HomeContainer extends React.Component {
   }
 
   componentDidMount() {
+    this.props.getUserPublications();
     // TODO: move this to header??
     // Header is always mounted, while HomeContainer is mounted on the /home page only
     if (!this.props.userInfo.user) {
       this.props.getUserInfo();
     }
-
     if (this.props.userFollowers.followers.length === 0) {
       this.props.getUserFollowers();
     }
@@ -41,7 +41,10 @@ class HomeContainer extends React.Component {
 
     this.setState({ lastScrollPos: scrolled });
   }
-
+  componentWillUnmount() {
+    this.props.clearUserPublication()
+    document.removeEventListener('scroll', this.trackScrolling);
+  }
   render() {
     const { userPublications, userInfo, userFollowers } = this.props;
     return (
@@ -75,6 +78,7 @@ const mapDispatchersToProps = {
   getUserInfo,
   getUserPublications,
   getUserFollowers,
+  clearUserPublication
 };
 
 export default connect(mapStateToProps, mapDispatchersToProps)(HomeContainer);

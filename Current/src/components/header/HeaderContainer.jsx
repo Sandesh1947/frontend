@@ -4,14 +4,14 @@ import { withRouter } from 'react-router-dom';
 import queryString from 'query-string';
 
 import Header from './Header';
-import { getUserPublications, clearUserPublication } from '../../actions/userPublicationAction';
+// import { getUserPublications, clearUserPublication } from '../../actions/userPublicationAction';
 import { logout } from '../../actions/accountAction';
 
 class HeaderContainer extends Component {
-  componentDidMount() {
-    // Header is mounted only once - request user publications here
-    this.props.getUserPublications();
-  }
+  // componentDidMount() {
+  //   It is better to get user publications at home container and profile container as likes and promotes are done and we need to keep track of it as pages are navigated
+  //   this.props.getUserPublications();
+  // }
 
   onSubmitSearchKeyword = (keyword) => {
     if (keyword) {
@@ -48,9 +48,7 @@ class HeaderContainer extends Component {
 const mapStateToProps = ({ userInfo }) => ({ userInfo });
 
 const mapDispatchersToProps = {
-  logout,
-  getUserPublications,
-  clearUserPublication,
+  logout
 };
 
 export default withRouter(connect(mapStateToProps, mapDispatchersToProps)(HeaderContainer));
