@@ -68,7 +68,7 @@ export default class PeopleTab extends React.Component {
         this.setState({ lastScrollPos: scrolled });
     }
     handlePopOver(user,key) {
-        if(user.current_user===1 && !this.state.showPopOver[key]) {
+        if(user.currentuser===1 && !this.state.showPopOver[key]) {
             let currentState = this.state.showPopOver
             currentState[key] = true
             this.setState({showPopOver:currentState})
@@ -96,7 +96,7 @@ export default class PeopleTab extends React.Component {
 
                                     >
                                         <Popover id="popover-contained" title="View Profile">
-                                            <strong><Link to={{pathname:'/profile/?user='+user.id,search: queryString.stringify(Object.assign({}, {user_id:user.id})),state:{current_user:user.current_user}}}>Click to view profile of {user.first_name}</Link></strong>
+                                            <strong><Link to={{pathname:'/profile/?user='+user.id,search: queryString.stringify(Object.assign({}, {user_id:user.id})),state:{currentuser:user.currentuser}}}>Click to view profile of {user.first_name}</Link></strong>
                                         </Popover>
                                     </Overlay>
                                     <span>@{user.email}</span>
