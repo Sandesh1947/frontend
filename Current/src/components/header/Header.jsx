@@ -86,7 +86,7 @@ class Header extends Component {
                       <FontAwesomeIcon icon={faBell} className="navbar-right__icon" />
                     </Button>
                     <NavDropdown
-                      title={user && (user.first_name + ' ' + user.last_name)}
+                      title={user[0] && (user[0].first_name + ' ' + user[0].last_name)}
                       id="basic-nav-dropdown"
                       className="navbar-dropdown"
                     >
@@ -113,7 +113,7 @@ class Header extends Component {
                         }}>Logout</NavDropdown.Item>
                     </NavDropdown>
                     <figure className="navbar-avatar">
-                      <Image src={user && BASE_URL + user.avatar}
+                      <Image src={user[0] && BASE_URL + user[0].avatar}
                         className="navbar-avatar__image" />
                     </figure>
                   </Nav>
