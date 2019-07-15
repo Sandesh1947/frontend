@@ -3,7 +3,7 @@ import ProfileView from './ProfileView';
 import './profile.scss';
 import { connect } from 'react-redux';
 import { getUserInfo, getUserFollowers, getPartners, getOtherUserProfile } from '../../actions/userInfoActions';
-import { getUserPublications, getOtherUserPublications,clearUserPublication,clearOtherUserPublication } from '../../actions/userPublicationAction';
+import { getUserPublications, getOtherUserPublications } from '../../actions/userPublicationAction';
 import queryString from 'query-string'
 
 class ProfileContainer extends React.Component {
@@ -101,5 +101,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { getUserInfo, getUserPublications, getUserFollowers, getPartners, getOtherUserProfile, getOtherUserPublications,clearUserPublication,clearOtherUserPublication }
+  { getUserInfo, getUserPublications, getUserFollowers, getPartners, getOtherUserProfile, getOtherUserPublications }
 )(ProfileContainer); 

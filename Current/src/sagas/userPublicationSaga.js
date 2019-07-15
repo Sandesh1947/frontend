@@ -28,6 +28,8 @@ import {
   GET_OTHER_USER_PUBLICATIONS,
   NO_MORE_OTHER_USER_PUBLICATIONS,
   FETCHED_OTHER_USER_PUBLICATIONS ,
+  FETCHED_USER_PUBLICATIONS_ON_SCROLLING,
+  FETCHED_OTHER_USER_PUBLICATIONS_ON_SCROLLING
 
 } from '../actions/types';
 
@@ -73,7 +75,12 @@ function* getUserPublicationsWorker(action) {
       params: action.query
     });
     if (!isEmpty(pubResponse.data)) {
-      yield put({ type: FETCHED_USER_PUBLICATIONS, payload: pubResponse });
+      if(action.query && action.query.page >1) {
+        yield put({ type:FETCHED_USER_PUBLICATIONS_ON_SCROLLING,payload:pubResponse })
+      }
+      else {
+        yield put({ type: FETCHED_USER_PUBLICATIONS, payload: pubResponse });
+      }
     } else {
       yield put({ type: NO_MORE_USER_PUBLICATIONS });
     }
@@ -124,7 +131,12 @@ function* getOtherUserPublicationsWorker(action) {
       params:action.query
     });
     if (!isEmpty(pubResponse.data))  {
-      yield put({ type: FETCHED_OTHER_USER_PUBLICATIONS, payload: pubResponse });
+      if(action.query && action.query.page > 1) {
+        yield put({ type: FETCHED_OTHER_USER_PUBLICATIONS_ON_SCROLLING, payload: pubResponse });
+      }
+      else {
+        yield put({ type: FETCHED_OTHER_USER_PUBLICATIONS, payload: pubResponse });
+      }
     } else {
       yield put({ type: NO_MORE_OTHER_USER_PUBLICATIONS });
     }
