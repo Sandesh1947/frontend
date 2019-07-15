@@ -41,8 +41,8 @@ const userPublicationReducer = (state = initialState, action) => {
       return {
         publications: [],
         loading: false,
-        noMoreData: state.noMoreData,
-        page:state.page
+        noMoreData: false,
+        page:1
       };
     case POST_PUBLICATION:
       return {

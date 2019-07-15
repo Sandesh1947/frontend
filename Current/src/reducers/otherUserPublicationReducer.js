@@ -39,8 +39,8 @@ import {
         return {
           publications: [],
           loading: false,
-          noMoreData: state.noMoreData,
-          page:state.page
+          noMoreData: false,
+          page:1
         };
       default: return state;
     }

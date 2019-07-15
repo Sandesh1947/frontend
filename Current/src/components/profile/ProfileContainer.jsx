@@ -3,7 +3,7 @@ import ProfileView from './ProfileView';
 import './profile.scss';
 import { connect } from 'react-redux';
 import { getUserInfo, getUserFollowers, getPartners, getOtherUserProfile } from '../../actions/userInfoActions';
-import { getUserPublications, getOtherUserPublications } from '../../actions/userPublicationAction';
+import { getUserPublications, getOtherUserPublications,clearUserPublication,clearOtherUserPublication } from '../../actions/userPublicationAction';
 import queryString from 'query-string'
 
 class ProfileContainer extends React.Component {
@@ -25,7 +25,7 @@ class ProfileContainer extends React.Component {
       this.props.getOtherUserPublications(user)
     }
     else {
-      console.log('in ele')
+      this.props.getUserPublications();
       if (!this.props.userInfo.user) {
         this.props.getUserInfo();
       }
@@ -40,6 +40,8 @@ class ProfileContainer extends React.Component {
   }
 
   componentWillUnmount() {
+    this.props.clearUserPublication()
+    this.props.clearOtherUserPublication()
     document.removeEventListener('scroll', this.trackScrolling);
   }
 
@@ -99,5 +101,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { getUserInfo, getUserPublications, getUserFollowers, getPartners, getOtherUserProfile, getOtherUserPublications }
+  { getUserInfo, getUserPublications, getUserFollowers, getPartners, getOtherUserProfile, getOtherUserPublications,clearUserPublication,clearOtherUserPublication }
 )(ProfileContainer); 
