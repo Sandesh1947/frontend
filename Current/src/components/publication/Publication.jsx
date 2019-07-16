@@ -165,7 +165,7 @@ class Publication extends Component {
           <Card.Body className="publication-form__body">
             <div className="d-flex">
               <figure className="navbar-avatar">
-                <Image src={this.props.user && BASE_URL + this.props.user.avatar}
+                <Image src={this.props.user && BASE_URL + this.props.user[0].avatar}
                   className="navbar-avatar__image" />
               </figure>
               <div className="publication-form__control">

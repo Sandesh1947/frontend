@@ -26,7 +26,7 @@ export default class ProfileView extends React.Component {
               />
             </Col>
             <Col md={3}>
-              {this.props.currentUserState === 1 ? <Button  variant="secondary" className='mt-2' size="lg">Edit Profile</Button> : (this.props.currentUserState === 2 ?<Button  variant="secondary" className='mt-2' size="lg">Connect </Button> :'')}
+              {this.props.currentUserState === 1 ? <Button  variant="secondary" className='mt-2' size="lg">Edit Profile</Button> : (this.props.currentUserState === 0 ?<Button  variant="secondary" className='mt-2' size="lg">Connect </Button> :'')}
             </Col>
           </Row>
         </Container>

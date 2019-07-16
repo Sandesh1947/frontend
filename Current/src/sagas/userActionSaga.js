@@ -15,23 +15,6 @@ import {
 
 function callUserInfoApi() {
   return axios.get(BASE_URL + '/api/user');
-  // return {
-  //   'data': {
-  //     "id": 3,
-  //     "first_name": "sushanth",
-  //     "last_name": "avaru",
-  //     "sex": "f",
-  //     "email": "savaru@eycon.com",
-  //     "phone": "619-724-1262",
-  //     "last_login": "2019-04-07T11:19:35.000Z",
-  //     "school": null,
-  //     "location": null,
-  //     "profession": null,
-  //     "avatar": "/rails/active_storage/blobs/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBGUT09IiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--6ab9685af183298a0e1a3270ec08d5a81899f2ef/profilepic.png",
-  //     "updated_at": "2019-06-05T07:29:00.000Z",
-  //     "dob": null
-  //   }
-  // }
 }
 
 function* getUserInfo() {
@@ -90,7 +73,7 @@ export function* userPartnerWatcher() {
 
 function* getOtherUserInfo(action) {
   try {
-    const infoResponse = yield axios.get(BASE_URL + '/api/user/'+action.user_id+'/');
+    const infoResponse = yield axios.get(BASE_URL + '/api/otheruser/'+action.user_id+'/');
     yield put({ type: FETHCED_OTHER_USER_INFO, payload: infoResponse });
   } catch (error) {
     yield put({ type: ERROR_OCCUR, payload: { message: 'Something went wrong. Please try again later' } });

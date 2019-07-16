@@ -12,6 +12,7 @@ export default class PeopleTab extends React.Component {
             page: 1, noMoreData: false, loading: false,showPopOver:[]
         }
         this.handlePopOver =this.handlePopOver.bind(this)
+        this.handleBodyClick = this.handleBodyClick.bind(this)
         this.refList =[];
     }
     componentDidMount() {
@@ -24,6 +25,7 @@ export default class PeopleTab extends React.Component {
                 }
             )
         }
+         document.addEventListener('click', this.handleBodyClick)
     }
     componentDidUpdate(prevProps) {
         if ((this.props.keyword !== prevProps.keyword) && this.props.keyword) {
@@ -37,7 +39,18 @@ export default class PeopleTab extends React.Component {
     }
     componentWillUnmount() {
         document.removeEventListener('scroll', this.trackScrolling);
+        document.removeEventListener('click',this.handleBodyClick)
     }
+    handleBodyClick(event) {
+        let currentState = this.state.showPopOver
+        if(event.target.id !=='username') {
+            currentState.forEach((element,key) => {
+                if(currentState[key])
+                currentState[key] = false
+            });
+            this.setState({showPopOver:currentState})
+        }
+      }
     loadMoreData = () => {
         if (this.state.noMoreData || this.state.loading) {
             return;
@@ -68,7 +81,7 @@ export default class PeopleTab extends React.Component {
         this.setState({ lastScrollPos: scrolled });
     }
     handlePopOver(user,key) {
-        if(user.current_user===1 && !this.state.showPopOver[key]) {
+        if(user.currentuser ===0 && !this.state.showPopOver[key]) {
             let currentState = this.state.showPopOver
             currentState[key] = true
             this.setState({showPopOver:currentState})
@@ -88,7 +101,7 @@ export default class PeopleTab extends React.Component {
                             <Col className='flex-container' md={4}>
                                 <span><img className='user-image' src={BASE_URL + user.avatar} alt='avatar' /></span>
                                 <div className='flex-container flex-direction-column user-details-div'>
-                                    <span  ref={refList => this.refList[key] = refList} onClick={() => this.handlePopOver(user,key)}>{user.first_name} {user.last_name}</span>
+                                    <span id='username' className='search-username'  ref={refList => this.refList[key] = refList} onClick={() => this.handlePopOver(user,key)}>{user.first_name} {user.last_name}</span>
                                     <Overlay
                                         show={this.state.showPopOver[key]}
                                         target={this.refList[key]}
@@ -96,7 +109,7 @@ export default class PeopleTab extends React.Component {
 
                                     >
                                         <Popover id="popover-contained" title="View Profile">
-                                            <strong><Link to={{pathname:'/profile/?user='+user.id,search: queryString.stringify(Object.assign({}, {user_id:user.id})),state:{current_user:user.current_user}}}>Click to view profile of {user.first_name}</Link></strong>
+                                            <strong><Link to={{pathname:'/profile/?user='+user.id,search: queryString.stringify(Object.assign({}, {user_id:user.id})),state:{currentuser:user.currentuser}}}>Click to view profile of {user.first_name}</Link></strong>
                                         </Popover>
                                     </Overlay>
                                     <span>@{user.email}</span>

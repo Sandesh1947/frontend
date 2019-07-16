@@ -8,16 +8,15 @@ import { getUserPublications } from '../../actions/userPublicationAction';
 class HomeContainer extends React.Component {
   state = {
     lastScrollPos: 0,
-    page: 1,
   }
 
   componentDidMount() {
+    this.props.getUserPublications();
     // TODO: move this to header??
     // Header is always mounted, while HomeContainer is mounted on the /home page only
     if (!this.props.userInfo.user) {
       this.props.getUserInfo();
     }
-
     if (this.props.userFollowers.followers.length === 0) {
       this.props.getUserFollowers();
     }
@@ -28,14 +27,13 @@ class HomeContainer extends React.Component {
     if (this.props.userPublications.noMoreData || this.props.userPublications.loading) {
       return;
     }
-    this.props.getUserPublications({ page: this.state.page + 1 });
-    this.setState({ page: this.state.page + 1 });
+    this.props.getUserPublications({ page: this.props.userPublications.page + 1 });
+    this.props.userPublications.page = this.props.userPublications.page + 1  
   }
 
   trackScrolling = () => {
     const scrollable = document.documentElement.scrollHeight - window.innerHeight;
     const scrolled = window.scrollY;
-
     if (!this.props.userPublications.noMoreData && !this.props.userPublications.loading
       && this.state.lastScrollPos < scrolled && Math.ceil(scrolled) >= scrollable - 100) {
       this.loadMoreData();
@@ -43,7 +41,9 @@ class HomeContainer extends React.Component {
 
     this.setState({ lastScrollPos: scrolled });
   }
-
+  componentWillUnmount() {
+    document.removeEventListener('scroll', this.trackScrolling);
+  }
   render() {
     const { userPublications, userInfo, userFollowers } = this.props;
     return (
@@ -76,7 +76,7 @@ const mapStateToProps = ({ userInfo, userPublications, userFollowers }) => ({
 const mapDispatchersToProps = {
   getUserInfo,
   getUserPublications,
-  getUserFollowers,
+  getUserFollowers
 };
 
 export default connect(mapStateToProps, mapDispatchersToProps)(HomeContainer);

@@ -2,21 +2,24 @@ import React from 'react';
 import ProfileView from './ProfileView';
 import './profile.scss';
 import { connect } from 'react-redux';
-import { getUserInfo, getUserFollowers, getPartners,getOtherUserProfile } from '../../actions/userInfoActions';
-import { getUserPublications ,getOtherUserPublications} from '../../actions/userPublicationAction';
+import { getUserInfo, getUserFollowers, getPartners, getOtherUserProfile } from '../../actions/userInfoActions';
+import { getUserPublications, getOtherUserPublications } from '../../actions/userPublicationAction';
 import queryString from 'query-string'
 
 class ProfileContainer extends React.Component {
-  state = {
-    lastScrollPos: 0,
-    page: 1,
-    isCurrentUser:1
+  constructor() {
+    super()
+    this.state = {
+      lastScrollPos: 0,
+      isCurrentUser: 1
+    }
+    this.trackScrolling = this.trackScrolling.bind(this)
+    this.loadMoreData = this.loadMoreData.bind(this)
   }
-
   componentDidMount() {
     const location = this.props.location
-    if(location.state && location.state.current_user) {
-      this.setState({isCurrentUser:location.state.current_user})
+    if (location.state && location.state.currentuser === 0) {
+      this.setState({ isCurrentUser: location.state.currentuser })
       let user = queryString.parse(location.search).user_id
       this.props.getOtherUserProfile(user)
       this.props.getOtherUserPublications(user)
@@ -44,17 +47,23 @@ class ProfileContainer extends React.Component {
     if (this.props.userPublications.noMoreData || this.props.userPublications.loading) {
       return;
     }
-    if(this.state.isCurrentUser ===1)
-    this.props.getUserPublications({ page: this.state.page + 1 });
+    if (this.state.isCurrentUser === 1) {
+      this.props.getUserPublications({ page: this.props.userPublications.page + 1 });
+      this.props.userPublications.page = this.props.userPublications.page + 1  
+    }
     else
-    this.props.getOtherUserPublications({ page: this.state.page + 1 });
-    this.setState({ page: this.state.page + 1 });
+      this.props.getOtherUserPublications({ page: this.props.otherUserPublications.page + 1   });
+      this.props.otherUserPublications.page = this.props.otherUserPublications.page + 1  
   }
 
   trackScrolling = () => {
     const scrollable = document.documentElement.scrollHeight - window.innerHeight;
     const scrolled = window.scrollY;
-    const { userPublications } = this.props;
+    let userPublications = []
+    if (this.state.isCurrentUser === 1)
+      userPublications = this.props.userPublications;
+    else
+      userPublications = this.props.otherUserPublications;
 
     if (!userPublications.noMoreData && !userPublications.loading
       && this.state.lastScrollPos < scrolled && Math.ceil(scrolled) >= scrollable - 100) {
@@ -65,15 +74,15 @@ class ProfileContainer extends React.Component {
   }
 
   render() {
-    const { userPartners, userPublications, userFollowers, userInfo,otherUserInfo,otherUserPublications} = this.props;
+    const { userPartners, userPublications, userFollowers, userInfo, otherUserInfo, otherUserPublications } = this.props;
     return (
       <ProfileView
         userPartners={userPartners.partners}
         loading={userPublications.loading}
         userFollowers={userFollowers.followers}
-        currentUserState= {this.state.isCurrentUser}
-        userPublications={this.state.isCurrentUser === 1 ? userPublications.publications:otherUserPublications.publications}
-        userInfo={this.state.isCurrentUser === 1 ? userInfo:otherUserInfo}
+        currentUserState={this.state.isCurrentUser}
+        userPublications={this.state.isCurrentUser === 1 ? userPublications.publications : otherUserPublications.publications}
+        userInfo={this.state.isCurrentUser === 1 ? userInfo : otherUserInfo}
       />
     );
   }
@@ -84,11 +93,11 @@ const mapStateToProps = state => ({
   userInfo: state.userInfo,
   userPublications: state.userPublications,
   userFollowers: state.userFollowers,
-  otherUserInfo:state.otherUserInfo,
-  otherUserPublications:state.otherUserPublications
+  otherUserInfo: state.otherUserInfo,
+  otherUserPublications: state.otherUserPublications
 });
 
 export default connect(
   mapStateToProps,
-  { getUserInfo, getUserPublications, getUserFollowers, getPartners,getOtherUserProfile,getOtherUserPublications}
+  { getUserInfo, getUserPublications, getUserFollowers, getPartners, getOtherUserProfile, getOtherUserPublications }
 )(ProfileContainer); 

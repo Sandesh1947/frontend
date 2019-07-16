@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { takeLatest, put } from 'redux-saga/effects';
-
+import isEmpty from 'lodash/isEmpty';
 import { BASE_URL } from '../app.constants';
 import Attachment from '../components/generic/Attachment';
 import {
@@ -28,6 +28,8 @@ import {
   GET_OTHER_USER_PUBLICATIONS,
   NO_MORE_OTHER_USER_PUBLICATIONS,
   FETCHED_OTHER_USER_PUBLICATIONS ,
+  FETCHED_USER_PUBLICATIONS_ON_SCROLLING,
+  FETCHED_OTHER_USER_PUBLICATIONS_ON_SCROLLING
 
 } from '../actions/types';
 
@@ -70,10 +72,15 @@ function* getUserPublicationsWorker(action) {
   try {
     yield put({ type: FETCHING_USER_PUBLICATIONS });
     const pubResponse = yield axios.get(BASE_URL + '/api/userpublications', {
-      params: action.query ? action.query(action) : null,
+      params: action.query
     });
-    if (pubResponse && pubResponse.data) {
-      yield put({ type: FETCHED_USER_PUBLICATIONS, payload: pubResponse });
+    if (!isEmpty(pubResponse.data)) {
+      if(action.query && action.query.page >1) {
+        yield put({ type:FETCHED_USER_PUBLICATIONS_ON_SCROLLING,payload:pubResponse })
+      }
+      else {
+        yield put({ type: FETCHED_USER_PUBLICATIONS, payload: pubResponse });
+      }
     } else {
       yield put({ type: NO_MORE_USER_PUBLICATIONS });
     }
@@ -121,10 +128,15 @@ function* getOtherUserPublicationsWorker(action) {
   try {
     yield put({ type: FETCHING_OTHER_USER_PUBLICATIONS  });
     const pubResponse = yield axios.get(BASE_URL + '/api/otheruserpublications/'+action.id+'/', {
-      params: action.query ? action.query(action) : null,
+      params:action.query
     });
-    if (pubResponse && pubResponse.data) {
-      yield put({ type: FETCHED_OTHER_USER_PUBLICATIONS, payload: pubResponse });
+    if (!isEmpty(pubResponse.data))  {
+      if(action.query && action.query.page > 1) {
+        yield put({ type: FETCHED_OTHER_USER_PUBLICATIONS_ON_SCROLLING, payload: pubResponse });
+      }
+      else {
+        yield put({ type: FETCHED_OTHER_USER_PUBLICATIONS, payload: pubResponse });
+      }
     } else {
       yield put({ type: NO_MORE_OTHER_USER_PUBLICATIONS });
     }
