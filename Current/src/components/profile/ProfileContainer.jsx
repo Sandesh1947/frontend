@@ -46,8 +46,6 @@ class ProfileContainer extends React.Component {
   }
 
   componentWillUnmount() {
-    this.props.clearUserPublication()
-    this.props.clearOtherUserPublication()
     document.removeEventListener('scroll', this.trackScrolling);
   }
 
