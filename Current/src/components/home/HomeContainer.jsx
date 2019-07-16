@@ -3,7 +3,7 @@ import HomeView from './HomeView';
 import { connect } from 'react-redux';
 import Loader from '../Loader/Loader';
 import { getUserInfo, getUserFollowers } from '../../actions/userInfoActions';
-import { getUserPublications ,clearUserPublication} from '../../actions/userPublicationAction';
+import { getUserPublications } from '../../actions/userPublicationAction';
 
 class HomeContainer extends React.Component {
   state = {
@@ -42,7 +42,6 @@ class HomeContainer extends React.Component {
     this.setState({ lastScrollPos: scrolled });
   }
   componentWillUnmount() {
-    this.props.clearUserPublication()
     document.removeEventListener('scroll', this.trackScrolling);
   }
   render() {
@@ -77,8 +76,7 @@ const mapStateToProps = ({ userInfo, userPublications, userFollowers }) => ({
 const mapDispatchersToProps = {
   getUserInfo,
   getUserPublications,
-  getUserFollowers,
-  clearUserPublication
+  getUserFollowers
 };
 
 export default connect(mapStateToProps, mapDispatchersToProps)(HomeContainer);
