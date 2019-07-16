@@ -7,14 +7,20 @@ import { getUserPublications, getOtherUserPublications } from '../../actions/use
 import queryString from 'query-string'
 
 class ProfileContainer extends React.Component {
-  constructor() {
-    super()
+  constructor(props) {
+    super(props)
+    this.isCurrentUser = this.isCurrentUser.bind(this)
     this.state = {
       lastScrollPos: 0,
-      isCurrentUser: 1
+      isCurrentUser:this.isCurrentUser(props.location)
     }
     this.trackScrolling = this.trackScrolling.bind(this)
     this.loadMoreData = this.loadMoreData.bind(this)
+  }
+  isCurrentUser(location) {
+    if(location.state)
+    return location.state.currentuser
+    return 1
   }
   componentDidMount() {
     const location = this.props.location
