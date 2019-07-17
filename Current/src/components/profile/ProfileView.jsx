@@ -16,13 +16,13 @@ export default class ProfileView extends React.Component {
               <Left
                 partners={this.props.userPartners}
                 followers={this.props.userFollowers}
-                user={user}
+                user={this.props.userInfo.user}
               />
             </Col>
             <Col md={6}>
               <ProfileCenter
                 loading={this.props.loading}
-                user={user}
+                user={this.props.userInfo.user}
                 userPublications={this.props.userPublications}
               />
             </Col>

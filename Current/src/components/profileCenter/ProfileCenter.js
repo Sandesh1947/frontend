@@ -51,7 +51,6 @@ export default class ProfileCenter extends Component {
               <ContentCard
                 key={index}
                 postIndex={index}
-                user={this.props.user}
                 userPublication={userPublication}
                 userPublications={this.props.userPublications}
               />
@@ -62,7 +61,6 @@ export default class ProfileCenter extends Component {
               <ContentCard
                 key={index}
                 postIndex={index}
-                user={this.props.user}
                 userPublication={userPublication}
                 userPublications={this.props.userPublications}
               />

@@ -22,7 +22,6 @@ export default class HomeView extends React.Component {
                 <ContentCard
                   key={index}
                   postIndex={index}
-                  user={this.props.userInfo.user}
                   userPublication={userPublication}
                   userPublications={this.props.userPublications}
                   loadMoreData={this.loadMoreData}
