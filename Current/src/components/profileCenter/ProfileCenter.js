@@ -8,6 +8,7 @@ import titleTop from '../../assets/title-top.png';
 import ContentCard from '../content-card/content-card';
 import './profileCenter.scss';
 import isEqual from 'lodash/isEqual';
+import { BASE_URL } from '../../app.constants';
 
 export default class ProfileCenter extends Component {
   constructor() {
@@ -33,10 +34,11 @@ export default class ProfileCenter extends Component {
     return this.props.userPublications.filter((publication) => publication.publication_type === "1")
   }
   render() {
+    const user = this.props.user ? this.props.user[0]:undefined
     return (
       <div className="right">
         <figure className="title-img">
-          <Image src={titleTop} className="title-img__image" />
+          <Image  src={user && BASE_URL + user.coverpic} className="title-img__image" />
         </figure>
 
         <Tabs
