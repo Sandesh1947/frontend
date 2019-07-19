@@ -14,7 +14,6 @@ import PromotedOrLikedUsersContainer from '../UserListModal/PromotedOrLikedUsers
 import queryString from 'query-string';
 export default class ContentCard extends Component {
   static propTypes = {
-    user: PropTypes.object.isRequired,
     userPublication: PropTypes.object,
     userPublications: PropTypes.array.isRequired,
     postIndex: PropTypes.number.isRequired,
@@ -151,7 +150,7 @@ export default class ContentCard extends Component {
     }
   }
   render() {
-    const { user, userPublication, userPublications } = this.props;
+    const { userPublication, userPublications } = this.props;
     return (
       <div className="content-card">
         <Popup
@@ -159,7 +158,6 @@ export default class ContentCard extends Component {
           onHide={this.handleClose}
           onPrevClick={this.onPrevClick}
           onNextClick={this.onNextClick}
-          user={user}
           userPublication={userPublications[this.state.postIndex]}
           likePost={this.likePost}
           promotePost={this.promotePost}

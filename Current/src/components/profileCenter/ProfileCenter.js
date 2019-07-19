@@ -4,7 +4,6 @@ import Tabs from 'react-bootstrap/Tabs'
 import Tab from 'react-bootstrap/Tab'
 import Alert from 'react-bootstrap/Alert';
 import Spinner from 'react-bootstrap/Spinner';
-import titleTop from '../../assets/title-top.png';
 import ContentCard from '../content-card/content-card';
 import './profileCenter.scss';
 import isEqual from 'lodash/isEqual';
@@ -51,7 +50,6 @@ export default class ProfileCenter extends Component {
               <ContentCard
                 key={index}
                 postIndex={index}
-                user={this.props.user}
                 userPublication={userPublication}
                 userPublications={this.props.userPublications}
               />
@@ -62,7 +60,6 @@ export default class ProfileCenter extends Component {
               <ContentCard
                 key={index}
                 postIndex={index}
-                user={this.props.user}
                 userPublication={userPublication}
                 userPublications={this.props.userPublications}
               />
