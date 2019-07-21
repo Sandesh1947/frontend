@@ -15,7 +15,7 @@ export default class Left extends Component {
 
           <h3
             className='left__username'>{user && (user.first_name + ' ' + user.last_name)}</h3>
-          <p className='left__description'>{user && user.profession}</p>
+          <p className='left__description'>{user && user.bio}</p>
           <div className='left-meta'>
             <figure className='left-meta__icon'>
               <FontAwesomeIcon icon={faGraduationCap} className='left-meta__fa' />

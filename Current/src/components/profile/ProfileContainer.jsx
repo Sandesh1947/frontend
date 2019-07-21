@@ -5,16 +5,22 @@ import { connect } from 'react-redux';
 import { getUserInfo, getUserFollowers, getPartners, getOtherUserProfile } from '../../actions/userInfoActions';
 import { getUserPublications, getOtherUserPublications } from '../../actions/userPublicationAction';
 import queryString from 'query-string'
-
+import isEqual from 'lodash/isEqual';
 class ProfileContainer extends React.Component {
-  constructor() {
-    super()
+  constructor(props) {
+    super(props)
+    this.isCurrentUser = this.isCurrentUser.bind(this)
     this.state = {
       lastScrollPos: 0,
-      isCurrentUser: 1
+      isCurrentUser:this.isCurrentUser(props.location)
     }
     this.trackScrolling = this.trackScrolling.bind(this)
     this.loadMoreData = this.loadMoreData.bind(this)
+  }
+  isCurrentUser(location) {
+    if(location.state)
+    return location.state.currentuser
+    return 1
   }
   componentDidMount() {
     const location = this.props.location
@@ -38,7 +44,24 @@ class ProfileContainer extends React.Component {
     }
     document.addEventListener('scroll', this.trackScrolling);
   }
-
+  componentDidUpdate(prevProps) {
+    if (!isEqual(prevProps.location, this.props.location)) {
+      const location = this.props.location
+      if (location.state && location.state.currentuser === 0) {
+        this.setState({ isCurrentUser: location.state.currentuser })
+        let user = queryString.parse(location.search).user_id
+        this.props.getOtherUserProfile(user)
+        this.props.getOtherUserPublications(user)
+      }
+      else {
+        this.setState({ isCurrentUser:1 })
+        this.props.getUserPublications();
+        if (!this.props.userInfo.user) {
+          this.props.getUserInfo();
+        }
+      }
+    }
+  }
   componentWillUnmount() {
     document.removeEventListener('scroll', this.trackScrolling);
   }

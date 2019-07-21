@@ -7,6 +7,7 @@ import ProfileCenter from '../profileCenter/ProfileCenter';
 import Button from 'react-bootstrap/Button'
 export default class ProfileView extends React.Component {
   render() {
+    const user = this.props.userInfo.user ? this.props.userInfo.user[0]:undefined
     return (
       <section style={{ backgroundColor: '#f2f2f2' }}>
         <Container className="content">
@@ -26,7 +27,8 @@ export default class ProfileView extends React.Component {
               />
             </Col>
             <Col md={3}>
-              {this.props.currentUserState === 1 ? <Button  variant="secondary" className='mt-2' size="lg">Edit Profile</Button> : (this.props.currentUserState === 0 ?<Button  variant="secondary" className='mt-2' size="lg">Connect </Button> :'')}
+              {this.props.currentUserState === 1 ? <Button  variant="secondary" className='mt-2' size="lg">Edit Profile</Button> : 
+              (this.props.currentUserState === 0 ? (user && user.followed === 1 ? <Button  variant="secondary" className='mt-2' size="lg">Connected </Button> :<Button  variant="secondary" className='mt-2' size="lg">Connect </Button> ) :'')}
             </Col>
           </Row>
         </Container>

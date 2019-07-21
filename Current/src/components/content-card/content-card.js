@@ -4,7 +4,7 @@ import ReactTimeAgo from 'react-time-ago';
 import { Card, Image, Popover, Overlay } from 'react-bootstrap';
 import { faEllipsisH } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-
+import isEqual from 'lodash/isEqual';
 import Popup from '../../components/popup/popup';
 import { Link } from 'react-router-dom'
 import { BASE_URL } from '../../app.constants';
@@ -14,7 +14,6 @@ import PromotedOrLikedUsersContainer from '../UserListModal/PromotedOrLikedUsers
 import queryString from 'query-string';
 export default class ContentCard extends Component {
   static propTypes = {
-    user: PropTypes.object.isRequired,
     userPublication: PropTypes.object,
     userPublications: PropTypes.array.isRequired,
     postIndex: PropTypes.number.isRequired,
@@ -95,6 +94,11 @@ export default class ContentCard extends Component {
     document.removeEventListener('keydown', this.keyDownEvent);
     document.removeEventListener('click',this.handleBodyClick);
   }
+  componentDidUpdate(prevProps) {
+    if(!isEqual(this.props.userPublication,prevProps.userPublication)) {
+      this.setState({likeCount:this.props.userPublication.likes,promoteCount:this.props.userPublication.promote})
+    }
+  }
   likePost(id) {
     this.setState({ likeCount: (this.state.likeCount + 1) })
     likePost(id).then(
@@ -151,7 +155,7 @@ export default class ContentCard extends Component {
     }
   }
   render() {
-    const { user, userPublication, userPublications } = this.props;
+    const { userPublication, userPublications } = this.props;
     return (
       <div className="content-card">
         <Popup
@@ -159,7 +163,6 @@ export default class ContentCard extends Component {
           onHide={this.handleClose}
           onPrevClick={this.onPrevClick}
           onNextClick={this.onNextClick}
-          user={user}
           userPublication={userPublications[this.state.postIndex]}
           likePost={this.likePost}
           promotePost={this.promotePost}
