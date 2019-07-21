@@ -1,17 +1,22 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import ReactTimeAgo from 'react-time-ago';
+import queryString from 'query-string';
+import isEqual from 'lodash/isEqual';
+import { Link } from 'react-router-dom'
 import { Card, Image, Popover, Overlay } from 'react-bootstrap';
 import { faEllipsisH } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import isEqual from 'lodash/isEqual';
-import Popup from '../../components/popup/popup';
-import { Link } from 'react-router-dom'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+  ;
 import { BASE_URL } from '../../app.constants';
-import './content-card.scss';
 import { likePost, promotePost } from '../../actions/userPublicationAction'
+
 import PromotedOrLikedUsersContainer from '../UserListModal/PromotedOrLikedUsersContainer'
-import queryString from 'query-string';
+import Popup from '../../components/popup/popup';
+import VideoThumbnail from '../generic/VideoThumbnail';
+
+import './content-card.scss';
+
 export default class ContentCard extends Component {
   static propTypes = {
     userPublication: PropTypes.object,
@@ -92,11 +97,11 @@ export default class ContentCard extends Component {
 
   componentWillUnmount() {
     document.removeEventListener('keydown', this.keyDownEvent);
-    document.removeEventListener('click',this.handleBodyClick);
+    document.removeEventListener('click', this.handleBodyClick);
   }
   componentDidUpdate(prevProps) {
-    if(!isEqual(this.props.userPublication,prevProps.userPublication)) {
-      this.setState({likeCount:this.props.userPublication.likes,promoteCount:this.props.userPublication.promote})
+    if (!isEqual(this.props.userPublication, prevProps.userPublication)) {
+      this.setState({ likeCount: this.props.userPublication.likes, promoteCount: this.props.userPublication.promote })
     }
   }
   likePost(id) {
@@ -217,7 +222,7 @@ export default class ContentCard extends Component {
             }
 
             {userPublication && userPublication.publication_vid === '1' && (
-              <Image className="content-card__image" src={BASE_URL + userPublication.vid_thumbnail} onClick={this.showPopup} />
+              <VideoThumbnail className="content-card__video" src={BASE_URL + userPublication.post} onClick={this.showPopup} />
             )}
 
           </Card.Body>

@@ -38,7 +38,9 @@ export default class VideoThumbnail extends Component {
   }
 
   componentWillMount() {
-    this.setSrc();
+    if (this.props.file) {
+      this.setSrc();
+    }
   }
 
   componentDidUpdate(prevProps) {
@@ -89,6 +91,14 @@ export default class VideoThumbnail extends Component {
     this.setState({ playInOverlay: false });
   }
 
+  onClick = () => {
+    if (this.props.onClick) {
+      this.props.onClick();
+    } else {
+      this.playInOverlay();
+    }
+  }
+
   get removeIcon() {
     if (!this.state.ready || !this.props.onRemove) {
       return null;
@@ -98,10 +108,10 @@ export default class VideoThumbnail extends Component {
 
   render() {
     return (
-      <div className="video-thumbnail">
+      <div className={`video-thumbnail ${this.props.className || ''}`}>
         <video ref={this.videoRef} src={this.src} type="video/mp4" />
-        <canvas ref={this.canvasRef} onClick={this.playInOverlay} />
-        <FontAwesomeIcon icon={faFilm} size="4x" className="fallback" />
+        <canvas ref={this.canvasRef} onClick={this.onClick} />
+        <FontAwesomeIcon icon={faFilm} size="4x" className="fallback" onClick={this.onClick} />
         {this.removeIcon}
         <Modal
           show={this.state.playInOverlay}

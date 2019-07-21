@@ -1,14 +1,17 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { Component } from 'react';
+import { connect } from 'react-redux'
+import ReactTimeAgo from 'react-time-ago';
+import { LoadingSpinner, Player } from 'video-react';
+
 import Button from 'react-bootstrap/Button';
 import Image from 'react-bootstrap/Image';
 import Modal from 'react-bootstrap/Modal';
-import ReactTimeAgo from 'react-time-ago';
-import { BigPlayButton, LoadingSpinner, Player } from 'video-react';
 import { BASE_URL } from '../../app.constants';
+import { fetchPromotedUsers, clearPromotedUsers } from '../../actions/userPublicationAction'
+
 import './popup.scss';
-import {connect} from 'react-redux'
-import {fetchPromotedUsers,clearPromotedUsers } from '../../actions/userPublicationAction'
+
 class Popup extends Component {
   onModalShow = () => {
     // TODO: use react refs instead
@@ -31,7 +34,7 @@ class Popup extends Component {
     this.props.clearPromotedUsers()
   }
   render() {
-    const { userPublication, show, onHide ,likeCount,promoteCount,promotedUsers} = this.props;
+    const { userPublication, show, onHide, likeCount, promoteCount, promotedUsers } = this.props;
     return (
       <Modal show={show} onShow={this.onModalShow} onHide={onHide} >
         <div className="carousel-control-prev" role="button" onClick={this.props.onPrevClick}>
@@ -66,8 +69,8 @@ class Popup extends Component {
             <Player
               playsInline
               src={BASE_URL + userPublication.post}
+              autoPlay={true}
             >
-              <BigPlayButton position="center" />
               <LoadingSpinner />
             </Player>
           )}
@@ -77,17 +80,17 @@ class Popup extends Component {
             <span className="d-flex align-items-center">
               <span className="like"><FontAwesomeIcon icon={['fas', 'share']} color="#bebebe" /> {this.props.formatCount(promoteCount)}</span>
               <span className="like d-flex align-items-center">&nbsp;Promoted by&nbsp;&nbsp;&nbsp;&nbsp;
-                {promotedUsers.users.slice(0,4).map((user,key) => (
-                      <Image key={key}className="promoted-by-image" src={BASE_URL + user.avatar} />
-                ))}
+                {promotedUsers.users.slice(0, 4).map((user, key) => (
+                <Image key={key} className="promoted-by-image" src={BASE_URL + user.avatar} />
+              ))}
               </span>
             </span>
           </div>
         </Modal.Body>
         <Modal.Footer>
           <div className="d-flex w-100 footer-buttons">
-            <Button disabled={userPublication.liked || this.props.isLiked} onClick={() => this.props.likePost(userPublication.id)} variant="light">Like</Button>
-            <Button disabled={userPublication.promoted || this.props.isPromoted} onClick={() => this.props.promotePost(userPublication.id)}  variant="light">Promote</Button>
+            <Button disabled={userPublication.liked || this.props.isLiked} onClick={() => this.props.likePost(userPublication.id)} variant="light">Like</Button>
+            <Button disabled={userPublication.promoted || this.props.isPromoted} onClick={() => this.props.promotePost(userPublication.id)} variant="light">Promote</Button>
           </div>
           <div className="d-flex w-100">
             <Image className="footer-avatar" src={userPublication && BASE_URL + userPublication.avatar} />
@@ -104,4 +107,4 @@ const mapDispatchersToProps = {
   clearPromotedUsers,
   fetchPromotedUsers
 };
-export default connect(mapStateToProps,mapDispatchersToProps)  (Popup)
+export default connect(mapStateToProps, mapDispatchersToProps)(Popup)
