@@ -53,7 +53,7 @@ class UserNameFormatter extends React.Component {
 
         >
           <Popover id="popover-contained" title="View Profile">
-            <strong><Link to={{ pathname: '/profile/', search: queryString.stringify(Object.assign({}, { id: user.id })), state: { currentuser: user.currentuser } }}>Click to view profile of {user.first_name}</Link></strong>
+            <strong><Link to={{ pathname: '/profile/', search: queryString.stringify(Object.assign({}, { user_id: user.id })), state: { currentuser: user.currentuser } }}>Click to view profile of {user.first_name}</Link></strong>
           </Popover>
         </Overlay>
       </React.Fragment>
