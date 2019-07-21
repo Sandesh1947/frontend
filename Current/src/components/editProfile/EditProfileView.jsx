@@ -4,6 +4,8 @@ import { Row, Col, Button, Image } from 'react-bootstrap'
 import DatePicker from "react-datepicker";
 import moment from 'moment'
 import "react-datepicker/dist/react-datepicker.css";
+import isEmpty from 'lodash/isEmpty';
+import isEqual from 'lodash/isEqual'
 class EditProfileView extends React.Component {
     constructor() {
         super()
@@ -27,9 +29,16 @@ class EditProfileView extends React.Component {
         this.handleDateOfBirth = this.handleDateOfBirth.bind(this)
         this.birthDate = null
         this.handleTextFieldChanges = this.handleTextFieldChanges.bind(this)
+        this.onFileUploadAvatar = this.onFileUploadAvatar.bind(this)
+        this.onFileUploadCoverPic = this.onFileUploadCoverPic.bind(this)
     }
     componentDidMount() {
         this.initValues()
+    }
+    componentDidUpdate(prevProps) {
+        if(!isEqual(prevProps.userInfo,this.props.userInfo)) {
+            this.initValues()
+        }
     }
     initValues() {
         let userInfo = this.props.userInfo
@@ -49,7 +58,11 @@ class EditProfileView extends React.Component {
         })
     }
     handleSave() {
-        console.log(this.state.fieldsChanged)
+        let changedFields = this.state.fieldsChanged
+        if(!isEmpty(changedFields))
+        this.props.editProfile()
+        else
+        console.log('no fields changed')
     }
     handleDateOfBirth(value) {
         this.birthDate = value
@@ -100,6 +113,37 @@ class EditProfileView extends React.Component {
             default: return
         }
     }
+    onFileUploadAvatar(e) {
+        if (!e.target.files.length) {
+            return;
+          }
+          const attachment = Array.from(e.target.files)[0];
+          let changedFields = this.state.fieldsChanged
+          Object.assign(changedFields, {avatar:attachment })
+          this.setState({ fieldsChanged: changedFields })
+          this.loadImage(attachment,'avatar')
+        
+    }
+    onFileUploadCoverPic(e) {
+        if (!e.target.files.length) {
+            return;
+          }
+          const attachment = Array.from(e.target.files)[0];
+          let changedFields = this.state.fieldsChanged
+          Object.assign(changedFields, {coverpic:attachment })
+          this.setState({ fieldsChanged: changedFields })
+          this.loadImage(attachment,'coverpic')
+    }
+    loadImage(attachment,target) {
+        const reader = new FileReader();
+        reader.onload = e => {
+            if(target ==='avatar')
+            this.setState({ 'avatar': e.target.result });
+            else
+            this.setState({ 'coverpic': e.target.result });
+        };
+        reader.readAsDataURL(attachment);
+    }
     render() {
         return (
             <React.Fragment>
@@ -118,10 +162,19 @@ class EditProfileView extends React.Component {
 
                 <Row className='mt-4'>
                     <Col md={2}>
-                        <Image src="https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50" style={{ borderRadius: '45px' }} />
+                        <Image src={this.state.avatar} style={{ borderRadius: '45px' }} />
                     </Col>
                     <Col md={4}>
-                        <Button className='mt-3 button-background ' variant="danger">Upload new avatar</Button>
+                        <label htmlFor='avatar-file'className="mt-3 button-background  btn btn-danger">
+                                Upload new avatar
+                        </label>
+                        <input
+                            className="d-none"
+                            type="file"
+                            id='avatar-file'
+                            name='avatar-file'
+                            onChange={this.onFileUploadAvatar}
+                        />
                     </Col>
                 </Row>
 
@@ -195,10 +248,19 @@ class EditProfileView extends React.Component {
                 <Row className='mt-4'>
                     <Col md={9}>
                         <label className='sub-heading-edit-profile'>Cover Pic</label>
-                        <Image width='400px' src='/img1.png' />
+                        <Image width='400px' src={this.state.coverpic} />
                     </Col>
                     <Col>
-                        <Button className='button-background '>Change Cover Pic</Button>
+                        <label htmlFor='cover-pic-file'className="mt-3 button-background  btn btn-danger">
+                        Change Cover Pic
+                        </label>
+                        <input
+                            className="d-none"
+                            type="file"
+                            id='cover-pic-file'
+                            name='cover-pic-file'
+                            onChange={this.onFileUploadCoverPic}
+                        />
                     </Col>
                 </Row>
             </React.Fragment>
