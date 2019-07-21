@@ -4,7 +4,7 @@ import ReactTimeAgo from 'react-time-ago';
 import { Card, Image, Popover, Overlay } from 'react-bootstrap';
 import { faEllipsisH } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-
+import isEqual from 'lodash/isEqual';
 import Popup from '../../components/popup/popup';
 import { Link } from 'react-router-dom'
 import { BASE_URL } from '../../app.constants';
@@ -93,6 +93,11 @@ export default class ContentCard extends Component {
   componentWillUnmount() {
     document.removeEventListener('keydown', this.keyDownEvent);
     document.removeEventListener('click',this.handleBodyClick);
+  }
+  componentDidUpdate(prevProps) {
+    if(!isEqual(this.props.userPublication,prevProps.userPublication)) {
+      this.setState({likeCount:this.props.userPublication.likes,promoteCount:this.props.userPublication.promote})
+    }
   }
   likePost(id) {
     this.setState({ likeCount: (this.state.likeCount + 1) })
