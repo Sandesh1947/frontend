@@ -6,6 +6,8 @@ import moment from 'moment'
 import "react-datepicker/dist/react-datepicker.css";
 import isEmpty from 'lodash/isEmpty';
 import isEqual from 'lodash/isEqual'
+import { BASE_URL } from '../../app.constants';
+
 class EditProfileView extends React.Component {
     constructor() {
         super()
@@ -162,7 +164,7 @@ class EditProfileView extends React.Component {
 
                 <Row className='mt-4'>
                     <Col md={2}>
-                        <Image src={this.state.avatar} style={{ borderRadius: '45px' }} />
+                        <Image src={BASE_URL + this.state.avatar} style={{ borderRadius: '45px' }} />
                     </Col>
                     <Col md={4}>
                         <label htmlFor='avatar-file'className="mt-3 button-background  btn btn-danger">
@@ -248,7 +250,7 @@ class EditProfileView extends React.Component {
                 <Row className='mt-4'>
                     <Col md={9}>
                         <label className='sub-heading-edit-profile'>Cover Pic</label>
-                        <Image width='400px' src={this.state.coverpic} />
+                        <Image width='400px' src={BASE_URL + this.state.coverpic} />
                     </Col>
                     <Col>
                         <label htmlFor='cover-pic-file'className="mt-3 button-background  btn btn-danger">
