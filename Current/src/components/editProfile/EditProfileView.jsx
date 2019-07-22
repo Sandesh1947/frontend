@@ -55,8 +55,8 @@ class EditProfileView extends React.Component {
             email: userInfo.email,
             location: userInfo.location,
             bio: userInfo.bio,
-            avatar: userInfo.avatar,
-            coverpic: userInfo.coverPic,
+            avatar: BASE_URL + userInfo.avatar,
+            coverpic: BASE_URL + userInfo.coverPic,
         })
     }
     handleSave() {
@@ -164,7 +164,7 @@ class EditProfileView extends React.Component {
 
                 <Row className='mt-4'>
                     <Col md={2}>
-                        <Image src={BASE_URL + this.state.avatar} style={{ borderRadius: '45px' }} />
+                        <Image src={this.state.avatar} style={{ borderRadius: '45px' }} />
                     </Col>
                     <Col md={4}>
                         <label htmlFor='avatar-file'className="mt-3 button-background  btn btn-danger">
@@ -250,7 +250,7 @@ class EditProfileView extends React.Component {
                 <Row className='mt-4'>
                     <Col md={9}>
                         <label className='sub-heading-edit-profile'>Cover Pic</label>
-                        <Image width='400px' src={BASE_URL + this.state.coverpic} />
+                        <Image width='400px' src={this.state.coverpic} />
                     </Col>
                     <Col>
                         <label htmlFor='cover-pic-file'className="mt-3 button-background  btn btn-danger">
