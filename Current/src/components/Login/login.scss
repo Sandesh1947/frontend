@@ -41,14 +41,17 @@
 .slide-design-button {
 	border-radius: 20px;
 	border: 1px solid #1b1b4c;
-	background-color: #1b1b4c;
-	color: #ffffff;
+	color: #1b1b4c;
 	font-size: 12px;
 	font-weight: bold;
 	padding: 12px 45px;
 	letter-spacing: 1px;
 	text-transform: uppercase;
 	transition: transform 80ms ease-in;
+	&:hover {
+		background: #1b1b4c;
+		color:#fff
+	}
 	&:active {
 		transform: scale(0.95);
 	}
@@ -59,6 +62,7 @@
 .slide-design-button-ghost {
 	background-color: transparent;
 	border-color: #ffffff;
+	color: white;
 }
 .slide-design-form {
 	background-color: #ffffff;

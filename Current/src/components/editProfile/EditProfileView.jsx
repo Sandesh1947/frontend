@@ -7,6 +7,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import isEmpty from 'lodash/isEmpty';
 import isEqual from 'lodash/isEqual'
 import { BASE_URL } from '../../app.constants';
+import isEmail from 'validator/lib/isEmail';
 
 class EditProfileView extends React.Component {
     constructor() {
@@ -24,7 +25,13 @@ class EditProfileView extends React.Component {
             bio: '',
             avatar: '',
             coverpic: '',
-            fieldsChanged: {}
+            fieldsChanged: {},
+            empty_first_name:false,
+            empty_last_name:false,
+            empty_dob:false,
+            empty_email:false,
+            empty_bio:false,
+            is_valid_email:true
         }
         this.handleSave = this.handleSave.bind(this)
         this.initValues = this.initValues.bind(this)
@@ -61,10 +68,8 @@ class EditProfileView extends React.Component {
     }
     handleSave() {
         let changedFields = this.state.fieldsChanged
-        if(!isEmpty(changedFields))
-        this.props.editProfile()
-        else
-        console.log('no fields changed')
+        if(!isEmpty(changedFields) && !this.state.empty_bio && !this.state.empty_dob && !this.state.empty_email && !this.state.empty_first_name && !this.state.empty_last_name && this.state.is_valid_email)
+        this.props.editProfile(changedFields)
     }
     handleDateOfBirth(value) {
         this.birthDate = value
@@ -72,6 +77,10 @@ class EditProfileView extends React.Component {
         Object.assign(changedFields, { dob: moment(value).format("YYYY-MM-DD") })
         this.setState({ fieldsChanged: changedFields })
         this.setState({ dob: moment(value).format("YYYY-MM-DD") })
+        if(!value)
+        this.setState({empty_dob:true})
+    else
+        this.setState({empty_dob:false})
     }
     handleTextFieldChanges(field, value) {
         let changedFields = this.state.fieldsChanged
@@ -79,10 +88,18 @@ class EditProfileView extends React.Component {
             case 'first_name': this.setState({ first_name: value });
                 Object.assign(changedFields, { first_name: value })
                 this.setState({ fieldsChanged: changedFields })
+                if(value ==='')
+                    this.setState({empty_first_name:true})
+                else
+                    this.setState({empty_first_name:false})
                 break;
             case 'last_name': this.setState({ last_name: value });
                 Object.assign(changedFields, { last_name: value })
                 this.setState({ fieldsChanged: changedFields })
+                if(value ==='')
+                this.setState({empty_last_name:true})
+            else
+                this.setState({empty_last_name:false})
                 break;
             case 'phone': this.setState({ phone: value });
                 Object.assign(changedFields, { phone: value })
@@ -95,6 +112,10 @@ class EditProfileView extends React.Component {
             case 'bio': this.setState({ bio: value });
                 Object.assign(changedFields, { bio: value })
                 this.setState({ fieldsChanged: changedFields })
+                if(value ==='')
+                this.setState({empty_bio:true})
+            else
+                this.setState({empty_bio:false})
                 break;
             case 'school': this.setState({ school: value });
                 Object.assign(changedFields, { school: value })
@@ -103,6 +124,14 @@ class EditProfileView extends React.Component {
             case 'email': this.setState({ email: value });
                 Object.assign(changedFields, { email: value })
                 this.setState({ fieldsChanged: changedFields });
+                if(value ==='')
+                this.setState({empty_email:true})
+                else
+                this.setState({empty_email:false})
+                if(isEmail(value))
+                    this.setState({is_valid_email:true})
+                else 
+                this.setState({is_valid_email:false})
                 break;
             case 'location': this.setState({ location: value });
                 Object.assign(changedFields, { location: value })
@@ -167,7 +196,7 @@ class EditProfileView extends React.Component {
                         <Image src={this.state.avatar} style={{ borderRadius: '45px' }} />
                     </Col>
                     <Col md={4}>
-                        <label htmlFor='avatar-file'className="mt-3 button-background  btn btn-danger">
+                        <label htmlFor='avatar-file'className="mt-3 button-background btn">
                                 Upload new avatar
                         </label>
                         <input
@@ -183,11 +212,13 @@ class EditProfileView extends React.Component {
                 <Row className='mt-5'>
                     <Col md={6}>
                         <label className='sub-heading-edit-profile'>First name</label>
-                        <input type="text" className="form-control" placeholder="First name" onChange={(event) => this.handleTextFieldChanges('first_name', event.target.value)} value={this.state.first_name} />
+                        <input type="text" className={this.state.empty_first_name ? 'empty-edit-profile-border form-control':"form-control"} placeholder="First name" onChange={(event) => this.handleTextFieldChanges('first_name', event.target.value)} value={this.state.first_name} />
+                        {this.state.empty_first_name &&<span style={{color:'red'}}>This Field cannot be empty</span>}
                     </Col>
                     <Col md={6}>
                         <label className='sub-heading-edit-profile'>Last name</label>
-                        <input type="text" className="form-control" placeholder="Last name" onChange={(event) => this.handleTextFieldChanges('last_name', event.target.value)} value={this.state.last_name} />
+                        <input type="text" className={this.state.empty_last_name ? 'empty-edit-profile-border form-control':"form-control"} placeholder="Last name" onChange={(event) => this.handleTextFieldChanges('last_name', event.target.value)} value={this.state.last_name} />
+                        {this.state.empty_last_name &&<span style={{color:'red'}}>This Field cannot be empty</span>}
                     </Col>
                 </Row>
 
@@ -202,13 +233,14 @@ class EditProfileView extends React.Component {
                     </Col>
                     <Col md={6}>
                         <label className='sub-heading-edit-profile'>Date of birth</label>
-                        <div className='form-control'>
+                        <div className={this.state.empty_dob? 'empty-edit-profile-border form-control':"form-control"}>
                             <DatePicker
                                 placeholderText='Date of birth'
                                 selected={this.birthDate}
                                 onChange={this.handleDateOfBirth}
                             />
                         </div>
+                        {this.state.empty_dob &&<span style={{color:'red'}}>This Field cannot be empty</span>}
                         {/* <input type="date" className="form-control" placeholder="Date of birth" onChange={(event)=>this.handleTextFieldChanges('dob',event.target.value)} value={this.state.dob} /> */}
                     </Col>
                 </Row>
@@ -227,7 +259,9 @@ class EditProfileView extends React.Component {
                 <Row className='mt-4'>
                     <Col md={4}>
                         <label className='sub-heading-edit-profile'>Email</label>
-                        <input type="text" className="form-control" placeholder="Email" onChange={(event) => this.handleTextFieldChanges('email', event.target.value)} value={this.state.email} />
+                        <input type="text"className={this.state.empty_email || !this.state.is_valid_email ? 'empty-edit-profile-border form-control':"form-control"} placeholder="Email" onChange={(event) => this.handleTextFieldChanges('email', event.target.value)} value={this.state.email} />
+                        {this.state.empty_email &&<span style={{color:'red'}}>This Field cannot be empty</span>}
+                        {!this.state.is_valid_email && <span style={{color:'red'}}>This email id is not valid</span> }
                     </Col>
                     <Col md={4}>
                         <label className='sub-heading-edit-profile'>Phone</label>
@@ -242,7 +276,8 @@ class EditProfileView extends React.Component {
                 <Row className='mt-4'>
                     <Col md={12}>
                         <label className='sub-heading-edit-profile'>Bio</label>
-                        <textarea type="text" className="form-control" placeholder="Bio" onChange={(event) => this.handleTextFieldChanges('bio', event.target.value)} value={this.state.bio} />
+                        <textarea type="text" className={this.state.empty_bio ? 'empty-edit-profile-border form-control':"form-control"} placeholder="Bio" onChange={(event) => this.handleTextFieldChanges('bio', event.target.value)} value={this.state.bio} />
+                        {this.state.empty_bio &&<span style={{color:'red'}}>This Field cannot be empty</span>}
                     </Col>
 
                 </Row>
@@ -253,7 +288,7 @@ class EditProfileView extends React.Component {
                         <Image width='400px' src={this.state.coverpic} />
                     </Col>
                     <Col>
-                        <label htmlFor='cover-pic-file'className="mt-3 button-background  btn btn-danger">
+                        <label htmlFor='cover-pic-file'className="mt-3 button-background  btn">
                         Change Cover Pic
                         </label>
                         <input

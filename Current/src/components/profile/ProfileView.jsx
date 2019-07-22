@@ -28,7 +28,7 @@ export default class ProfileView extends React.Component {
               />
             </Col>
             <Col md={3}>
-              {this.props.currentUserState === 1 ? <Link to='/settings/editprofile' className='mt-2 btn btn-secondary btn-lg'>Edit Profile</Link> : 
+              {this.props.currentUserState === 1 ? <Link to='/settings/editprofile' className='mt-2 btn btn edit-profile-button-background btn-lg'>Edit Profile</Link> : 
               (this.props.currentUserState === 0 ? (user && user.followed === 1 ? <Button  variant="secondary" className='mt-2' size="lg">Connected </Button> :<Button  variant="secondary" className='mt-2' size="lg">Connect </Button> ) :'')}
             </Col>
           </Row>

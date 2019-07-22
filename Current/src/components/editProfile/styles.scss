@@ -8,6 +8,13 @@
 	font-size: 30px;
 }
 .button-background {
-    background-color: #1b1b4c;
-    border: #1b1b4c;
+	border-color: #1b1b4c;
+	color:#1b1b4c;
+}
+.button-background:hover {
+	background: #1b1b4c;
+	color:#ffffff;
+}
+.empty-edit-profile-border{
+	border-color: red;
 }
