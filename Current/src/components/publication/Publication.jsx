@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Button, Card, DropdownButton, Dropdown, Form, Image } from 'react-bootstrap';
+import { Card, DropdownButton, Dropdown, Form, Image } from 'react-bootstrap';
 import { faGlobe, faKey } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
@@ -138,10 +138,10 @@ class Publication extends Component {
   get publishWorkButton() {
     return this.props.publicationType === 'work' && (
       <div className="d-flex justify-content-end bbar">
-        <Button
+        <button
           onClick={this.onSubmit}
           disabled={!this.isValid()}
-          className="publish-button__work">Publish</Button>
+          className="publish-button__work btn">Publish</button>
       </div>
     );
   }
@@ -149,10 +149,10 @@ class Publication extends Component {
   get publishUpdateButton() {
     return this.props.publicationType === 'update' && (
       <div className="d-flex flex-grow-1 justify-content-end">
-        <Button
+        <button
           disabled={!this.isValid()}
           onClick={this.onSubmit}
-          className="publish-button__update">Publish</Button>
+          className="publish-button__update btn">Publish</button>
       </div>
     );
   }
