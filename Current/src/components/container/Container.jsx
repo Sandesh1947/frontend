@@ -6,8 +6,8 @@ import HeaderContainer from '../header/HeaderContainer';
 import HomeContainer from '../home/HomeContainer';
 import ProfileContainer from '../profile/ProfileContainer';
 import SearchResultsContainer from '../searchresults/searchResultsContainer'
+import SettingsContainer from '../settings/SettingsContainer'
 import { getUserInfo } from '../../actions/userInfoActions';
-
 class Container extends React.Component {
   state = {
     isLoggedIn: false,
@@ -38,6 +38,7 @@ class Container extends React.Component {
               <Route path="/profile" component={ProfileContainer} />
               <Route path="/home" component={HomeContainer} />
               <Route path='/searchresults' component={SearchResultsContainer}/>
+              <Route path='/settings' component={SettingsContainer}/>
             </Switch>
           </section> : !this.state.isLoadingLocalStorage ? <Redirect to="/login" /> : ''}
       </React.Fragment>
