@@ -31,16 +31,20 @@ class Container extends React.Component {
   render() {
     return (
       <React.Fragment>
-        {this.state.isLoggedIn ?
-          <section>
-            <HeaderContainer />
-            <Switch>
-              <Route path="/profile" component={ProfileContainer} />
-              <Route path="/home" component={HomeContainer} />
-              <Route path='/searchresults' component={SearchResultsContainer}/>
-              <Route path='/settings' component={SettingsContainer}/>
-            </Switch>
-          </section> : !this.state.isLoadingLocalStorage ? <Redirect to="/login" /> : ''}
+        {this.state.isLoggedIn
+          ? (
+            <section>
+              <HeaderContainer />
+              <Switch>
+                <Route path="/profile" component={ProfileContainer} />
+                <Route path="/home" component={HomeContainer} />
+                <Route path='/searchresults' component={SearchResultsContainer} />
+                <Route path='/settings' component={SettingsContainer} />
+              </Switch>
+            </section>
+          )
+          : !this.state.isLoadingLocalStorage && <Redirect to="/login" />
+        }
       </React.Fragment>
     );
   }
