@@ -17,5 +17,10 @@ export const getPartners = () => ({ type: GET_PARTNERS });
 export const getOtherUserProfile =(user_id) =>({ type: GET_OTHER_USER_INFO,user_id:user_id })
 
 export function editUserProfile(data) {
-  return axios.post(BASE_URL + '/api/userupdate/',data);
+  let postData = data
+  if(postData['coverpic'] || postData['avatar']) {
+    postData = new FormData();
+    Object.keys(data).forEach(param => postData.append(param, data[param]));
+  }
+  return axios.post(BASE_URL + '/api/userupdate/',postData);
 }
