@@ -122,20 +122,20 @@ class Header extends Component {
     return (
       <NavDropdown title={this.userFullName} id="main-menu-dropdown">
         {pathname !== '/profile' && (
-          <NavDropdown.Item>
+          <NavDropdown.Item as="div">
             <Link to="/profile">Profile</Link>
           </NavDropdown.Item>
         )}
         {pathname !== '/home' && (
-          <NavDropdown.Item>
+          <NavDropdown.Item as="div">
             <Link to="/home">Home</Link>
           </NavDropdown.Item>
         )}
-        <NavDropdown.Item href="#">
-          Settings
+        <NavDropdown.Item as="div">
+          <Link to="#">Settings</Link>
         </NavDropdown.Item>
-        <NavDropdown.Item onClick={this.handleLogout}>
-          Logout
+        <NavDropdown.Item as="div" onClick={this.handleLogout}>
+          <Link to="#">Logout</Link>
         </NavDropdown.Item>
       </NavDropdown>
     );
