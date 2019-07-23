@@ -4,7 +4,6 @@ import Col from 'react-bootstrap/Col';
 import Container from 'react-bootstrap/Container';
 import Left from '../left/left';
 import ProfileCenter from '../profileCenter/ProfileCenter';
-import Button from 'react-bootstrap/Button'
 import { Link } from 'react-router-dom'
 export default class ProfileView extends React.Component {
   render() {
@@ -28,8 +27,8 @@ export default class ProfileView extends React.Component {
               />
             </Col>
             <Col md={3}>
-              {this.props.currentUserState === 1 ? <Link to='/settings/editprofile' className='mt-2 btn btn edit-profile-button-background btn-lg'>Edit Profile</Link> : 
-              (this.props.currentUserState === 0 ? (user && user.followed === 1 ? <Button  variant="secondary" className='mt-2' size="lg">Connected </Button> :<Button  variant="secondary" className='mt-2' size="lg">Connect </Button> ) :'')}
+              {this.props.currentUserState === 1 ? <Link to='/settings/editprofile' className='mt-2 btn edit-profile-button-background'>Edit Profile</Link> : 
+              (this.props.currentUserState === 0 ? (user && user.followed === 1 ? <button className='mt-2  btn edit-profile-button-background'>Connected </button> :<button  className='mt-2  btn edit-profile-button-background'>Connect </button> ) :'')}
             </Col>
           </Row>
         </Container>
