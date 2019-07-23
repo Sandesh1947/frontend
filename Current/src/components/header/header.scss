@@ -1,5 +1,28 @@
 @import '../../style/abstract/abstract';
 
+%nav-text-hoverable {
+  color: $c-darkest;
+  @include easeOut;
+
+  &:hover {
+    color: $c-neutral;
+    
+    * {
+      color: $c-neutral;
+    }
+  }
+}
+
+%nav-button {
+  @extend %nav-text-hoverable;
+  
+  display: flex;
+  align-items: center;
+  border: none;
+  background: none;
+  box-shadow: none;
+}
+
 .header {
   height: 4rem;
 
@@ -35,36 +58,23 @@
           border-radius: 5px;
         }
 
-        .search-icon {
+        svg {
           position: absolute;
           right: 15px;
+          color: $c-neutral;
         }
       }
       
       .create-publication {
-        &__button {
-          display: flex;
-          align-items: center;
-          border: none;
-          background: none;
-          @include easeOut;
-          
-          &:hover {
-            background: none;
-            color: $c-neutral;
-            border: none;
-            
-            .create-publication__icon {
-              color: $c-neutral;
-            }
-          }
+        .btn {
+          @extend %nav-button;
         }
 
-        &__text {
+        h3 {
           @extend %h3;
         }
         
-        &__icon {
+        svg {
           margin-left: .25rem;
           color: $c-active;
           @include easeOut;
@@ -72,28 +82,22 @@
       }
 
       .navbar-right {
-        &__button {
+        .btn {
+          @extend %nav-button;
           margin-right: .5rem;
-          border: none;
-          @include easeOut;
-          background: none;
-          color: $c-darkest;
-          text-align: left;
-        
-          &:hover {
-            background: none;
-            color: $c-neutral;
-            border: none;
-          }
         }
       }
       
-      .navbar-dropdown {
+      .dropdown {
         @extend %h3;
         color: $c-darkest;
         background: none;
         display: flex;
         align-items: center;
+
+        .nav-link {
+          @extend %nav-text-hoverable;
+        }
       }
       
       .navbar-avatar {
@@ -102,7 +106,7 @@
         overflow: hidden;
         border-radius: $border-radius;
         
-        &__image {
+        img {
           object-fit: cover;
           height: 3rem;
         }

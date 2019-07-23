@@ -4,13 +4,13 @@ import React, { Component } from 'react';
 import { Link, withRouter } from 'react-router-dom';
 
 import Button from 'react-bootstrap/Button';
+import Container from 'react-bootstrap/Container';
+import Image from 'react-bootstrap/Image';
 import Form from 'react-bootstrap/Form';
 import FormControl from 'react-bootstrap/FormControl';
-import Image from 'react-bootstrap/Image';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
-import Container from 'react-bootstrap/Container';
 
 import { BASE_URL } from '../../app.constants';
 
@@ -25,7 +25,6 @@ class Header extends Component {
       showPublicationModal: false,
       searchKeyword: '',
     };
-    this.handleSearch = this.handleSearch.bind(this);
   }
 
   handleSearch = event => {
@@ -41,14 +40,18 @@ class Header extends Component {
     this.setState({ showPublicationModal: false });
   }
 
-  handleSubmitSearchForm = (event) => {
+  handleSubmitSearchForm = event => {
     event.preventDefault();
     this.props.onSubmitSearchKeyword(this.state.searchKeyword);
   }
 
+  handleLogout = () => {
+    localStorage.removeItem('AUTH_TOKEN');
+    this.props.logout();
+    this.props.history.replace('/login');
+  }
+
   render() {
-    const { user } = this.props;
-    const { pathname } = this.props.location;
     return (
       <>
         <header className="header">
@@ -57,57 +60,15 @@ class Header extends Component {
               <Navbar.Brand><Link to="/home">Eycon</Link></Navbar.Brand>
               <Navbar.Toggle aria-controls="basic-navbar-nav" />
               <Navbar.Collapse id="basic-navbar-nav">
-                <Form onSubmit={this.handleSubmitSearchForm} inline className="navbar-search-form">
-                  <FormControl onChange={this.handleSearch} size="sm" type="text" className="mr-sm-2" />
-                  <FontAwesomeIcon icon={faSearch} className="search-icon navbar-search-form__icon" style={{ color: '#dcdcdc' }} />
-                </Form>
-                <Nav className="mr-5 w-100 justify-content-end create-publication">
-                  <Button variant="light" className="create-publication__button" onClick={this.showPublicationModal}>
-                    <h3 className="create-publication__text">Create</h3>
-                    <FontAwesomeIcon icon={faPlus} className="create-publication__icon" />
-                  </Button>
-                </Nav>
+                {this.searchField}
+                {this.createPublicationLink}
                 <Nav className="navbar-right">
-                  <Button variant="light" className="navbar-right__button">
-                    <FontAwesomeIcon icon={faCommentAlt} className="navbar-right__icon" />
-                  </Button>
-                  <Button variant="light" className="navbar-right__button">
-                    <FontAwesomeIcon icon={faBell} className="navbar-right__icon" />
-                  </Button>
-                  <NavDropdown
-                    title={user && (user[0].first_name + ' ' + user[0].last_name)}
-                    id="basic-nav-dropdown"
-                    className="navbar-dropdown"
-                  >
-                    {(pathname !== '/profile') &&
-                      <NavDropdown.Item className="navbar-dropdown__item">
-                        <Link to="/profile">Profile</Link>
-                      </NavDropdown.Item>}
-                    {(pathname !== '/home') &&
-                      <NavDropdown.Item className="navbar-dropdown__item">
-                        <Link to="/home">Home</Link>
-                      </NavDropdown.Item>}
-                    <NavDropdown.Item
-                      href="#"
-                      className="navbar-dropdown__item"
-                    >
-                      Settings
-                  </NavDropdown.Item>
-                    <NavDropdown.Item
-                      className="navbar-dropdown__item"
-                      onClick={() => {
-                        localStorage.removeItem('AUTH_TOKEN');
-                        this.props.logout();
-                        this.props.history.replace('/login');
-                      }}>Logout</NavDropdown.Item>
-                  </NavDropdown>
-                  <figure className="navbar-avatar">
-                    <Image src={user && BASE_URL + user[0].avatar}
-                      className="navbar-avatar__image" />
-                  </figure>
+                  {this.messages}
+                  {this.notifications}
+                  {this.menuDropdown}
+                  {this.avatar}
                 </Nav>
               </Navbar.Collapse>
-
             </Container>
           </Navbar>
         </header>
@@ -118,6 +79,83 @@ class Header extends Component {
         />
       </>
     );
+  }
+
+  get searchField() {
+    return (
+      <Form onSubmit={this.handleSubmitSearchForm} inline className="navbar-search-form">
+        <FormControl onChange={this.handleSearch} size="sm" type="text" className="mr-sm-2" />
+        <FontAwesomeIcon icon={faSearch} className="search-icon" />
+      </Form>
+    );
+  }
+
+  get createPublicationLink() {
+    return (
+      <Nav className="mr-5 w-100 justify-content-end create-publication">
+        <Button variant="light" onClick={this.showPublicationModal}>
+          <h3>Create</h3>
+          <FontAwesomeIcon icon={faPlus} />
+        </Button>
+      </Nav>
+    );
+  }
+
+  get messages() {
+    return (
+      <Button variant="light">
+        <FontAwesomeIcon icon={faCommentAlt} />
+      </Button>
+    );
+  }
+
+  get notifications() {
+    return (
+      <Button variant="light">
+        <FontAwesomeIcon icon={faBell} />
+      </Button>
+    );
+  }
+
+  get menuDropdown() {
+    const { pathname } = this.props.location;
+    return (
+      <NavDropdown title={this.userFullName} id="main-menu-dropdown">
+        {pathname !== '/profile' && (
+          <NavDropdown.Item>
+            <Link to="/profile">Profile</Link>
+          </NavDropdown.Item>
+        )}
+        {pathname !== '/home' && (
+          <NavDropdown.Item>
+            <Link to="/home">Home</Link>
+          </NavDropdown.Item>
+        )}
+        <NavDropdown.Item href="#">
+          Settings
+        </NavDropdown.Item>
+        <NavDropdown.Item onClick={this.handleLogout}>
+          Logout
+        </NavDropdown.Item>
+      </NavDropdown>
+    );
+  }
+
+  get avatar() {
+    return this.user && (
+      <figure className="navbar-avatar">
+        <Image src={BASE_URL + this.user.avatar} />
+      </figure>
+    );
+  }
+
+  get user() {
+    // TODO: refactor parent container so that user is passed as object instead of array
+    return this.props.user && this.props.user[0];
+  }
+
+  get userFullName() {
+    return this.user && (this.user.first_name + ' ' + this.user.last_name)
   }
 }
 
