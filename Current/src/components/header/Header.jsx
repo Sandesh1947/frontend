@@ -1,8 +1,8 @@
-import { faBell, faCommentAlt, faSearch, faPlus } from '@fortawesome/free-solid-svg-icons';
+import { faBell, faCommentAlt, faSearch, faPlus, faHome,faCog,faSignOutAlt,faUser  } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { Component } from 'react';
 import { Link, withRouter } from 'react-router-dom';
-
+import { LinkContainer } from 'react-router-bootstrap'
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import FormControl from 'react-bootstrap/FormControl';
@@ -13,7 +13,6 @@ import NavDropdown from 'react-bootstrap/NavDropdown';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-
 import { BASE_URL } from '../../app.constants';
 
 import PublicationModal from '../publication-modal/PublicationModal';
@@ -91,18 +90,26 @@ class Header extends Component {
                       className="navbar-dropdown"
                     >
                       {(pathname !== '/profile') &&
-                        <NavDropdown.Item className="navbar-dropdown__item">
-                          <Link to="/profile">Profile</Link>
-                        </NavDropdown.Item>}
+                      <LinkContainer to="/profile">
+                      <NavDropdown.Item className="navbar-dropdown__item">
+                      <FontAwesomeIcon icon={faUser} className="access-type__icon" />
+                        <span className='ml-2'>Profile</span>
+                        </NavDropdown.Item>
+                      </LinkContainer>}
                       {(pathname !== '/home') &&
+                      <LinkContainer to="/home">
                         <NavDropdown.Item className="navbar-dropdown__item">
-                          <Link to="/home">Home</Link>
-                        </NavDropdown.Item>}
+                        <FontAwesomeIcon icon={faHome} className="access-type__icon" />
+                          <span className='ml-2'>Home</span>
+                        </NavDropdown.Item>
+                        </LinkContainer>
+                        }
                       <NavDropdown.Item
                         href="#"
                         className="navbar-dropdown__item"
                       >
-                        Settings
+                        <FontAwesomeIcon icon={faCog} className="access-type__icon" />
+                        <span className='ml-2'>Settings</span>
                       </NavDropdown.Item>
                       <NavDropdown.Item
                         className="navbar-dropdown__item"
@@ -110,7 +117,7 @@ class Header extends Component {
                           localStorage.removeItem('AUTH_TOKEN');
                           this.props.logout();
                           this.props.history.replace('/login');
-                        }}>Logout</NavDropdown.Item>
+                        }}><FontAwesomeIcon icon={faSignOutAlt} className="access-type__icon" /> <span className='ml-2'>Logout</span></NavDropdown.Item>
                     </NavDropdown>
                     <figure className="navbar-avatar">
                       <Image src={user && BASE_URL + user[0].avatar}

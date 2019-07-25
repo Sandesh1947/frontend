@@ -89,30 +89,6 @@ class LoginView extends React.Component {
                     onChange={this.handleDateOfBirth}
                   />
                 </div>
-      
-                <div className={this.props.signUpFailed ? 'slide-design-input login-failed-border slide-design-select-wrap':'slide-design-input slide-design-select-wrap'}>
-                  <span className='slide-design-select-placeholder'>
-                    Sex
-                  </span>
-                  <select
-                    className='select-css'
-                    name='sex'
-                    onChange={ this.handleChange }
-                  >
-                    <option>
-                      Select your sex
-                    </option>
-                    <option value='male'>
-                      Male
-                    </option>
-                    <option value='female'>
-                      Female
-                    </option>
-                    <option value='other'>
-                      Other
-                    </option>
-                  </select>
-                  </div>
                   {this.props.signUpFailed && <span style={{color:'red'}}>Sign up error! Try again</span>}
                 <button
                   className='slide-design-button mt-2'

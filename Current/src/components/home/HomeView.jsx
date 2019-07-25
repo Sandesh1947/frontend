@@ -10,7 +10,7 @@ import './home.scss';
 export default class HomeView extends React.Component {
   render() {
     return (
-      <section style={{ backgroundColor: '#f2f2f2', paddingBottom: '2rem' }}> {/** TODO: extract styles to scss */}
+      <section style={{ backgroundColor: '#f2f2f2', paddingBottom: '2rem', paddingTop:'1rem' }}> {/** TODO: extract styles to scss */}
         <Container className="content">
           <Row>
             <Col md={3}>

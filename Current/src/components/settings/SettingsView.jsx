@@ -29,19 +29,21 @@ class SettingsView extends React.Component {
     }
     render() {
         return (
-            <Container className="content mb-5">
-                <Row>
-                    <Col md={3}>
-                        <Nav defaultActiveKey="/home" className="flex-column nav-bar-container">
-                            <Nav.Link href="/home"><span className={this.state.path === 1 ? 'link-navbar-selected' : 'link-navbar'}><FontAwesomeIcon icon={faPencilAlt} />  Edit Profile</span></Nav.Link>
-                            <Nav.Link> <span className={this.state.path === 2 ? 'link-navbar-selected' : 'link-navbar'}><FontAwesomeIcon icon={faLock} />  Privacy</span> </Nav.Link>
-                        </Nav>
-                    </Col>
-                    <Col md={9}>
-                        <EditProfileContainer />
-                    </Col>
-                </Row>
-            </Container>
+            <section style={{ backgroundColor: '#f2f2f2', paddingTop: '1rem' }} className="content mb-5">
+                <Container>
+                    <Row>
+                        <Col md={3}>
+                            <Nav defaultActiveKey="/home" className="flex-column nav-bar-container" style={{height:'95%'}}>
+                                <Nav.Link href="/home"><span className={this.state.path === 1 ? 'link-navbar-selected' : 'link-navbar'}><FontAwesomeIcon icon={faPencilAlt} />  Edit Profile</span></Nav.Link>
+                                <Nav.Link> <span className={this.state.path === 2 ? 'link-navbar-selected' : 'link-navbar'}><FontAwesomeIcon icon={faLock} />  Privacy</span> </Nav.Link>
+                            </Nav>
+                        </Col>
+                        <Col md={9}>
+                            <EditProfileContainer />
+                        </Col>
+                    </Row>
+                </Container>
+            </section>
         )
     }
 }

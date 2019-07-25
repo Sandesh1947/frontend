@@ -9,7 +9,7 @@ export default class ProfileView extends React.Component {
   render() {
     const user = this.props.userInfo.user ? this.props.userInfo.user[0]:undefined
     return (
-      <section style={{ backgroundColor: '#f2f2f2' }}>
+      <section style={{ backgroundColor: '#f2f2f2',paddingTop:'1rem' }}>
         <Container className="content">
           <Row>
             <Col md={3}>
