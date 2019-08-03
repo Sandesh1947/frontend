@@ -88,7 +88,8 @@ class Publication extends Component {
     this.setState({ attachment: null });
   }
 
-  onSubmit = () => {
+  onSubmit = (e) => {
+    e.preventDefault();
     this.props.postPublication({
       ...this.state,
       publicationType: this.props.publicationType,
