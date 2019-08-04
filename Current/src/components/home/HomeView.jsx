@@ -14,7 +14,7 @@ export default class HomeView extends React.Component {
         <Container className="content">
           <Row>
             <Col md={3}>
-              <Left user={this.props.userInfo.user} />
+              <Left from='home' user={this.props.userInfo.user} />
             </Col>
             <Col md={6}>
               <Publication publicationType="update" />

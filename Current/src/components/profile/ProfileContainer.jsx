@@ -2,7 +2,7 @@ import React from 'react';
 import ProfileView from './ProfileView';
 import './profile.scss';
 import { connect } from 'react-redux';
-import { getUserInfo, getUserFollowers, getPartners, getOtherUserProfile } from '../../actions/userInfoActions';
+import { getUserInfo, getUserFollowers, getPartners, getOtherUserProfile,editUserProfile } from '../../actions/userInfoActions';
 import { getUserPublications, getOtherUserPublications } from '../../actions/userPublicationAction';
 import queryString from 'query-string'
 import isEqual from 'lodash/isEqual';
@@ -16,12 +16,17 @@ class ProfileContainer extends React.Component {
     }
     this.trackScrolling = this.trackScrolling.bind(this)
     this.loadMoreData = this.loadMoreData.bind(this)
+    this.editProfile = this.editProfile.bind(this)
   }
   isCurrentUser(location) {
     if(location.state)
     return location.state.currentuser
     return 1
   }
+  editProfile(data) {
+    editUserProfile(data);
+
+}
   componentDidMount() {
     const location = this.props.location
     if (location.state && location.state.currentuser === 0) {
@@ -106,6 +111,7 @@ class ProfileContainer extends React.Component {
         currentUserState={this.state.isCurrentUser}
         userPublications={this.state.isCurrentUser === 1 ? userPublications.publications : otherUserPublications.publications}
         userInfo={this.state.isCurrentUser === 1 ? userInfo : otherUserInfo}
+        editProfile = {this.editProfile}
       />
     );
   }

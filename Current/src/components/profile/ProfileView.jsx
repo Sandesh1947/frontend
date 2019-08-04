@@ -14,9 +14,11 @@ export default class ProfileView extends React.Component {
           <Row>
             <Col md={3}>
               <Left
+                from='profile'
                 partners={this.props.userPartners}
                 followers={this.props.userFollowers}
                 user={this.props.userInfo.user}
+                editProfile={this.props.editProfile}
               />
             </Col>
             <Col md={6}>
@@ -24,6 +26,7 @@ export default class ProfileView extends React.Component {
                 loading={this.props.loading}
                 user={this.props.userInfo.user}
                 userPublications={this.props.userPublications}
+                editProfile={this.props.editProfile}
               />
             </Col>
             <Col md={3}>
