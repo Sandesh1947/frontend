@@ -13,6 +13,13 @@
       opacity: 0.25
     }
   }
+  &__avatarhome {
+    width: 12.5rem;
+    height: 12.5rem;
+    
+    object-fit: cover;
+    border-radius: $border-radius;
+  }
   &__username {
     @extend %h2;
     color: $c-darkest;

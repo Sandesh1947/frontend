@@ -52,3 +52,11 @@ code {
         background-size: 15px 15px;
     }
 }
+
+.overlay-container {
+    background-color: rgba(197, 164, 164, 0.5);
+    z-index: 2;
+  }
+  .profile-pic-changed-opacity {
+    opacity:0.5
+  }
