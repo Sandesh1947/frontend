@@ -13,18 +13,19 @@ import { BASE_URL } from '../../app.constants';
 export default class ProfileCenter extends Component {
   constructor() {
     super()
-    this.state = { selectedTab: 'updates', workPublication: [], updatedPublication: [],coverPicChanged:false }
+    this.state = { selectedTab: 'updates', workPublication: [], updatedPublication: [], coverPicChanged: false }
     this.getUpdates = this.getUpdates.bind(this)
     this.getWorks = this.getWorks.bind(this)
-    this.onFileUploadCoverPic= this.onFileUploadCoverPic.bind(this)
+    this.onFileUploadCoverPic = this.onFileUploadCoverPic.bind(this)
     this.initProfilePic = this.initProfilePic.bind(this)
+    this.editProfile = this.editProfile.bind(this)
   }
   componentDidMount() {
     this.setState({ workPublication: this.getWorks() })
     this.setState({ updatedPublication: this.getUpdates() })
   }
   componentDidUpdate(prevProps) {
-    if(!isEqual(prevProps,this.props)) {
+    if (!isEqual(prevProps, this.props)) {
       this.setState({ workPublication: this.getWorks() })
       this.setState({ updatedPublication: this.getUpdates() })
       this.initProfilePic();
@@ -38,34 +39,41 @@ export default class ProfileCenter extends Component {
   }
   initProfilePic() {
     const user = this.props.user ? this.props.user[0] : undefined
-    if(user)
-    this.setState({coverpic : BASE_URL + user.coverpic,coverPicChanged:false})
+    if (user)
+      this.setState({ coverpic: BASE_URL + user.coverpic, coverPicChanged: false })
   }
   onFileUploadCoverPic(e) {
     if (!e.target.files.length) {
-        return;
+      return;
     }
     const attachment = Array.from(e.target.files)[0];
     this.loadImage(attachment)
 
-}
-loadImage(attachment) {
-  const reader = new FileReader();
-  reader.onload = e => {
-      this.setState({ 'coverpic': e.target.result,coverPicChanged:true });
-  };
-  reader.readAsDataURL(attachment);
-}
+  }
+  loadImage(attachment) {
+    const reader = new FileReader();
+    reader.onload = e => {
+      this.setState({ 'coverpic': e.target.result, coverPicChanged: true });
+    };
+    reader.readAsDataURL(attachment);
+  }
+  editProfile() {
+    this.setState({ coverPicChanged: false })
+    this.props.editProfile({ avatar: this.state.avatar })
+  }
   render() {
-    const user = this.props.user ? this.props.user[0]:undefined
     return (
       <div className="right">
-        <figure className="title-img">
+        <figure className={this.state.coverPicChanged ? "title-img overlay-container" :'title-img '}>
 
           <React.Fragment>
+            {this.state.coverPicChanged && <div className='d-flex mb-2'>
+              <Button size="sm" className='mr-3' onClick={this.editProfile} variant="outline-success">Save</Button>
+              <Button size="sm" onClick={() => { this.initProfilePic() }} variant="outline-danger">Cancel</Button>
+            </div>}
             <div className='coverpic-container'>
-              <label htmlFor='cover-pic'>
-                <Image src={this.state.coverpic} className="title-image" />
+              <label style={{width:'100%'}} htmlFor='cover-pic'>
+                <Image src={this.state.coverpic} className={this.state.coverPicChanged ? "title-image profile-pic-changed-opacity":'title-image '} />
               </label>
               <input
                 className="d-none"
@@ -75,12 +83,7 @@ loadImage(attachment) {
                 onChange={this.onFileUploadCoverPic}
               />
             </div>
-            {this.state.coverPicChanged && <div className='d-flex'>
-              <Button size="sm" className='mr-3' onClick={() => this.props.editProfile({ coverpic: this.state.coverpic })} variant="outline-success">Save</Button>
-              <Button size="sm" onClick={() => { this.initProfilePic() }} variant="outline-danger">Cancel</Button>
-            </div>}
-          </React.Fragment> 
-          <Image  src={user && BASE_URL + user.coverpic} className="title-img__image" />
+          </React.Fragment>
         </figure>
 
         <Tabs

@@ -13,6 +13,7 @@ export default class Left extends Component {
     this.onFileUploadAvatar = this.onFileUploadAvatar.bind(this)
     this.loadImage = this.loadImage.bind(this)
     this.initAvatar = this.initAvatar.bind(this)
+    this.editProfile = this.editProfile.bind(this)
   }
   componentDidMount() {
     this.initAvatar();
@@ -42,6 +43,10 @@ loadImage(attachment) {
   };
   reader.readAsDataURL(attachment);
 }
+editProfile() {
+  this.setState({avatarChanged:false})
+  this.props.editProfile({ avatar: this.state.avatar })
+}
   render() {
     const user = this.props.user ? this.props.user[0] : null
     return (
@@ -49,9 +54,13 @@ loadImage(attachment) {
         {user && <div className='left'>
           {this.props.from === 'profile' ?
             <React.Fragment>
-              <div className='pic-container'>
+              <div className={this.state.avatarChanged ? 'pic-container overlay-container':'pic-container'}>
+              {this.state.avatarChanged && <div className='d-flex mb-2'>
+                <Button size="sm" className='mr-3' onClick={this.editProfile} variant="outline-success">Save</Button>
+                <Button size="sm" onClick={() => { this.initAvatar() }} variant="outline-danger">Cancel</Button>
+              </div>}
                 <label htmlFor='profile-pic'>
-                  <Image src={this.state.avatar} className='left__avatar' />
+                  <Image src={this.state.avatar} className={this.state.avatarChanged ? 'left__avatar profile-pic-changed-opacity':'left__avatar'}  />
                 </label>
                 <input
                   className="d-none"
@@ -61,11 +70,7 @@ loadImage(attachment) {
                   onChange={this.onFileUploadAvatar}
                 />
               </div>
-              {this.state.avatarChanged && <div className='d-flex'>
-              <Button size="sm" className='mr-3' onClick={() => this.props.editProfile({avatar :this.state.avatar})} variant="outline-success">Save</Button>
-              <Button size="sm" onClick={() => { this.initAvatar() }} variant="outline-danger">Cancel</Button>
-                </div>}
-            </React.Fragment> : <Image src={this.state.avatar} className='left__avatar' />}
+            </React.Fragment> : <Image src={this.state.avatar} className='left__avatarhome' />}
           <h3
             className='left__username'>{user && (user.first_name + ' ' + user.last_name)}</h3>
           <p className='left__description'>{user && user.bio}</p>
