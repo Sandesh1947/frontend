@@ -4,12 +4,13 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Button,Image } from 'react-bootstrap'
 import { BASE_URL } from '../../app.constants';
 import isEqual from 'lodash/isEqual'
+import ProfilePic from './profilePic'
 import './left.scss';
 
 export default class Left extends Component {
   constructor(props){
     super(props)
-    this.state = {avatar: '',avatarChanged:false}
+    this.state = {avatar: '',avatarChanged:false,enlargeImage:false}
     this.onFileUploadAvatar = this.onFileUploadAvatar.bind(this)
     this.loadImage = this.loadImage.bind(this)
     this.initAvatar = this.initAvatar.bind(this)
@@ -70,7 +71,8 @@ editProfile() {
                   onChange={this.onFileUploadAvatar}
                 />
               </div>
-            </React.Fragment> : <Image src={this.state.avatar} className='left__avatarhome' />}
+            </React.Fragment> : <Image onClick={()=>{this.setState({enlargeImage:true})}} src={this.state.avatar} className='left__avatarhome' />}
+            {this.state.enlargeImage && <ProfilePic imgsrc={this.state.avatar} close={()=>this.setState({enlargeImage:false})}/> }
           <h3
             className='left__username'>{user && (user.first_name + ' ' + user.last_name)}</h3>
           <p className='left__description'>{user && user.bio}</p>
