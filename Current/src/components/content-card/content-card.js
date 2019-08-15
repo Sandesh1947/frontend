@@ -14,7 +14,6 @@ import { likePost, promotePost } from '../../actions/userPublicationAction'
 import PromotedOrLikedUsersContainer from '../UserListModal/PromotedOrLikedUsersContainer'
 import Popup from '../../components/popup/popup';
 import VideoThumbnail from '../generic/VideoThumbnail';
-
 import './content-card.scss';
 
 export default class ContentCard extends Component {
@@ -182,11 +181,15 @@ export default class ContentCard extends Component {
             <div className="d-flex justify-content-between">
               <div>
                 <div className="d-flex">
+                <Link to={{ pathname: '/profile/', search: queryString.stringify(Object.assign({}, { user_id: userPublication.user_id })), state: { currentuser: userPublication.currentuser } }}>
                   <Image className="content-card__avatar"
                     src={userPublication && BASE_URL + userPublication.avatar} />
+                  </Link>
                   <span className="d-flex flex-column">
+                  <Link to={{ pathname: '/profile/', search: queryString.stringify(Object.assign({}, { user_id: userPublication.user_id })), state: { currentuser: userPublication.currentuser } }}>
                     <h6
                       id='username-content' ref={refList => this.refList = refList} onClick={() => this.handlePopOver(userPublication, this.props.postIndex)} className="content-card__username">{userPublication && (userPublication.first_name + ' ' + userPublication.last_name)}</h6>
+                  </Link>
                     <Overlay
                       show={this.state.showPopOver[this.props.postIndex]}
                       target={this.refList}
@@ -229,12 +232,12 @@ export default class ContentCard extends Component {
           <Card.Footer style={{ margin: '0 -1rem', padding: '1rem 1rem 0', borderTopColor: '#f2f2f2' }}>
             <div className='content-card-footer d-flex justify-content-between'>
               <div className='content-card-footer__item'>
-                {(this.state.isLiked || userPublication.liked) ?
+                {((this.state.isLiked || userPublication.liked) || (this.state.isPromoted || userPublication.promoted ) )?
                   <span><span onClick={() => { this.handleOpenUsersList('liked', userPublication.id) }} className='count-value'>{this.formatCount(this.state.likeCount)}</span> <span className='count-value like-done '>Like</span></span> :
                   <span><span className='count-value' onClick={() => { this.handleOpenUsersList('liked', userPublication.id) }}>{this.formatCount(this.state.likeCount)} </span> <span onClick={() => { this.likePost(userPublication.id) }} className='count-value'>Like</span> </span>}
               </div>
               <div className='content-card-footer__item'>
-                {(this.state.isPromoted || userPublication.promoted) ?
+                {((this.state.isPromoted || userPublication.promoted) || (this.state.isLiked || userPublication.liked)) ?
                   <span><span onClick={() => { this.handleOpenUsersList('promotes', userPublication.id) }} className='count-value'>{this.formatCount(this.state.promoteCount)}</span> <span className='count-value like-done '>Promote</span></span> :
                   <span><span onClick={() => { this.handleOpenUsersList('promotes', userPublication.id) }} className='count-value'>{this.formatCount(this.state.promoteCount)}</span><span onClick={() => { this.promotePost(userPublication.id) }} className='count-value'> Promote</span></span>
                 }

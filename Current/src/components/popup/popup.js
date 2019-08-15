@@ -9,7 +9,8 @@ import Image from 'react-bootstrap/Image';
 import Modal from 'react-bootstrap/Modal';
 import { BASE_URL } from '../../app.constants';
 import { fetchPromotedUsers, clearPromotedUsers } from '../../actions/userPublicationAction'
-
+import {Link} from 'react-router-dom'
+import queryString from 'query-string';
 import './popup.scss';
 
 class Popup extends Component {
@@ -36,7 +37,8 @@ class Popup extends Component {
   render() {
     const { userPublication, show, onHide, likeCount, promoteCount, promotedUsers } = this.props;
     return (
-      <Modal show={show} onShow={this.onModalShow} onHide={onHide} >
+      <React.Fragment>
+             {userPublication && <Modal show={show} onShow={this.onModalShow} onHide={onHide} >
         <div className="carousel-control-prev" role="button" onClick={this.props.onPrevClick}>
           <span className="carousel-control-prev-icon" aria-hidden="true"></span>
           <span className="sr-only">Previous</span>
@@ -48,8 +50,10 @@ class Popup extends Component {
         <Modal.Header closeButton>
           <div className="d-flex flex-row justify-content-center w-100">
             <div className="d-flex flex-column align-items-center">
-              <Image className="header-avatar" src={userPublication && BASE_URL + userPublication.avatar} />
-              <div className="header-title">{userPublication && (userPublication.first_name + ' ' + userPublication.last_name)}</div>
+                <Link to={{ pathname: '/profile/', search: queryString.stringify(Object.assign({}, { user_id: userPublication.user_id })), state: { currentuser: userPublication.currentuser } }}>
+                  <Image className="header-avatar" src={userPublication && BASE_URL + userPublication.avatar} />
+                  <div className="header-title">{userPublication && (userPublication.first_name + ' ' + userPublication.last_name)}</div>
+                </Link>
               {userPublication && !isNaN(Date.parse(userPublication.created_at)) &&
                 <span className="header-ago"><ReactTimeAgo date={new Date(userPublication.created_at)} /> - Public</span>
               }
@@ -81,8 +85,10 @@ class Popup extends Component {
               <span className="like"><FontAwesomeIcon icon={['fas', 'share']} color="#bebebe" /> {this.props.formatCount(promoteCount)}</span>
               <span className="like d-flex align-items-center">&nbsp;Promoted by&nbsp;&nbsp;&nbsp;&nbsp;
                 {promotedUsers.users.slice(0, 4).map((user, key) => (
-                <Image key={key} className="promoted-by-image" src={BASE_URL + user.avatar} />
-              ))}
+                  <Link key={key} to={{ pathname: '/profile/', search: queryString.stringify(Object.assign({}, { user_id: user.id })), state: { currentuser: user.currentuser } }}>
+                    <Image  className="promoted-by-image" src={BASE_URL + user.avatar} />
+                  </Link>
+                ))}
               </span>
             </span>
           </div>
@@ -93,10 +99,13 @@ class Popup extends Component {
             <Button disabled={userPublication.promoted || this.props.isPromoted} onClick={() => this.props.promotePost(userPublication.id)} variant="light">Promote</Button>
           </div>
           <div className="d-flex w-100">
-            <Image className="footer-avatar" src={userPublication && BASE_URL + userPublication.avatar} />
+            <Link to={{ pathname: '/profile/', search: queryString.stringify(Object.assign({}, { user_id: userPublication.user_id })), state: { currentuser: userPublication.currentuser } }}>
+              <Image className="header-avatar" src={userPublication && BASE_URL + userPublication.avatar} />
+            </Link>
           </div>
         </Modal.Footer>
-      </Modal>
+      </Modal>}
+      </React.Fragment>
     );
   }
 }

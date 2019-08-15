@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import { faPaperclip } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import VideoThumbnail from './VideoThumbnail';
@@ -9,6 +8,7 @@ import ImageThumbnail from './ImageThumbnail';
 import DocumentThumbnail from './DocumentThumbnail';
 
 import './Attachment.scss';
+import { faImage } from '@fortawesome/free-regular-svg-icons';
 
 let fileInputId = 0;
 
@@ -59,7 +59,7 @@ class Attachment extends Component {
       : (
         <div key={fileInputId} className="btn attachment__button">
           <label htmlFor={fileInputId} className="m-0 p-0 attachment__label">
-            <FontAwesomeIcon icon={faPaperclip} size="2x" className="cursor-pointer attachment__icon" />
+            <FontAwesomeIcon icon={faImage} size="2x" className="cursor-pointer attachment__icon" />
           </label>
           <input
             className="d-none"
