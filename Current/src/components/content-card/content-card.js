@@ -9,7 +9,8 @@ import { faEllipsisH } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
   ;
 import { BASE_URL } from '../../app.constants';
-import { likePost, promotePost,unFollowUser } from '../../actions/userPublicationAction'
+import { likePost, promotePost } from '../../actions/userPublicationAction'
+import {unFollowUser } from '../../actions/userInfoActions'
 
 import PromotedOrLikedUsersContainer from '../UserListModal/PromotedOrLikedUsersContainer'
 import Popup from '../../components/popup/popup';
