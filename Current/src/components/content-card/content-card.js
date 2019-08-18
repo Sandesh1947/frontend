@@ -9,7 +9,7 @@ import { faEllipsisH } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
   ;
 import { BASE_URL } from '../../app.constants';
-import { likePost, promotePost } from '../../actions/userPublicationAction'
+import { likePost, promotePost,unFollowUser } from '../../actions/userPublicationAction'
 
 import PromotedOrLikedUsersContainer from '../UserListModal/PromotedOrLikedUsersContainer'
 import Popup from '../../components/popup/popup';
@@ -65,6 +65,7 @@ export default class ContentCard extends Component {
     this.promotePost = this.promotePost.bind(this)
     this.handlePopOver = this.handlePopOver.bind(this)
     this.handleBodyClick = this.handleBodyClick.bind(this)
+    this.unFollow = this.unFollow.bind(this)
     this.refList = null;
   }
 
@@ -179,6 +180,12 @@ export default class ContentCard extends Component {
       this.setState({ showPopOver: currentState })
     }
   }
+  unFollow(user_id) {
+    let postData = {
+      'user_id':user_id
+    }
+    unFollowUser(postData);
+  }
   render() {
     const { userPublication, userPublications } = this.props;
     return (
@@ -238,7 +245,7 @@ export default class ContentCard extends Component {
                         <Dropdown.Item eventKey="1"><span className='count-value like-done '>Promote Piece</span></Dropdown.Item> 
                         }
                         <Dropdown.Item eventKey="2">Add To Collection</Dropdown.Item>
-                        <Dropdown.Item eventKey="3">Unfollow</Dropdown.Item>
+                        <Dropdown.Item eventKey="3" onClick={() => {this.unFollow(userPublication.user_id)}}>Unfollow</Dropdown.Item>
                       </Dropdown.Menu>
                   </Dropdown.Toggle>
                   </Dropdown>
