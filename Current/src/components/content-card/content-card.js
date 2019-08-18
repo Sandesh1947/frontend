@@ -242,11 +242,14 @@ export default class ContentCard extends Component {
                   <FontAwesomeIcon icon={faEllipsisH} className="content-card__icon" />
                       <Dropdown.Menu >
                       {((this.state.isPromoted || userPublication.promoted) || (this.state.isLiked || userPublication.liked)) ?
-                        <Dropdown.Item eventKey="1" onClick={() => { this.promotePost(userPublication.id) }}>Promote Piece</Dropdown.Item> : 
-                        <Dropdown.Item eventKey="1"><span className='count-value like-done '>Promote Piece</span></Dropdown.Item> 
+                        <Dropdown.Item eventKey="1"><span className='count-value like-done '>Promote Piece</span></Dropdown.Item> :
+                        <Dropdown.Item eventKey="1" onClick={() => { this.promotePost(userPublication.id) }}>Promote Piece</Dropdown.Item> 
+                       
                         }
                         <Dropdown.Item eventKey="2">Add To Collection</Dropdown.Item>
-                        <Dropdown.Item eventKey="3" onClick={() => {this.unFollow(userPublication.user_id)}}>Unfollow</Dropdown.Item>
+                        {userPublication.following ===1 ? 
+                        <Dropdown.Item eventKey="3" onClick={() => {this.unFollow(userPublication.user_id)}}>Unfollow</Dropdown.Item>:
+                        <Dropdown.Item eventKey="3"><span className='count-value like-done '>Unfollow</span></Dropdown.Item>}
                       </Dropdown.Menu>
                   </Dropdown.Toggle>
                   </Dropdown>
