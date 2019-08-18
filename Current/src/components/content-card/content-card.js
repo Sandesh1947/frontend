@@ -4,7 +4,7 @@ import ReactTimeAgo from 'react-time-ago';
 import queryString from 'query-string';
 import isEqual from 'lodash/isEqual';
 import { Link } from 'react-router-dom'
-import { Card, Image, Popover, Overlay } from 'react-bootstrap';
+import { Card, Image, Popover, Overlay ,Dropdown} from 'react-bootstrap';
 import { faEllipsisH } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
   ;
@@ -15,6 +15,27 @@ import PromotedOrLikedUsersContainer from '../UserListModal/PromotedOrLikedUsers
 import Popup from '../../components/popup/popup';
 import VideoThumbnail from '../generic/VideoThumbnail';
 import './content-card.scss';
+class CustomToggle extends React.Component {
+  constructor(props, context) {
+    super(props, context);
+
+    this.handleClick = this.handleClick.bind(this);
+  }
+
+  handleClick(e) {
+    e.preventDefault();
+
+    this.props.onClick(e);
+  }
+
+  render() {
+    return (
+      <span onClick={this.handleClick}>
+        {this.props.children}
+      </span>
+    );
+  }
+}
 
 export default class ContentCard extends Component {
   static propTypes = {
@@ -207,9 +228,21 @@ export default class ContentCard extends Component {
                 </div>
               </div>
               <div className="d-flex justify-content-end text-right right flex-column">
-                <a href="#" className="content-card__button">
+                <span className="content-card__button">
+                  <Dropdown>
+                  <Dropdown.Toggle  as={CustomToggle} id="dropdown-basic">
                   <FontAwesomeIcon icon={faEllipsisH} className="content-card__icon" />
-                </a>
+                      <Dropdown.Menu >
+                      {((this.state.isPromoted || userPublication.promoted) || (this.state.isLiked || userPublication.liked)) ?
+                        <Dropdown.Item eventKey="1" onClick={() => { this.promotePost(userPublication.id) }}>Promote Piece</Dropdown.Item> : 
+                        <Dropdown.Item eventKey="1"><span className='count-value like-done '>Promote Piece</span></Dropdown.Item> 
+                        }
+                        <Dropdown.Item eventKey="2">Add To Collection</Dropdown.Item>
+                        <Dropdown.Item eventKey="3">Unfollow</Dropdown.Item>
+                      </Dropdown.Menu>
+                  </Dropdown.Toggle>
+                  </Dropdown>
+                </span>
                 <p className="content-card__public">Public</p>
               </div>
             </div>
