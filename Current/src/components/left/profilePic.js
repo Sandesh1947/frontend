@@ -5,7 +5,11 @@ export default class ProfilePic extends React.Component {
         const { imgsrc } = this.props
         return (
             <Modal centered show={true} onHide={this.props.close} >
-             <Image src={imgsrc} />
+                <Modal.Header closeButton>
+                </Modal.Header>
+                <Modal.Body>
+                    <Image src={imgsrc} />
+                </Modal.Body>
             </Modal>
         )
     }
