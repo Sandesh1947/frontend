@@ -9,7 +9,7 @@ import { BASE_URL } from '../../app.constants';
 import { postPublication } from '../../actions/userPublicationAction';
 import { getWorkTypes } from '../../actions/workTypeAction';
 import { getAccessTypes } from '../../actions/accessTypeAction';
-
+import { Link } from 'react-router-dom'
 import Attachment from '../generic/Attachment';
 
 import './Publication.scss';
@@ -166,8 +166,10 @@ class Publication extends Component {
           <Card.Body className="publication-form__body">
             <div className="d-flex">
               <figure className="navbar-avatar">
+                <Link to='/profile'>
                 <Image src={this.props.user && BASE_URL + this.props.user[0].avatar}
                   className="navbar-avatar__image" />
+                </Link>
               </figure>
               <div className="publication-form__control">
                 <Form.Control

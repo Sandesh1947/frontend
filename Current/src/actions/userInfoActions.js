@@ -24,3 +24,7 @@ export function editUserProfile(data) {
   }
   return axios.post(BASE_URL + '/api/userupdate/',postData);
 }
+
+export function unFollowUser(data) {
+  return axios.post(BASE_URL + '/api/unfollow/',data)
+}
