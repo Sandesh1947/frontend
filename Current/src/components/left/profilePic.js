@@ -8,7 +8,7 @@ export default class ProfilePic extends React.Component {
                 <Modal.Header closeButton>
                 </Modal.Header>
                 <Modal.Body>
-                    <Image src={imgsrc} />
+                    <Image className='body-post-image ' src={imgsrc} />
                 </Modal.Body>
             </Modal>
         )
