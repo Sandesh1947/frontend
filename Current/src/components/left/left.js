@@ -55,13 +55,14 @@ editProfile() {
         {user && <div className='left'>
           {this.props.from === 'profile' ?
             <React.Fragment>
-              <div className={this.state.avatarChanged ? 'pic-container overlay-container':'pic-container'}>
-              {this.state.avatarChanged && <div className='d-flex mb-2'>
-                <Button size="sm" className='mr-3' onClick={this.editProfile} variant="outline-success">Save</Button>
-                <Button size="sm" onClick={() => { this.initAvatar() }} variant="outline-danger">Cancel</Button>
-              </div>}
+              <div className=''>
                 <label htmlFor='profile-pic'>
-                  <Image src={this.state.avatar} className={this.state.avatarChanged ? 'left__avatar profile-pic-changed-opacity':'left__avatar'}  />
+                <div className="img-box">
+                <Image src={this.state.avatar} className='left__avatar'  />
+                  <div className="img-content">
+                  </div>
+                </div>
+
                 </label>
                 <input
                   className="d-none"
@@ -70,6 +71,10 @@ editProfile() {
                   name='profile-pic'
                   onChange={this.onFileUploadAvatar}
                 />
+                {this.state.avatarChanged && <div className='d-flex btn-container justify-content-center mb-2'>
+                  <Button size="sm" className='mr-3' onClick={this.editProfile}  style={{color:'#1b1b4c',borderColor:'#1b1b4c'}}  variant="outline-success">Save</Button>
+                  <Button size="sm" onClick={() => { this.initAvatar() }} variant="outline-danger">Cancel</Button>
+                </div>}
               </div>
             </React.Fragment> : <Image onClick={()=>{this.setState({enlargeImage:true})}} src={this.state.avatar} className='left__avatarhome' />}
             {this.state.enlargeImage && <ProfilePic imgsrc={this.state.avatar} close={()=>this.setState({enlargeImage:false})}/> }

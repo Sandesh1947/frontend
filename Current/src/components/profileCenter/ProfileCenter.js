@@ -64,16 +64,16 @@ export default class ProfileCenter extends Component {
   render() {
     return (
       <div className="right">
-        <figure className={this.state.coverPicChanged ? "title-img overlay-container" :'title-img '}>
+        <figure className='title-img '>
 
           <React.Fragment>
-            {this.state.coverPicChanged && <div className='d-flex mb-2'>
-              <Button size="sm" className='mr-3' onClick={this.editProfile} variant="outline-success">Save</Button>
-              <Button size="sm" onClick={() => { this.initProfilePic() }} variant="outline-danger">Cancel</Button>
-            </div>}
-            <div className='coverpic-container'>
+            <div>
               <label style={{width:'100%'}} htmlFor='cover-pic'>
-                <Image src={this.state.coverpic} className={this.state.coverPicChanged ? "title-image profile-pic-changed-opacity":'title-image '} />
+              <div className="cover-pic-img-box">
+              <Image src={this.state.coverpic} className='title-image '/>
+                  <div className="cover-pic-img-content">
+                  </div>
+                </div>
               </label>
               <input
                 className="d-none"
@@ -83,6 +83,10 @@ export default class ProfileCenter extends Component {
                 onChange={this.onFileUploadCoverPic}
               />
             </div>
+            {this.state.coverPicChanged && <div className='d-flex mb-2 justify-content-center'>
+              <Button size="sm" className='mr-3' onClick={this.editProfile} style={{color:'#1b1b4c',borderColor:'#1b1b4c'}} variant="outline-success">Save</Button>
+              <Button size="sm" onClick={() => { this.initProfilePic() }} variant="outline-danger">Cancel</Button>
+            </div>}
           </React.Fragment>
         </figure>
 

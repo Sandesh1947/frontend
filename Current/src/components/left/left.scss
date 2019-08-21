@@ -31,18 +31,37 @@
     margin: 1rem 0;
   }
 }
-.pic-container {
-  display: inline-block;
-  &:hover{
-    background-image: url('edit-icon.png');
-	  background-repeat: no-repeat;
-	  background-position:center;
-    color: #ffffff;
-	  transform: translateX(0);
-	  transition: transform 0.6s ease-in-out;
+.btn-container  {
+  width: 12.5rem;
+}
+.img-box {
+      position: relative;
+      text-align: center;
+      display: block;
+      overflow: hidden;
+  }
+  .img-content {
+      padding: 20px;
+      background: transparent;
+      position: absolute;
+      bottom: -200px;
+      width: 100%;
+      box-sizing: border-box;
+      transition: all 0.2s ease-in-out;
+      -webkit-transition: all 0.2s ease-in-out;
+      -moz-transition: all 0.2s ease-in-out;
+  }
+  .img-box:hover .img-content{
+    bottom: 0px;
     background-color: rgba(91, 91, 103, 0.7);
-}
-}
+    transition: all 0.2s ease-in-out;
+      -webkit-transition: all 0.2s ease-in-out;
+      -moz-transition: all 0.2s ease-in-out;
+      background-image: url('edit-icon.png');
+      background-repeat: no-repeat;
+      background-position:center;
+  }
+
 
 .left-meta {
   margin-top: -.5rem;
