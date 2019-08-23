@@ -1,6 +1,6 @@
 import React from 'react'
 import './styles.scss'
-import { Row, Col, Button, Image } from 'react-bootstrap'
+import { Row, Col, Button } from 'react-bootstrap'
 import DatePicker from "react-datepicker";
 import moment from 'moment'
 import "react-datepicker/dist/react-datepicker.css";
@@ -149,12 +149,6 @@ class EditProfileView extends React.Component {
                             <div className='mr-3'><Button onClick={() => { this.initValues() }} variant="outline-danger">Cancel</Button></div>
                             <div ><Button onClick={this.handleSave} variant="outline-success">Save</Button></div>
                         </div>
-                    </Col>
-                </Row>
-
-                <Row className='mt-4'>
-                    <Col md={2}>
-                        <Image src={this.state.avatar} style={{ borderRadius: '45px' }} />
                     </Col>
                 </Row>
 
