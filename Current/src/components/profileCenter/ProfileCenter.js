@@ -13,7 +13,7 @@ import { BASE_URL } from '../../app.constants';
 export default class ProfileCenter extends Component {
   constructor() {
     super()
-    this.state = { selectedTab: 'updates', workPublication: [], updatedPublication: [], coverPicChanged: false }
+    this.state = { selectedTab: 'updates', workPublication: [], updatedPublication: [], coverPicChanged: false,coverpic:'' }
     this.getUpdates = this.getUpdates.bind(this)
     this.getWorks = this.getWorks.bind(this)
     this.onFileUploadCoverPic = this.onFileUploadCoverPic.bind(this)
@@ -59,7 +59,7 @@ export default class ProfileCenter extends Component {
   }
   editProfile() {
     this.setState({ coverPicChanged: false })
-    this.props.editProfile({ avatar: this.state.avatar })
+    this.props.editProfile({ coverpic: this.state.coverpic })
   }
   render() {
     return (
