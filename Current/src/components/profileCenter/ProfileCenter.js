@@ -13,7 +13,7 @@ import { BASE_URL } from '../../app.constants';
 export default class ProfileCenter extends Component {
   constructor() {
     super()
-    this.state = { selectedTab: 'updates', workPublication: [], updatedPublication: [], coverPicChanged: false }
+    this.state = { selectedTab: 'updates', workPublication: [], updatedPublication: [], coverPicChanged: false,coverpic:'',coverpicView:'' }
     this.getUpdates = this.getUpdates.bind(this)
     this.getWorks = this.getWorks.bind(this)
     this.onFileUploadCoverPic = this.onFileUploadCoverPic.bind(this)
@@ -40,26 +40,27 @@ export default class ProfileCenter extends Component {
   initProfilePic() {
     const user = this.props.user ? this.props.user[0] : undefined
     if (user)
-      this.setState({ coverpic: BASE_URL + user.coverpic, coverPicChanged: false })
+      this.setState({ coverpicView: BASE_URL + user.coverpic, coverPicChanged: false })
   }
   onFileUploadCoverPic(e) {
     if (!e.target.files.length) {
       return;
     }
     const attachment = Array.from(e.target.files)[0];
+    this.setState({ 'coverpic': attachment, coverPicChanged: true });
     this.loadImage(attachment)
 
   }
   loadImage(attachment) {
     const reader = new FileReader();
     reader.onload = e => {
-      this.setState({ 'coverpic': e.target.result, coverPicChanged: true });
+      this.setState({ 'coverpicView': e.target.result});
     };
     reader.readAsDataURL(attachment);
   }
   editProfile() {
     this.setState({ coverPicChanged: false })
-    this.props.editProfile({ avatar: this.state.avatar })
+    this.props.editProfile({ coverpic: this.state.coverpic })
   }
   render() {
     return (
@@ -70,7 +71,7 @@ export default class ProfileCenter extends Component {
             <div>
               <label style={{width:'100%'}} htmlFor='cover-pic'>
               <div className="cover-pic-img-box">
-              <Image src={this.state.coverpic} className='title-image '/>
+              <Image src={this.state.coverpicView} className='title-image '/>
                   <div className="cover-pic-img-content">
                   </div>
                 </div>
