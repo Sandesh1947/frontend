@@ -24,7 +24,11 @@ class ProfileContainer extends React.Component {
     return 1
   }
   editProfile(data) {
-    editUserProfile(data);
+    editUserProfile(data).then(
+      ()=>{
+        this.props.getUserInfo();
+      }
+    );
 
 }
   componentDidMount() {
