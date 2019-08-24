@@ -43,8 +43,11 @@ export default class HomeView extends React.Component {
                     return (
                       <div key={index} className="member d-flex flex-row align-items-start">
                         <Image className="member__avatar"
-                          src={require('../../assets/avatar.png')} />
-                        <h6 className="member__username">{value.first_name + ' ' + value.last_name}</h6>
+                          src={value.avatar} />
+                        <div>
+                          <h6 className="member__username">{value.first_name + ' ' + value.last_name}</h6>
+                          <p>{value.email}</p>
+                        </div>
                       </div>
                     );
                   })}

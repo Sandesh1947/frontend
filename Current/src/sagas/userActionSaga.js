@@ -33,7 +33,7 @@ export function* userInfoWatcher() {
 
 // User followers saga
 function callUserFollowersApi() {
-  return axios.get(BASE_URL + '/api/followers');
+  return axios.get(BASE_URL + '/api/influencers');
   // return {
   //     'data': [
   //         { 'id': 1, 'first_name': 'harikrishnan', 'last_name': 'm' }
