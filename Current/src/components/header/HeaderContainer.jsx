@@ -40,7 +40,7 @@ class HeaderContainer extends Component {
       <Header
         user={userInfo.user}
         onSubmitPublication={this.onSubmitPublication}
-        logout={this.props.logout}
+        logout={this.handleLogout}
         onSubmitSearchKeyword={this.onSubmitSearchKeyword}
         redirectPage={this.redirectToSearchPage}
       />
