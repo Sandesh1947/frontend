@@ -10,7 +10,7 @@ import './left.scss';
 export default class Left extends Component {
   constructor(props){
     super(props)
-    this.state = {avatar: '',avatarChanged:false,enlargeImage:false}
+    this.state = {avatar: '',avatarChanged:false,enlargeImage:false,avatarView:''}
     this.onFileUploadAvatar = this.onFileUploadAvatar.bind(this)
     this.loadImage = this.loadImage.bind(this)
     this.initAvatar = this.initAvatar.bind(this)
@@ -27,20 +27,21 @@ export default class Left extends Component {
   initAvatar() {
     const user = this.props.user ? this.props.user[0] : null
     if(user)
-    this.setState({avatar : BASE_URL + user.avatar,avatarChanged:false})
+    this.setState({avatarView : BASE_URL + user.avatar,avatarChanged:false})
   }
   onFileUploadAvatar(e) {
     if (!e.target.files.length) {
         return;
     }
     const attachment = Array.from(e.target.files)[0];
+    this.setState({'avatar':attachment,avatarChanged:true })
     this.loadImage(attachment)
 
 }
 loadImage(attachment) {
   const reader = new FileReader();
   reader.onload = e => {
-      this.setState({ 'avatar': e.target.result,avatarChanged:true });
+      this.setState({ 'avatarView': e.target.result});
   };
   reader.readAsDataURL(attachment);
 }
@@ -58,7 +59,7 @@ editProfile() {
               <div className=''>
                 <label htmlFor='profile-pic'>
                 <div className="img-box">
-                <Image src={this.state.avatar} className='left__avatar'  />
+                <Image src={this.state.avatarView} className='left__avatar'  />
                   <div className="img-content">
                   </div>
                 </div>
@@ -76,8 +77,8 @@ editProfile() {
                   <Button size="sm" onClick={() => { this.initAvatar() }} variant="outline-danger">Cancel</Button>
                 </div>}
               </div>
-            </React.Fragment> : <Image onClick={()=>{this.setState({enlargeImage:true})}} src={this.state.avatar} className='left__avatarhome' />}
-            {this.state.enlargeImage && <ProfilePic imgsrc={this.state.avatar} close={()=>this.setState({enlargeImage:false})}/> }
+            </React.Fragment> : <Image onClick={()=>{this.setState({enlargeImage:true})}} src={this.state.avatarView} className='left__avatarhome' />}
+            {this.state.enlargeImage && <ProfilePic imgsrc={this.state.avatarView} close={()=>this.setState({enlargeImage:false})}/> }
           <h3
             className='left__username'>{user && (user.first_name + ' ' + user.last_name)}</h3>
           <p className='left__description'>{user && user.bio}</p>
