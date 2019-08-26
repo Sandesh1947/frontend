@@ -4,7 +4,8 @@ import { Alert, Col, Container, Image, Row, Spinner } from 'react-bootstrap';
 import ContentCard from '../content-card/content-card';
 import Left from '../left/left';
 import Publication from '../publication/Publication';
-
+import {Link} from 'react-router-dom'
+import queryString from 'query-string';
 import './home.scss';
 
 export default class HomeView extends React.Component {
@@ -45,7 +46,7 @@ export default class HomeView extends React.Component {
                         <Image className="member__avatar"
                           src={value.avatar} />
                         <div>
-                          <h6 className="member__username">{value.first_name + ' ' + value.last_name}</h6>
+                          <h6 className="member__username"><Link to={{pathname:'/profile/',search: queryString.stringify(Object.assign({}, {user_id:value.id})),state:{currentuser:false}}}>{value.first_name + ' ' + value.last_name}</Link></h6>
                           <p>{value.email}</p>
                         </div>
                       </div>
