@@ -12,7 +12,7 @@ export default class ProfileView extends React.Component {
       <section style={{ backgroundColor: '#f2f2f2',paddingTop:'1rem' }}>
         <Container className="content">
           <Row>
-            <Col md={3}>
+            <Col md={2}>
               <Left
                 from='profile'
                 partners={this.props.userPartners}
@@ -21,7 +21,7 @@ export default class ProfileView extends React.Component {
                 editProfile={this.props.editProfile}
               />
             </Col>
-            <Col md={6}>
+            <Col md={8}>
               <ProfileCenter
                 loading={this.props.loading}
                 user={this.props.userInfo.user}
@@ -29,7 +29,7 @@ export default class ProfileView extends React.Component {
                 editProfile={this.props.editProfile}
               />
             </Col>
-            <Col md={3}>
+            <Col md={2}>
               {this.props.currentUserState === 1 ? <Link to='/settings/editprofile' className='mt-2 btn edit-profile-button-background'>Edit Profile</Link> : 
               (this.props.currentUserState === 0 ? (user && user.followed === 1 ? <button className='mt-2  btn edit-profile-button-background'>Connected </button> :<button  className='mt-2  btn edit-profile-button-background'>Connect </button> ) :'')}
             </Col>
