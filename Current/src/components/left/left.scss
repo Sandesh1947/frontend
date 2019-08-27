@@ -5,13 +5,10 @@
   
   &__avatar {
     width: 12.5rem;
-    height: 12.5rem;
+    height: 10.5rem;
     
     object-fit: cover;
     border-radius: $border-radius;
-    &:hover{
-      opacity: 0.25
-    }
   }
   &__avatarhome {
     width: 12.5rem;
@@ -53,7 +50,7 @@
   }
   .img-box:hover .img-content{
     bottom: 0px;
-    background-color: rgba(91, 91, 103, 0.7);
+    background-color: rgba(226, 226, 230, 0.7);
     transition: all 0.2s ease-in-out;
       -webkit-transition: all 0.2s ease-in-out;
       -moz-transition: all 0.2s ease-in-out;
