@@ -6,14 +6,14 @@ import "react-datepicker/dist/react-datepicker.css";
 class LoginView extends React.Component {
   constructor() {
     super()
-    this.state = {birthDate:null}
+    this.state = {dob:null}
     this.handleChange = this.handleChange.bind(this);
     this.handleDateOfBirth = this.handleDateOfBirth.bind(this)
     this.birthDate = null
   }
   handleDateOfBirth = (value) => {
     this.birthDate=value
-    this.setState({birthDate:moment(value).format("YYYY-MM-DD")})
+    this.setState({dob:moment(value).format("YYYY-MM-DD")})
     this.props.clearErrorBorders()
   }
   handleChange = e => {
@@ -43,7 +43,7 @@ class LoginView extends React.Component {
                     )
                 }    
                 <input
-                  name='firstName'
+                  name='first_name'
                   className={this.props.signUpFailed ? 'slide-design-input login-failed-border':'slide-design-input'}
                   type='text'
                   placeholder='First name'
@@ -51,7 +51,7 @@ class LoginView extends React.Component {
                 />
                 
                 <input
-                  name='lastName'
+                  name='last_name'
                   className={this.props.signUpFailed ? 'slide-design-input login-failed-border':'slide-design-input'}
                   type='text'
                   placeholder='Last name'
